@@ -1,0 +1,43 @@
+<!-- 幕课网  javascript学习 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<script src="extend.js"></script>
+	<script>
+		// 定义父类
+		function SuperClass(name) {
+			this.name = name;
+			this.colors = ["red","blue","green"];
+		}
+
+		// 定义父类方法
+		SuperClass.prototype.getName = function() {
+			console.log(this.name);
+		};
+		// 定义子类
+		function SubClass(name, time) {
+			// 构造函数继承
+			SuperClass.call(this,name);
+			// 子类新增属性
+			this.time = time;
+		}
+		// 寄生式继承父类原型
+		extend(SubClass, SuperClass);
+		// 为子类添加原型方法
+		SubClass.prototype.getTime = function() {
+			console.log(this.time);
+		};
+		// 创建两个实例
+		var test1 = new SubClass("js book","2014");
+		var test2 = new SubClass("English book","2015");
+		console.log(test1);
+		console.log(test2);
+		console.log(test1.getTime());
+	</script>
+</head>
+<body>
+
+</body>
+</html>

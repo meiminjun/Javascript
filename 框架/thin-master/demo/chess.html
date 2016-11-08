@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Chinese Chess</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Chinese Chess">
+	<meta name="author" content="xu.fei@outlook.com">
+	<script type="text/javascript" src="../libs/lodash/lodash.min.js"></script>
+	<script type="text/javascript" src="../js/thin.js"></script>
+	<script type="text/javascript" src="../libs/raphael-min.js"></script>
+</head>
+<body>
+
+<div id="chessTemplate" style="display: none">
+	<div vm-model="Chess.Game" vm-init="init" vm-element="chessContainer">
+		<button vm-click="undo">undo</button>
+		<!--button vm-click="redo">redo</button-->
+		<button vm-click="destroy">remove current game</button>
+		<div vm-element="chessBoardDiv"></div>
+	</div>
+</div>
+
+<button id="createBtn">Create New Game</button>
+
+<script type="text/javascript">
+	thin.ready(function () {
+		thin.require(["chess/config", "chess/game",	"chess/chessman", "chess/chessboard", "core/binding"], function () {
+			var template = document.getElementById("chessTemplate");
+
+			document.getElementById("createBtn").onclick = function () {
+				var binding = thin.use("DOMBinding");
+				var div = document.createElement("div");
+				div.innerHTML = template.innerHTML;
+				document.body.appendChild(div);
+				binding.parse(div);
+			};
+		});
+	}, 1);
+</script>
+</body>
+</html>
