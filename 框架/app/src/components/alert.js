@@ -6,5 +6,7 @@ define(function() {
       alert:function() {},
       comfirm:function() {}
     };
-    return new Window();
+    return {
+        Window:Window
+    }
 });
