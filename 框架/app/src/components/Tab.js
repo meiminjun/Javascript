@@ -4,14 +4,14 @@ define(['zepto'], function($) {
 	function Tab() {}
 
 	Tab.prototype = {
-		init: function(ele, arr) {
+		init: function(opt) {
 			var me = this;
-			var $ele = this.$ele = $('#' + ele),
-				this.arr = arr,
+			var arr = this.arr = opt.items;
+			var $ele = this.$ele = $('#' + opt.ele),
 				ulDom = this.ulDom = $('<ul class="tabs" id="tabs"></ul>'),
 				liDom = '<li _idx={#_idx#} >{#text#}</li>',
 				html = '';
-			if (!ele && Array.isArray(arr)) {
+			if (!opt.ele && Array.isArray(arr)) {
 				alert("参数传递错误！");
 				return;
 			}

@@ -26,43 +26,47 @@ require(['zepto', 'components/alert', 'components/Tab'], function($, w, t) {
   //      }
   //  });
 
-  var tab = new t.Tab().init('main', [{
-    text: '222sdf',
-    handler: function(ele, index) {
-      alert("开始请求数据");
-      getData();
-    },
-    targetDomId: 'tabOne',
-  }, {
-    text: '测试',
-    handler: function(ele, index) {
-      // alert(11);
-    },
-    targetDomId: 'tabTwo',
-    contentHeight: 55,
-  }, {
-    text: 'dfadf',
-    handler: function(ele, index) {
-      // alert(22);
-    },
-    targetDomId: 'tabThree',
-    contentHeight: 55,
-  }, {
-    text: '首页',
-    handler: function(ele, index) {
-      // alert(33);
-    },
-    targetDomId: 'tabFour',
-    contentHeight: 55,
-  }])
+  var option = {
+    ele: 'main',
+    dock: 'bottom',
+    items: [{
+      text: '222sdf',
+      handler: function(ele, index) {
+
+        getData();
+      },
+      targetDomId: 'tabOne',
+    }, {
+      text: '测试',
+      handler: function(ele, index) {
+        // alert(11);
+      },
+      targetDomId: 'tabTwo',
+      contentHeight: 55,
+    }, {
+      text: 'dfadf',
+      handler: function(ele, index) {
+        // alert(22);
+      },
+      targetDomId: 'tabThree',
+      contentHeight: 55,
+    }, {
+      text: '首页',
+      handler: function(ele, index) {
+        // alert(33);
+      },
+      targetDomId: 'tabFour',
+      contentHeight: 55,
+    }]
+  }
+
+  // var tab = new t.Tab().init(option)
 
   function getData() {
     $.getJSON('./mockData.json', function(data) {
-      alert('成功返回数据');
       // Supposing this JSON payload was received:
       //   {"project": {"id": 42, "html": "<div>..." }}
       // append the HTML to context object.
-      alert(data);
     })
   }
 });

@@ -62,7 +62,6 @@ a{
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
-    /*height: 100px;*/
     border: 1px #ff3f61 solid;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
@@ -99,7 +98,30 @@ a{
     background-size: 103% 100%;
     color:#fff;
 }
-/*----------------------tab 容器----------------------------*/
+/*----------------------List 容器----------------------------*/
+.list {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;     /*子元素垂直布局 */
+}
+.list-item {
+    -webkit-flex: 1;
+    flex: 1;
+    padding: 10px;
+    border:1px #cccccc solid;
+    border-top:none;
+}
+
+.list-item:last-child{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/*----------------------List 容器----------------------------*/
+
+
+
+
 
 
 
