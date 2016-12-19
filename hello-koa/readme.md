@@ -1,3 +1,9 @@
+## 启动项目
+
+nodemon start
+
+需要先下载nodemon
+
 ## 创建npm配置文件
 
 npm init
@@ -16,3 +22,6 @@ npm init
 }
 
 ```
+
+
+
