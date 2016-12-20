@@ -1,1 +1,127 @@
-main.css
+* {
+    margin:0;
+    padding:0;
+}
+html,
+body
+{
+    width: 100%;
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    overflow-x: hidden;
+    background-color:#fff;
+}
+ul li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+}
+/*----------------------alert 弹窗----------------------------*/
+.window_boundindBox {
+    position:absolute;
+    left: 50%;
+    top:50%;
+    transform: translateX(-50%);
+    margin-top: -150px;
+    width:500px;
+    height:300px;
+    background:black;
+}
+
+.window_header {
+    width:100%;
+    height:35px;
+    text-align: center;
+    line-height: 35px;
+    background:yellow;
+}
+.window_body {
+    height:230px;
+    background:black;
+}
+
+.window_footer {
+    height: 35px;
+    background: blue;
+    text-align: center;
+    line-height: 35px;
+}
+
+.window_button_confirm {
+    width:200px;
+    height:35px;
+}
+/*----------------------alert 弹窗----------------------------*/
+
+/*----------------------tab 容器----------------------------*/
+.tabs{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    border: 1px #ff3f61 solid;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.tabs li{
+    flex:1;
+    height: 50px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+    text-align: center;
+    border: 1px #cccccc solid;
+    background-color:#fff;
+}
+.tabs li:first-child{
+    border-left: none;
+    border-top-left-radius: 5px;
+}
+.tabs li:last-child{
+    border-right: none;
+    border-top-right-radius: 5px;
+}
+.active{
+    background-image: url("../images/tabBg.png");
+    background-repeat: no-repeat;
+    background-size: 103% 100%;
+    color:#fff;
+}
+.active1{
+    background-image: url("../images/rightTab.png");
+    background-repeat: no-repeat;
+    background-size: 103% 100%;
+    color:#fff;
+}
+/*----------------------List 容器----------------------------*/
+.list {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;     /*子元素垂直布局 */
+}
+.list-item {
+    -webkit-flex: 1;
+    flex: 1;
+    padding: 10px;
+    border:1px #cccccc solid;
+    border-top:none;
+}
+
+.list-item:last-child{
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+/*----------------------List 容器----------------------------*/
+
+
+
+
+
+
+
