@@ -24,4 +24,7 @@ npm init
 ```
 
 
+## 下载mysql
+
+http://dev.mysql.com/downloads/file/?id=467574
 
