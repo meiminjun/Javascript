@@ -6,3 +6,4 @@ register({
 
 // require('./app.js');
 require('./test-Nunjucks.js');
+console.log("测试新功能");
