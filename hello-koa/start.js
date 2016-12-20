@@ -5,4 +5,4 @@ register({
 });
 
 // require('./app.js');
-require('./test-controller2.js');
+require('./test-Nunjucks.js');
