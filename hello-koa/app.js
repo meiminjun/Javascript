@@ -25,18 +25,6 @@ app.use(async (ctx, next) => {
 	console.log(`第三个完毕`)
 });
 
-
-// app.use(async (ctx, next) => {
-// 		console.log("----执行路由---");
-// 		console.log(ctx.request.path);
-//     if (ctx.request.path === '/index') {
-//     		console.log('执行index page')
-//         ctx.response.body = '<h1>index page!</h1>';
-//     }else {
-//         await next();
-//     }
-// });
-
 app.use(async (ctx, next) => {
 	  let path = ctx.request.path;
     if (path === '/test') {
