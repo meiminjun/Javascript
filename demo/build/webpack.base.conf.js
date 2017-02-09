@@ -27,6 +27,7 @@ module.exports = {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components')
+      // 'mint-ui-css':projectRoot+'node_modules/mint-ui/lib/style.css'
     }
   },
   resolveLoader: {

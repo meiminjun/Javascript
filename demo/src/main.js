@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Mint from 'mint-ui'
-console.log(Mint);
-
+require('mint-ui/lib/style.css')
+import './assets/css/reset.css'
 import router from './router'
 import store from './vuex'
 

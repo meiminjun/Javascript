@@ -33,3 +33,18 @@ https://molunerfinn.com/Vue+Koa/
 "sequelize": "^3.28.0"
 
 ```
+
+## [sequelize-auto从数据库表自动生成Sequelize模型(Model)](https://itbilu.com/nodejs/npm/41mRdls_Z.html)
+
+安装：`sudo npm install -g sequelize-auto`
+
+如果使用MySQL/MariaDB，需要安装mysql：
+
+> sudo npm install -g mysql
+
+运行：
+
+> sequelize-auto -o "./server/models" -d mytest -h 127.0.0.1 -u root -p 3306 -x 123456 -e mysql
+
+
+
