@@ -48,14 +48,32 @@
           this.$store.commit("increment");
         },1000)
       },
-      login(event) {
-        if(this.username === 'admin'&&this.password === "admin") {
-          router.push('/')
-        }else {
-          Toast({
-            message: '操作失败'
-          });
+      login() {
+        let obj = {
+          name: this.username,
+          password: this.password
         }
+        this.$http.post('/api/user', obj) // 将信息发送给后端
+        .then((res) => { // axios返回的数据都在res.data里
+          if(res.data.success){ // 如果成功
+            sessionStorage.setItem('demo-token',res.data.token); // 用sessionStorage把token存下来
+            Toast({
+              message: '登录成功！'
+            });
+            this.$router.push('/todolist') // 进入todolist页面，登录成功
+          }else{
+            Toast({
+              message: res.data.info
+            });
+            // this.$message.error(res.data.info); // 登录失败，显示提示语
+            sessionStorage.setItem('demo-token',null); // 将token清空
+          }
+        }, (err) => {
+            Toast({
+              message: '请求错误！'
+            });
+            sessionStorage.setItem('demo-token',null); // 将token清空
+        })
       }
     }
   }

@@ -2,6 +2,7 @@
 
 const model = require('../model');
 
+
 const APIError = require('../rest').APIError;
 let Pet = model.pets;
 console.log("----")
@@ -25,5 +26,9 @@ module.exports = {
   			ctx.rest({
           products: await Pet.Pets.findAll()
       	});
-    }
+    },
+    'GET /api/user/:id': Pet.findUser,
+    // 'GET /api/user/:name': Pet.getUserByName,
+    'GET /api/list': Pet.findList,
+    'POST /api/user':Pet.postUserAuth
 };

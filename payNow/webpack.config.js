@@ -43,14 +43,17 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.vue', '.js',' .css'],
+    extensions: ['.vue', '.js', ' .css'],
     alias: {
       'vue$': 'vue/dist/vue.common.js'
     }
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    proxy: {
+      "/api": "http://localhost:3000"
+    }
   },
   performance: {
     hints: false
