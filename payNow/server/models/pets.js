@@ -77,33 +77,25 @@ var findUser = async (ctx, next) => {
 };
 
 const getUserByName = async (n) => {
-  console.log(`***Name****${name}`)
-  console.log(`***Name****${name}`)
-  console.log(`***Name****${name}`)
-  console.log(`***Name****${name}`)
+  console.log(`***Name****${n}`)
+  console.log(`***Name****${n}`)
+  console.log(`***Name****${n}`)
+  console.log(`***Name****${n}`)
   const name = n;
   const userInfo = await User.findOne({
     where: {
       user_name:name
     }
   });
-  return {
-    data:userInfo
-  };
+  return userInfo
 }
 
 
 const postUserAuth = async (ctx,next) => {
   const data = ctx.request.body;
-
   console.log(`***-name-***${data.name}`)
   console.log(`***--***${JSON.stringify(data)}`)
-  const userInfo = await User.findOne({
-    where: {
-      user_name:data.name
-    }
-  });
-  // const userInfo = await getUserByName(data.name);
+  const userInfo = await getUserByName(data.name);
   console.log(`***-userInfo-*** ${JSON.stringify(userInfo)}`);
   if(userInfo != null){ // 如果查无此用户会返回null
     if(userInfo.password != data.password){
