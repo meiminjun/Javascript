@@ -1,16 +1,15 @@
 import Vue from 'vue'
-import Mint from 'mint-ui'
-require('mint-ui/lib/style.css')
-import './assets/css/reset.css'
+import ElementUI from 'element-ui' // 引入element-ui
+import 'element-ui/lib/theme-default/index.css'
 import router from './router'
 import store from './vuex'
 
 import App from './App.vue'
 
-Vue.use(Mint)
+Vue.use(ElementUI)
 /* eslint-disable no-new */
 
-Vue.config.debug = true;
+// Vue.config.debug = true;
 
 var app = window.app = new Vue({
 	router,

@@ -1,6 +1,13 @@
 <template>
   <div>
-  <mt-header fixed title="固定在顶部"></mt-header>
+  <mt-header title="标题过长会隐藏后面的内容啊哈哈哈哈">
+  <router-link to="/" slot="left">
+    <mt-button icon="back">返回</mt-button>
+  </router-link>
+  <router-link to="/login" slot="right">
+    <mt-button>登录</mt-button>
+  </router-link>
+</mt-header>
   <div class="page-survey">
     <mt-swipe :auto="0" :show-indicators="false">
         <mt-swipe-item>
@@ -484,6 +491,11 @@
         //     // 这里是处理错误的回调
         //     console.log(response)
         // });
+    },
+    methods:{
+      login() {
+        alert(11);
+      }
     }
   };
 </script>
