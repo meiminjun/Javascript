@@ -19,7 +19,7 @@
         <mt-tab-container-item id="tab-container1">
           <template v-if="!Done">
             <template v-for="(item,index) in list">
-              <mt-cell v-if="item.status == false" v-bind:title="item.content">
+              <mt-cell v-if="item.status == 0" v-bind:title="item.content">
                 <mt-button @click= "finished(index)">完成</mt-button>
                 <mt-button @click= "remove(index)">删除</mt-button>
               </mt-cell>
@@ -32,7 +32,7 @@
         <mt-tab-container-item id="tab-container2">
           <template v-if="count > 0">
             <template v-for="(item,index) in list">
-              <mt-cell v-if="item.status == true" v-bind:title="item.content">
+              <mt-cell v-if="item.status == 1" v-bind:title="item.content">
                 <mt-button @click= "restore(index)">还原</mt-button>
               </mt-cell>
             </template>
@@ -48,7 +48,20 @@
 
 <script>
 import { Toast,Indicator } from 'mint-ui'
+import jwt from 'jsonwebtoken'  // 我们安装koa-jwt的时候会自动下载这个依赖
+
 export default {
+  created() {
+    const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
+    if(userInfo != null){
+      this.id = userInfo.id;
+      this.name = userInfo.name;
+    }else{
+      this.id = '';
+      this.name = ''
+    }
+    this.getTodolist(); // 新增：在组件创建时获取todolist
+  },
   data() {
     return {
       name:'梅敏君',
@@ -61,10 +74,11 @@ export default {
   },
   computed: {
     Done() {
+      debugger;
       let count = 0;
       let length = this.list.length;
       for(let i in this.list) {
-        this.list[i].status == true ? count += 1 : '';
+        this.list[i].status == 1 ? count += 1 : '';
       }
       this.count = count;
       if(count == length || length == 0) {
@@ -79,34 +93,131 @@ export default {
       if(this.todo == '')
         return
       let obj = {
-        status:false,
-        content:this.todo
+        status:0,
+        content:this.todo,
+        id:this.id
       }
-
-      this.list.push(obj);
-      this.todo = '';
-      console.log(this.list);
-      console.log(this.list[0].status);
-      console.log(this.list[0]);
-
+      this.$http.post('/api/addTodolist', obj) // 新增创建请求
+      .then((res) => {
+        if(res.status == 200){ // 当返回的状态为200成功时
+          this.getTodolist(); // 获得最新的todolist
+        }else{
+          Toast({
+            message: '创建失败！',
+            duration: 1000
+          });
+        }
+      }, (err) => {
+        Toast({
+          message: '创建失败！'
+        });
+        console.log(err)
+      })
+      this.todo = ''; // 将当前todos清空
     },
     finished(index) {
-      this.$set(this.list[index],'status',true)
-      Toast({
-        message: '任务完成'
-      });
+      // this.$set(this.list[index],'status',1)
+      this.$http.put('/api/updateTodolist/'+this.id + '/'+ this.list[index].id+'/'+ 1)
+      .then((res) => {
+        if(res.status == 200) {
+          if(res.data.ret_code == "000000") {
+            Toast({
+              message: '任务完成',
+              duration: 1000
+            });
+            this.getTodolist();
+          }
+        }else {
+          Toast({
+            message: '系统异常',
+            duration: 1000
+          });
+        }
+      },(err) => {
+        Toast({
+          message: '系统异常',
+          duration: 1000
+        });
+        console.log(err)
+      })
     },
     remove(index) {
-      this.list.splice(index,1);
-      Toast({
-        message: '任务删除'
-      });
+      this.$http.delete('/api/removeTodolist/'+ this.id + '/' + this.list[index].id)
+        .then((res) => {
+          if(res.status == 200){
+            Toast({
+              message: '任务删除成功！',
+              duration: 1000
+            });
+            this.getTodolist();
+          }else{
+            Toast({
+              message: '任务删除失败！',
+              duration: 1000
+            });
+          }
+        }, (err) => {
+          Toast({
+            message: '任务删除失败！',
+            duration: 1000
+          });
+          console.log(err)
+        })
     },
     restore(index) {
-      this.$set(this.list[index],'status',false)
-      Toast({
-        message: '任务还原'
-      });
+      // this.$set(this.list[index],'status',0)
+      this.$http.put('/api/updateTodolist/'+this.id + '/'+ this.list[index].id+'/'+ 0)
+      .then((res) => {
+        if(res.status == 200) {
+          if(res.data.ret_code == "000000") {
+            Toast({
+              message: '任务还原',
+              duration: 1000
+            });
+            this.getTodolist();
+          }
+        }else {
+          Toast({
+            message: '系统异常',
+            duration: 1000
+          });
+        }
+      },(err) => {
+        Toast({
+          message: '系统异常',
+          duration: 1000
+        });
+        console.log(err)
+      })
+    },
+    getUserInfo(){ // 获取用户信息
+      const token = sessionStorage.getItem('demo-token');
+      if(token != null && token != 'null'){
+        let decode = jwt.verify(token,'vue-koa-demo'); // 解析token
+        return decode // decode解析出来实际上就是{name: XXX,id: XXX}
+      }else {
+        return null
+      }
+    },
+    getTodolist(){
+      this.$http.get('/api/todolist/' + this.id) // 向后端发送获取todolist的请求
+        .then((res) => {
+          if(res.status == 200){
+            debugger;
+            if(res.data.data != null) {
+              this.list = res.data.data // 将获取的信息塞入实例里的list
+            }
+          }else{
+            Toast({
+              message: '获取列表失败！'
+            });
+          }
+        }, (err) => {
+          Toast({
+            message: '获取列表失败！'
+          });
+          console.log(err)
+        })
     }
   }
 }

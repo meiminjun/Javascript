@@ -7,48 +7,90 @@ const User = db.Pets.import(user);
 const List = db.Pets.import(list);
 
 const jwt = require('koa-jwt');
-
 var now = Date.now();
 
+/**
+ * 查
+ */
+const getTodolistById = async (ctx, next) => {
+    console.log(`get product ${ctx.params.id}...`);
+    let id = ctx.params.id;
+    ctx.rest({
+      data: await List.findAll({
+        where: {
+          user_id:id
+        },
+        attributes: ['id','content','status'] // 只需返回这三个字段的结果即可
+      })
+    });
+};
 
+/**
+ * 增
+ */
+const createTodolist = async (ctx, next) => { // 给某个用户创建一条todolist
+  const data = ctx.request.body;
+  await List.create({
+    user_id: data.id, // 用户的id，用来确定给哪个用户创建
+    content: data.content,
+    status: data.status
+  });
+  ctx.rest({
+    ret_code:'000000'
+  })
+}
 
-// Pets.create({
-//     id: 'g-' + now,
-//     name: 'Gaffey',
-//     gender: false,
-//     birth: '2007-07-07',
-//     createdAt: now,
-//     updatedAt: now,
-//     version: 0
-// }).then(function (p) {
-//     console.log('created.' + JSON.stringify(p));
-// }).catch(function (err) {
-//     console.log('failed: ' + err);
-// });
-//
-//
+/**
+ * 删除
+ */
+const removeTodolist = async (ctx, next) => {
+  const id = ctx.params.id;
+  const user_id = ctx.params.userId;
+  const result =  await List.destroy({
+      where: {
+        id,
+        user_id
+      }
+    });
+  if(result > 0) {
+    ctx.rest({
+      ret_code:"000000"
+    })
+  }else{
+    ctx.rest({
+      ret_code:"90001",
+      ret_mst:"删除失败"
+    })
+  }
+}
 
-
-// const findAll = function (){ // 注意是function* 而不是function 对于需要yield操作的函数都需要这种generator函数。
-//   const userInfo = Pets.findAll();
-//   console.log("()")
-//   console.log(userInfo)
-//   return userInfo // 返回数据
-// }
-
-
-// var creatData = (async () => {
-//     var dog = await Pets.create({
-//         id: 'd-' + now,
-//         name: 'Odie',
-//         gender: false,
-//         birth: '2008-08-08',
-//         createdAt: now,
-//         updatedAt: now,
-//         version: 0
-//     });
-//     console.log('created: ' + JSON.stringify(dog));
-// })();
+/**
+ * 更改
+ */
+const updateTodolist = async (ctx, next) => {
+  const user_id = ctx.params.userId;
+  const status = ctx.params.status;
+  const id = ctx.params.id;
+  const result = await List.update({
+    status
+  },{
+    where: {
+      id,
+      user_id
+    }
+  })
+  console.log(`-------${result}`);
+  if(result > 0) {
+    ctx.rest({
+      ret_code:"000000"
+    })
+  }else{
+    ctx.rest({
+      ret_code:"90001",
+      ret_mst:"更新失败"
+    })
+  }
+}
 
 var findUser = async (ctx, next) => {
     console.log(`get product ${ctx.params.id}...`);
@@ -148,5 +190,9 @@ module.exports = {
   findUser,
   findList,
   postUserAuth,
-  Pets
+  Pets,
+  createTodolist,
+  removeTodolist,
+  updateTodolist,
+  getTodolistById
 }

@@ -36,7 +36,7 @@ server(koa2) 下载依赖项：
     "babel-preset-es2015-node6": "^0.4.0",
     "babel-preset-stage-3": "^6.22.0"
 
-应用elm组件ui
+## [elm组件ui](http://mint-ui.github.io/docs/#!/zh-cn2/header)
 参考：https://github.com/mint-ui/mint-ui-starter/blob/master/webpack.config.js
 
 style-loader css-loader
@@ -100,11 +100,23 @@ https://itbilu.com/nodejs/npm/VkYIaRPz-.html#api-init
 
 这个时候有两种最方便的解决办法：
 
-如果是跨域，服务端只要在请求头上加上CORS，客户端即可跨域发送请求。
-变成同域，即可解决跨域请求问题。
+* 如果是跨域，服务端只要在请求头上加上CORS，客户端即可跨域发送请求。
+* 变成同域，即可解决跨域请求问题。
+
 第一种也很方便，采用kcors即可解决。
 不过为了之后部署方便，我们采用第二种，变成同域请求。
 
-下载依赖项：反向代理
+webpack 自带反向代理，配置如下：
 
-> npm install koa-proxiex --save
+```
+devServer: {
+    proxy: {
+      "/api": "http://localhost:3000"
+    }
+  },
+```
+
+## 密码md5加密
+
+> npm i md5 -S
+

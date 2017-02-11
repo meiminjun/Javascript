@@ -19,6 +19,7 @@
 <script>
   import router from '../router'
   import { Toast,Indicator } from 'mint-ui'
+  import md5 from 'md5'
   export default {
     data() {
       return {
@@ -51,26 +52,29 @@
       login() {
         let obj = {
           name: this.username,
-          password: this.password
+          password: md5(this.password) // md5加密
         }
         this.$http.post('/api/user', obj) // 将信息发送给后端
         .then((res) => { // axios返回的数据都在res.data里
           if(res.data.success){ // 如果成功
             sessionStorage.setItem('demo-token',res.data.token); // 用sessionStorage把token存下来
             Toast({
-              message: '登录成功！'
+              message: '登录成功！',
+              duration: 1000
             });
             this.$router.push('/todolist') // 进入todolist页面，登录成功
           }else{
             Toast({
-              message: res.data.info
+              message: res.data.info,
+              duration: 1000
             });
             // this.$message.error(res.data.info); // 登录失败，显示提示语
             sessionStorage.setItem('demo-token',null); // 将token清空
           }
         }, (err) => {
             Toast({
-              message: '请求错误！'
+              message: '请求错误！',
+              duration: 1000
             });
             sessionStorage.setItem('demo-token',null); // 将token清空
         })
