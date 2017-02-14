@@ -74,7 +74,6 @@ export default {
   },
   computed: {
     Done() {
-      debugger;
       let count = 0;
       let length = this.list.length;
       for(let i in this.list) {
@@ -203,7 +202,6 @@ export default {
       this.$http.get('/api/todolist/' + this.id) // 向后端发送获取todolist的请求
         .then((res) => {
           if(res.status == 200){
-            debugger;
             if(res.data.data != null) {
               this.list = res.data.data // 将获取的信息塞入实例里的list
             }
