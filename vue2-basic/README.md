@@ -20,8 +20,12 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 
 下载依赖项：
 npm install mint-ui vuex vue-router --save-dev
+## 迁移server
 
 server(koa2) 下载依赖项：
+
+```
+
     "koa": "2.0.0-alpha.7",
     "koa-bodyparser": "3.2.0",
     "koa-router": "7.0.0",
@@ -29,14 +33,18 @@ server(koa2) 下载依赖项：
     "nunjucks": "^3.0.0",
     "sequelize": "^3.28.0",
     "mz": "^2.6.0"
-    
+
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.10",
     "babel-polyfill": "^6.22.0",
     "babel-preset-es2015-node6": "^0.4.0",
     "babel-preset-stage-3": "^6.22.0"
+```
+迁移文件：
+start.js
+server
 
-## [elm组件ui](http://mint-ui.github.io/docs/#!/zh-cn2/header)
+## 如果要迁移[elm组件ui](http://mint-ui.github.io/docs/#!/zh-cn2/header)，则要依赖以下包
 参考：https://github.com/mint-ui/mint-ui-starter/blob/master/webpack.config.js
 
 style-loader css-loader
@@ -50,7 +58,7 @@ style-loader css-loader
 易错点：
 1、在index.html 中的head配置
 ```
- 		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+ 	<meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
@@ -64,7 +72,7 @@ http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb30
 
 
 ## sequelize api文档:
-  
+
 https://itbilu.com/nodejs/npm/VkYIaRPz-.html#api-init
 
 ## [sequelize-auto从数据库表自动生成Sequelize模型(Model)](https://itbilu.com/nodejs/npm/41mRdls_Z.html)
