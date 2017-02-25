@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
+    "axios": "^0.15.3",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
@@ -51,8 +52,8 @@
     "md5": "^2.2.1",
     "mysql": "^2.12.0",
     "mz": "^2.6.0",
-    "axios": "^0.15.3",
     "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0",
     "nunjucks": "^3.0.0",
     "opn": "^4.0.2",
     "ora": "^1.1.0",
