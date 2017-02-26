@@ -2,6 +2,14 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 
+// 当前目录下
+var t = path.dirname(__filename) + '/test.js';
+// 相邻目录下
+var c = path.resolve(__dirname, './lib/common.js');
+
+console.log(t)
+console.log(c)
+
 // var files = fs.readdirSync(__dirname);
 // files.forEach(function (filename) {
 //   var fullname = path.join(__dirname,filename);
