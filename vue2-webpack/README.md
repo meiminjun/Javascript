@@ -35,3 +35,28 @@ Expected space(s) after "if"
 
 Missing space before =>
 在=> 之前缺少空格
+
+
+## webpack
+
+### 插件
+
+
+#### [ExtractTextPlugin](https://github.com/zhengweikeng/blog/issues/9)
+new ExtractTextPlugin([id: string], filename: string, [options])
+
+作用：将样式抽取出来为独立的文件
+将require引入的样式嵌入js文件中，有好处也有坏处。好处是减少了请求数，坏处也很明显，就是当你的样式文件很大时，造成编译的js文件也很大。
+
+1. 该插件实例的唯一标志，一般是不会传的，其自己会生成。
+
+2. 文件名。可以是[name]、[id]、[contenthash]
+[name]：将会和entry中的chunk的名字一致
+[id]：将会和entry中的chunk的id一致
+[contenthash]：根据内容生成hash值
+options
+allchunk： 是否将所有额外的chunk都压缩成一个文件
+disable：禁止使用插件
+
+
+####
