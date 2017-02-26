@@ -2,18 +2,16 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry: config.entry,
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: 'assets/js/[name].js?[hash]',
+    chunkFilename: 'assets/js/[id].chunk.js?[hash]',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -55,6 +53,7 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
+        // loader: 'happypack/loader?id=url',
         query: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')

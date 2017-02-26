@@ -1,12 +1,57 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var fs = require('fs')
+
+// 迁移配置开始
+var env = process.env.NODE_ENV || process.argv[2] || 'prd';
+env = env.replace(/--/g, '');
+var client = process.argv[3] || 'web';
+client = client.replace(/--/g, '');
+console.log(process.env.NODE_ENV + ' | ' + process.argv[2] + ' | ' + env + ' ' + process.argv[3])
+
+var common = [
+    'babel-polyfill',
+    'vue',
+    'vuex',
+    'flexible',
+    //'aladdin',
+    'bow',
+    'ZDPAEBank'
+];
+const baseDir = '../src/container'
+var entries = {
+    'common': common
+    // 'app': './src/app.js'
+};
+var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entries, dir) => {
+    const fullDir = path.join(__dirname, baseDir + '/' + dir)
+    // console.log(dir) // finance
+    // console.log(fullDir)
+    const entry = path.join(fullDir, 'main.js');
+    if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
+        //native只打包首页
+        if(client == 'native'){
+            if(dir == 'finance'){
+                entries.finance = entry;
+                chunks.push(dir);
+            }
+        }else{
+            entries[dir] = entry;
+        }
+    }
+    return entries
+}, {});
+
+// 结束
 
 module.exports = {
+  templatesDir:path.resolve(__dirname,'../src/container'),
+  entry:entry,
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'page',
     assetsPublicPath: '/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as

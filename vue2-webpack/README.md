@@ -39,6 +39,8 @@ Missing space before =>
 
 ## webpack
 
+## [配置说明](http://stephenzhao.github.io/2016/06/13/webpack-doc-configuration/)
+
 ### 插件
 
 
