@@ -58,7 +58,7 @@ style-loader css-loader
 易错点：
 1、在index.html 中的head配置
 ```
- 	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no">
