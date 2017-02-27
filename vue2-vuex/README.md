@@ -28,8 +28,9 @@ server(koa2) 下载依赖项：
     "mysql": "^2.12.0",
     "nunjucks": "^3.0.0",
     "sequelize": "^3.28.0",
-    "mz": "^2.6.0"
-    
+    "mz": "^2.6.0",
+    "axios": "^0.15.3",
+
     "babel-core": "^6.20.0",
     "babel-loader": "^6.2.10",
     "babel-polyfill": "^6.22.0",
@@ -64,7 +65,7 @@ http://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb30
 
 
 ## sequelize api文档:
-  
+
 https://itbilu.com/nodejs/npm/VkYIaRPz-.html#api-init
 
 ## [sequelize-auto从数据库表自动生成Sequelize模型(Model)](https://itbilu.com/nodejs/npm/41mRdls_Z.html)
