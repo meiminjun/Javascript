@@ -6,8 +6,15 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var CleanPlugin = require('clean-webpack-plugin')
 var env = config.build.env
+
+console.log(env)
+
 var plugins = [
+  new CleanPlugin(['dist'], {
+    root: path.join(__dirname, '../')
+  }),
   // http://vuejs.github.io/vue-loader/en/workflow/production.html
   new webpack.DefinePlugin({
     'process.env': env
@@ -25,20 +32,20 @@ var plugins = [
   // generate dist index.html with correct asset hash for caching.
   // you can customize output by editing /index.html
   // see https://github.com/ampedandwired/html-webpack-plugin
-  new HtmlWebpackPlugin({
-    filename: config.build.index,
-    template: 'index.html',
-    inject: true,
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeAttributeQuotes: true
-      // more options:
-      // https://github.com/kangax/html-minifier#options-quick-reference
-    },
-    // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-    chunksSortMode: 'dependency'
-  }),
+  // new HtmlWebpackPlugin({
+  //   filename: config.build.index,
+  //   template: 'index.html',
+  //   inject: true,
+  //   minify: {
+  //     removeComments: true,
+  //     collapseWhitespace: true,
+  //     removeAttributeQuotes: true
+  //     // more options:
+  //     // https://github.com/kangax/html-minifier#options-quick-reference
+  //   },
+  //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+  //   chunksSortMode: 'dependency'
+  // }),
   // split vendor js into its own file
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
@@ -62,38 +69,38 @@ var plugins = [
 ]
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-    if (name !== 'app') {
-        // console.log(name,name=='finance',typeof(name))
-        plugins.push(new HtmlWebpackPlugin({
-          filename: (name == 'finance' ? 'index' : name) + '.html',
-          template: config.templatesDir+'/'+name+'/index.html',
-          inject: true,
-          minify: {
-            removeComments: true,
-            collapseWhitespace: true,
-            removeAttributeQuotes: true
-            // more options:
-            // https://github.com/kangax/html-minifier#options-quick-reference
-          },
-          // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-          chunksSortMode: 'dependency',
-          chunks: [
-              'common',
-              name
-          ],
-          env: env
-        }))
-        // plugins.push(new HtmlWebpackPlugin({
-        //     filename: (name == 'finance' ? 'index' : name) + '.html',
-        //     template: path.join(__dirname, '../index.html',
-        //     chunks: [
-        //         'common',
-        //         name
-        //     ],
-        //     env: env
-        //     // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
-        // }))
-    }
+  if (name !== 'app') {
+    // console.log(name,name=='finance',typeof(name))
+    plugins.push(new HtmlWebpackPlugin({
+      filename: (name == 'finance' ? 'index' : name) + '.html',
+      template: config.templatesDir + '/' + name + '/index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency',
+      chunks: [
+        'common',
+        name
+      ],
+      env: env
+    }))
+    // plugins.push(new HtmlWebpackPlugin({
+    //     filename: (name == 'finance' ? 'index' : name) + '.html',
+    //     template: path.join(__dirname, '../index.html',
+    //     chunks: [
+    //         'common',
+    //         name
+    //     ],
+    //     env: env
+    //     // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
+    // }))
+  }
 })
 
 

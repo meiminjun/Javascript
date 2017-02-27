@@ -1,6 +1,7 @@
 var utils = require('./utils')
 var config = require('../config')
 var isProduction = process.env.NODE_ENV === 'production'
+var cssnano = require('cssnano');
 
 module.exports = {
   loaders: utils.cssLoaders({
@@ -10,16 +11,23 @@ module.exports = {
     extract: isProduction
   }),
   postcss: [
-    require('autoprefixer')({
-      browsers: ['last 2 versions']
+    // require('autoprefixer')({
+    //   browsers: ['last 2 versions']
+    // }),
+    cssnano({
+        autoprefixer: {
+            add: true,
+            remove: true,
+            browsers: ['> 0%','Android 2.3','iOS 3.2','Safari 3.1','IE 10']
+        },
+        discardComments: {
+            removeAll: true
+        },
+        discardUnused: false,
+        mergeIdents: false,
+        reduceIdents: false,
+        safe: true,
+        sourcemap: true
     })
-  ],
-  // 下面是添加的，但是没发现有啥作用
-  presets: ["es2015-node6", { "modules": false }],
-  plugins: [
-    ['transform-runtime', {
-      polyfill: true, // TODO:查询一下这个是什么意思
-      regenerator: false  // TODO:查询一下这个是什么意思
-    }]
   ]
 }
