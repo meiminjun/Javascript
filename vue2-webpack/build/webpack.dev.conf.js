@@ -29,7 +29,7 @@ var plugins = [
   //   template: 'index.html',
   //   inject: true
   // }),
-  new FriendlyErrorsPlugin(),
+  new FriendlyErrorsPlugin()
   // new HappyPack({
   //   id: 'js',
   //   tempDir: '.happypackDev/',
@@ -44,7 +44,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   if (name !== 'app') {
     // console.log(name,name=='finance',typeof(name))
     plugins.push(new HtmlWebpackPlugin({
-      filename: (name == 'finance' ? 'index' : name) + '.html',
+      filename: (name === 'finance' ? 'index' : name) + '.html',
       template: config.templatesDir + '/' + name + '/index.html',
       chunks: [
         'common',
