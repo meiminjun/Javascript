@@ -11,11 +11,12 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 })
 
 // TODO:研究一下  vue-load 11才可以用
-// const HappyPack = require('happypack');
+// const HappyPack = require('happypack')
 // const os = require('os')
-// const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+// const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 var plugins = [
+
   new webpack.DefinePlugin({
     'process.env': config.dev.env
   }),
@@ -28,37 +29,56 @@ var plugins = [
   //   template: 'index.html',
   //   inject: true
   // }),
-  new FriendlyErrorsPlugin()
+  new FriendlyErrorsPlugin(),
   // new HappyPack({
-  //       id: 'js',
-  //       // tempDir: '.happypackDev/',
-  //       loaders: [ 'babel' ],
-  //       threadPool: happyThreadPool,
-  //       cache: true,
-  //       verbose: true
-  //   })
+  //   id: 'js',
+  //   tempDir: '.happypackDev/',
+  //   loaders: ['babel'],
+  //   threadPool: happyThreadPool,
+  //   cache: true,
+  //   verbose: true
+  // }),
 ]
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-    if (name !== 'app') {
-        // console.log(name,name=='finance',typeof(name))
-        plugins.push(new HtmlWebpackPlugin({
-            filename: (name == 'finance' ? 'index' : name) + '.html',
-            template: config.templatesDir+'/'+name+'/index.html',
-            chunks: [
-                'common',
-                name
-            ],
-            env: config.dev.env,
-            title: name +' App',
-            inject: true
-            // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
-        }))
-    }
+  if (name !== 'app') {
+    // console.log(name,name=='finance',typeof(name))
+    plugins.push(new HtmlWebpackPlugin({
+      filename: (name == 'finance' ? 'index' : name) + '.html',
+      template: config.templatesDir + '/' + name + '/index.html',
+      chunks: [
+        'common',
+        name
+      ],
+      env: config.dev.env,
+      title: name + ' App',
+      inject: true
+      // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
+    }))
+  }
 })
 
-console.log("-------------")
+console.log('-------------')
 console.log(baseWebpackConfig.happyLoader)
+
+// TODO:happypack暂时不支持webpack2
+// var happyPlugins = [
+//   createHappyPlugin('js-eslint', ['eslint-loader']),
+//   createHappyPlugin('vue-eslint', ['eslint-loader']),
+//   createHappyPlugin('babel', ['babel-loader']),
+//   createHappyPlugin('vue', ['vue-loader'])
+// ]
+// function createHappyPlugin (id, loaders) {
+//   return new HappyPack({
+//     id: id,
+//     loaders: loaders,
+//     threadPool: happyThreadPool,
+//     // 开启缓存
+//     cache: process.env.HAPPY_CACHE === '1',
+//     // make happy more verbose with HAPPY_VERBOSE=1
+//     verbose: true
+//   })
+// }
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -66,5 +86,5 @@ module.exports = merge(baseWebpackConfig, {
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
-  plugins: plugins
+  plugins: plugins.concat(happyPlugins)
 })
