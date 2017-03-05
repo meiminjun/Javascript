@@ -39,6 +39,11 @@ Missing space before =>
 
 ## webpack
 
+webpack2: https://doc.webpack-china.org/guides/get-started/
+webpack资源: https://github.com/webpack-china/awesome-webpack-cn
+
+webpack : https://segmentfault.com/a/1190000006871991
+
 ## [配置说明](http://stephenzhao.github.io/2016/06/13/webpack-doc-configuration/)
 
 ### 插件
