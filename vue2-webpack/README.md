@@ -35,3 +35,40 @@ Expected space(s) after "if"
 
 Missing space before =>
 在=> 之前缺少空格
+
+
+## webpack
+
+webpack2: https://doc.webpack-china.org/guides/get-started/
+webpack资源: https://github.com/webpack-china/awesome-webpack-cn
+
+webpack : https://segmentfault.com/a/1190000006871991
+
+## [配置说明](http://stephenzhao.github.io/2016/06/13/webpack-doc-configuration/)
+
+### 插件
+
+#### webpack.dll
+
+构建dll
+webpack --config webpack.dll.conf.js -p
+
+#### [ExtractTextPlugin](https://github.com/zhengweikeng/blog/issues/9)
+new ExtractTextPlugin([id: string], filename: string, [options])
+
+作用：将样式抽取出来为独立的文件
+将require引入的样式嵌入js文件中，有好处也有坏处。好处是减少了请求数，坏处也很明显，就是当你的样式文件很大时，造成编译的js文件也很大。
+
+1. 该插件实例的唯一标志，一般是不会传的，其自己会生成。
+
+2. 文件名。可以是[name]、[id]、[contenthash]
+[name]：将会和entry中的chunk的名字一致
+[id]：将会和entry中的chunk的id一致
+[contenthash]：根据内容生成hash值
+options
+allchunk： 是否将所有额外的chunk都压缩成一个文件
+disable：禁止使用插件
+
+
+#### 本地mock服务器
+https://github.com/ryannan/vue-compontent-scaffold/blob/master/config/dev-server.js
