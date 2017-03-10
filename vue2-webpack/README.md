@@ -70,4 +70,5 @@ allchunk： 是否将所有额外的chunk都压缩成一个文件
 disable：禁止使用插件
 
 
-####
+#### 本地mock服务器
+https://github.com/ryannan/vue-compontent-scaffold/blob/master/config/dev-server.js
