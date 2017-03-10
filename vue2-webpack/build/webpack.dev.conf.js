@@ -4,7 +4,11 @@ var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+// var manifest = require('../dist/manifest.json')
+var path = require('path')
+
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
@@ -30,6 +34,11 @@ var plugins = [
   //   inject: true
   // }),
   new FriendlyErrorsPlugin(),
+  new webpack.DllReferencePlugin({
+    context: path.join(__dirname),
+    // name: '[name]',
+    manifest: require('./dist/vendor-manifest.json')
+  })
   // new HappyPack({
   //   id: 'js',
   //   tempDir: '.happypackDev/',
@@ -41,25 +50,28 @@ var plugins = [
 ]
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  if (name !== 'app') {
-    // console.log(name,name=='finance',typeof(name))
-    plugins.push(new HtmlWebpackPlugin({
-      filename: (name == 'finance' ? 'index' : name) + '.html',
-      template: config.templatesDir + '/' + name + '/index.html',
-      chunks: [
-        'common',
-        name
-      ],
-      env: config.dev.env,
-      title: name + ' App',
-      inject: true
-      // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
-    }))
-  }
+  // console.log(name,name=='finance',typeof(name))
+  // var templatesHtmlFile = config.assetsRoot + '/' + name + '/index.html'
+  // console.log('模板文件路径')
+  // console.log(templatesHtmlFile)
+
+  plugins.push(new HtmlWebpackPlugin({
+    filename: (name == 'finance' ? 'index' : name) + '.html',
+    template: config.templatesDir + '/' + name + '/index.html',
+    chunks: [
+      name
+    ],
+    env: config.dev.env,
+    title: name + ' App',
+    inject: true
+    // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
+  }))
+  // console.log(config.build.buildDir + '/vendor.dll.js')
+  console.log('路径')
+  console.log(require.resolve('./dist/vendor.dll.js'))
 })
 
-console.log('-------------')
-console.log(baseWebpackConfig.happyLoader)
+plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/vendor.dll.js'), hash: true }))
 
 // TODO:happypack暂时不支持webpack2
 // var happyPlugins = [
@@ -86,5 +98,6 @@ module.exports = merge(baseWebpackConfig, {
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
+  // devtool: '#source-map',
   plugins: plugins
 })
