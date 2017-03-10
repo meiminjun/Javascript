@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+/*datepicker*/
+
+.pec-pop-datepicker {
+    position: fixed;
+    z-index: 30;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: $pec-color-FFFFFF;
+    .pec-datepicker-title {
+        position: relative;
+        height: 1.10rem;
+        line-height: 1.10rem;
+        border-bottom: 1px solid $pec-color-E6E6E6;
+        .pec-datepicker-title-head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0 .30rem;
+            height: 1.10rem;
+            line-height: 1.10rem;
+            color: $pec-color-ABABAB;
+            font-size: $pec-font-size28;
+        }
+        .pec-datepicker-title-body {
+            font-size: $pec-font-size36;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        .pec-datepicker-title-foot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0 .30rem;
+            height: 1.10rem;
+            line-height: 1.10rem;
+            color: $pec-color-F17940;
+            font-size: $pec-font-size28;
+        }
+    }
+    .pec-datepicker {
+        position: relative;
+        height: 2.9rem;
+        padding: .66rem .40rem;
+        overflow: hidden;
+        -webkit-box-sizing: initial;
+        box-sizing: initial;
+        @extend %pec-flex;
+        &:before,&:after{
+            position: absolute;
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1.70rem;
+            left: 0;
+        }
+        &:before{
+            top: 0;
+            border-bottom:1px solid $pec-color-E6E6E6;
+        }
+        &:after{
+            bottom: 0;
+            border-top:1px solid $pec-color-E6E6E6;
+        }
+        .pec-datepicker-list{
+            color: $pec-color-3F4246;
+            text-align: center;
+            @extend %pec-flex1;
+        }
+    }
+}

@@ -48,6 +48,10 @@ webpack : https://segmentfault.com/a/1190000006871991
 
 ### 插件
 
+#### webpack.dll
+
+构建dll
+webpack --config webpack.dll.conf.js -p
 
 #### [ExtractTextPlugin](https://github.com/zhengweikeng/blog/issues/9)
 new ExtractTextPlugin([id: string], filename: string, [options])
