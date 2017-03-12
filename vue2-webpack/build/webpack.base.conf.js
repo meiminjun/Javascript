@@ -2,7 +2,8 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-function resolve (dir) {
+
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -12,12 +13,10 @@ module.exports = {
     path: config.build.assetsRoot,
     filename: 'assets/js/[name].js?[hash]',
     chunkFilename: 'assets/js/[id].chunk.js?[hash]',
-    publicPath: process.env.NODE_ENV === 'production'
-      ? config.build.assetsPublicPath
-      : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', '.scss'],
     modules: [
       resolve('src'),
       resolve('node_modules')
@@ -26,47 +25,53 @@ module.exports = {
       'vue$': 'vue/dist/vue.common.js',
       'src': resolve('src'),
       'assets': resolve('src/assets'),
-      'components': resolve('src/components')
+      'components': resolve('src/components'),
+      'ZDPAEBank': resolve('src/assets/lib/zhida-paebank.js'),
+      'flexible': resolve('src/assets/lib/flexible.js'),
+      'swiper': resolve('src/assets/lib/swiper.min.js'),
+      'fastclick': resolve('src/assets/lib/fastclick.js'),
+      'aladdin': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/aladdin.min.js' : 'src/assets/lib/aladdin.web.min.js'),
+      // 'bow': resolve(__dirname, process.env.NODE_ENV == 'production' ? 'src/assets/lib/bow.min.js' : 'src/assets/lib/bow.web.min.js'),
+      'bow': resolve(process.env.NODE_ENV == 'production' ? 'src/assets/lib/bow.min.js' : 'src/assets/lib/bow.web.min.js'),
+      'share': resolve('src/assets/lib/share-1.0.js'),
+      'dante': resolve('src/assets/lib/dante.js')
     }
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: vueLoaderConfig
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url-loader',
-        // loader: 'happypack/loader?id=url',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
+    // {
+    //   test: /\.(js|vue)$/,
+    //   loader: 'eslint-loader',
+    //   enforce: 'pre',
+    //   include: [resolve('src'), resolve('test')],
+    //   options: {
+    //     formatter: require('eslint-friendly-formatter')
+    //   }
+    // }, 
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: vueLoaderConfig
+    }, {
+      test: /\.js$/,
+      // loader: 'babel-loader',
+      loader: 'happypack/loader?id=js',
+      include: [resolve('src'), resolve('test')]
+    }, {
+      test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+      loader: 'url-loader',
+      // loader: 'happypack/loader?id=url',
+      query: {
+        limit: 10000,
+        name: utils.assetsPath('img/[name].[hash:7].[ext]')
       }
-    ]
+    },{
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      query: {
+        limit: 10000,
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+      }
+    }]
   }
 }

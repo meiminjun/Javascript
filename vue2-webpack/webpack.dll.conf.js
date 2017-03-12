@@ -2,6 +2,8 @@ var path = require('path')
 
 var webpack = require('webpack')
 
+var client = 'web';
+
 var vendors = [
   'vue',
   'vue-router',
@@ -39,8 +41,9 @@ module.exports = {
       'flexible': path.resolve(__dirname, './src/assets/lib/flexible.js'),
       'swiper': path.resolve(__dirname, './src/assets/lib/swiper.min.js'),
       'fastclick': path.resolve(__dirname, './src/assets/lib/fastclick.js'),
+      'aladdin': path.resolve(__dirname, client == 'native' ? './src/assets/lib/aladdin.min.js' : './src/assets/lib/aladdin.web.min.js'),
       'aladdin': path.resolve(__dirname, './src/assets/lib/aladdin.min.js'),
-      'bow': path.resolve(__dirname, './src/assets/lib/bow.min.js')
+      'bow': path.resolve(__dirname, client == 'native' ? './src/assets/lib/bow.min.js' : './src/assets/lib/bow.web.min.js')
     }
   },
   plugins: [

@@ -1,6 +1,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 var fs = require('fs')
+var config = require('./config')
+var url = require('./url')
 
 // 迁移配置开始
 var env = process.env.NODE_ENV || process.argv[2] || 'prd'
@@ -46,6 +48,9 @@ var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir)
 // 结束
 
 module.exports = {
+  env:config.env, // 接口环境
+  hostname:config.hostname,
+  url:config.url, // 接口url
   templatesDir: path.resolve(__dirname, '../src/container'),
   entry: entry,
   build: {

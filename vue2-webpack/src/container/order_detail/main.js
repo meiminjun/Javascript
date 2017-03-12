@@ -5,7 +5,7 @@ import Vuex from 'vuex';
 import common from '../../store/common';
 import dhtDetail from '../../store/modules/order';
 import app from './index.vue'
-import '../../assets/scss/deposit/style';
+import 'assets/scss/deposit/style.scss'
 import createLogger from 'vuex/dist/logger';
 //import { Loadmore, Spinner } from 'mint-ui';
 //import { InfiniteScroll } from 'mint-ui'

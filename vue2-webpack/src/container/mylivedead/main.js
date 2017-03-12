@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import store from '../../store'
 import app from './index.vue'
-import '../../assets/scss/deposit/style';
+import 'assets/scss/deposit/style.scss'
 import { Loadmore, Spinner} from 'mint-ui';
 import 'mint-ui/lib/loadmore/style.css'
 import 'mint-ui/lib/spinner/style.css'

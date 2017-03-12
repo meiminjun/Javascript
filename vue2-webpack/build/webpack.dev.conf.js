@@ -15,9 +15,9 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 })
 
 // TODO:研究一下  vue-load 11才可以用
-// const HappyPack = require('happypack')
-// const os = require('os')
-// const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+const HappyPack = require('happypack')
+const os = require('os')
+const happyThreadPool = HappyPack.ThreadPool({ size: 5 })
 
 var plugins = [
 
@@ -27,27 +27,23 @@ var plugins = [
   // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
-  // https://github.com/ampedandwired/html-webpack-plugin
-  // new HtmlWebpackPlugin({
-  //   filename: 'index.html',
-  //   template: 'index.html',
-  //   inject: true
-  // }),
   new FriendlyErrorsPlugin(),
   new webpack.DllReferencePlugin({
     context: path.join(__dirname),
     // name: '[name]',
     manifest: require('./dist/vendor-manifest.json')
-  })
+  }),
   // new HappyPack({
   //   id: 'js',
-  //   tempDir: '.happypackDev/',
-  //   loaders: ['babel'],
+  //   loaders: ['babel-loader'],
   //   threadPool: happyThreadPool,
   //   cache: true,
   //   verbose: true
-  // }),
+  // })
 ]
+
+console.log("________测试_____")
+console.log(config.dev.env);
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   // console.log(name,name=='finance',typeof(name))
@@ -61,36 +57,37 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
     chunks: [
       name
     ],
-    env: config.dev.env,
+    env: 'dev',
     title: name + ' App',
     inject: true
     // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
   }))
   // console.log(config.build.buildDir + '/vendor.dll.js')
-  console.log('路径')
-  console.log(require.resolve('./dist/vendor.dll.js'))
+  // console.log('路径')
+  // console.log(require.resolve('./dist/vendor.dll.js'))
 })
 
 plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/vendor.dll.js'), hash: true }))
 
 // TODO:happypack暂时不支持webpack2
-// var happyPlugins = [
-//   createHappyPlugin('js-eslint', ['eslint-loader']),
-//   createHappyPlugin('vue-eslint', ['eslint-loader']),
-//   createHappyPlugin('babel', ['babel-loader']),
-//   createHappyPlugin('vue', ['vue-loader'])
-// ]
-// function createHappyPlugin (id, loaders) {
-//   return new HappyPack({
-//     id: id,
-//     loaders: loaders,
-//     threadPool: happyThreadPool,
-//     // 开启缓存
-//     cache: process.env.HAPPY_CACHE === '1',
-//     // make happy more verbose with HAPPY_VERBOSE=1
-//     verbose: true
-//   })
-// }
+var happyPlugins = [
+  // createHappyPlugin('js-eslint', ['eslint-loader']),
+  // createHappyPlugin('vue-eslint', ['eslint-loader']),
+  createHappyPlugin('js', ['babel-loader'])
+  // createHappyPlugin('sass', ['sass-loader'])
+  // createHappyPlugin('vue-js', ['vue-loader'])
+]
+function createHappyPlugin (id, loaders) {
+  return new HappyPack({
+    id: id,
+    loaders: loaders,
+    threadPool: happyThreadPool,
+    // 开启缓存
+    cache: true,
+    // make happy more verbose with HAPPY_VERBOSE=1
+    verbose: true
+  })
+}
 
 module.exports = merge(baseWebpackConfig, {
   module: {
@@ -99,5 +96,5 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
   // devtool: '#source-map',
-  plugins: plugins
+  plugins: plugins.concat(happyPlugins)
 })

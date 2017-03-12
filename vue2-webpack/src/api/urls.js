@@ -28,7 +28,7 @@
 //         : 'https://ibp-uat5.pingan.com.cn/ibp',
 //     };
 // })();
-const ENV = ENV || 'stg';
+const ENV = 'stg';
 const hostname = {
     dev:{
         paebank:'https://bank.pingan.com.cn',
