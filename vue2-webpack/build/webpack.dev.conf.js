@@ -10,64 +10,64 @@ var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var path = require('path')
 
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-})
+// Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+//   console.log(`********`)
+//   console.log(name);
+//   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
+// })
 
 // TODO:研究一下  vue-load 11才可以用
 const HappyPack = require('happypack')
-const os = require('os')
+// const os = require('os')
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 })
 
 var plugins = [
-
   new webpack.DefinePlugin({
     'process.env': config.dev.env
   }),
+  // new webpack.optimize.CommonsChunkPlugin({
+  //   name: 'vendor',
+  //   minChunks: Infinity
+  // }),
   // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
-  new FriendlyErrorsPlugin(),
-  new webpack.DllReferencePlugin({
-    context: path.join(__dirname),
-    // name: '[name]',
-    manifest: require('./dist/vendor-manifest.json')
-  }),
-  // new HappyPack({
-  //   id: 'js',
-  //   loaders: ['babel-loader'],
-  //   threadPool: happyThreadPool,
-  //   cache: true,
-  //   verbose: true
+  new FriendlyErrorsPlugin()
+  // new webpack.DllReferencePlugin({
+  //   context: path.join(__dirname),
+  //   // name: '[name]',
+  //   manifest: require('./dist/vendor-manifest.json')
   // })
 ]
 
-console.log("________测试_____")
-console.log(config.dev.env);
+console.log('________测试_____')
+console.log(config.dev.env)
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
   // console.log(name,name=='finance',typeof(name))
   // var templatesHtmlFile = config.assetsRoot + '/' + name + '/index.html'
   // console.log('模板文件路径')
   // console.log(templatesHtmlFile)
-
-  plugins.push(new HtmlWebpackPlugin({
-    filename: (name == 'finance' ? 'index' : name) + '.html',
-    template: config.templatesDir + '/' + name + '/index.html',
-    chunks: [
-      name
-    ],
-    env: 'dev',
-    title: name + ' App',
-    inject: true
-    // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
-  }))
+  if (name !== 'vendor') {
+    plugins.push(new HtmlWebpackPlugin({
+      filename: name + '.html',
+      template: config.templatesDir + '/' + name + '/index.html',
+      chunks: [
+        name, 'vendor'
+      ],
+      env: 'dev',
+      title: name + ' App'
+      // inject: true
+      // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
+    }))
+  }
   // console.log(config.build.buildDir + '/vendor.dll.js')
   // console.log('路径')
   // console.log(require.resolve('./dist/vendor.dll.js'))
 })
 
-plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/vendor.dll.js'), hash: true }))
+// plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/vendor.dll.js'), hash: true }))
 
 // TODO:happypack暂时不支持webpack2
 var happyPlugins = [
@@ -94,7 +94,7 @@ module.exports = merge(baseWebpackConfig, {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   // cheap-module-eval-source-map is faster for development
-  devtool: '#cheap-module-eval-source-map',
-  // devtool: '#source-map',
+  // devtool: '#cheap-module-eval-source-map',
+  devtool: '#source-map',
   plugins: plugins.concat(happyPlugins)
 })

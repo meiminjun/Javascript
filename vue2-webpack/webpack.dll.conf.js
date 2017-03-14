@@ -2,18 +2,17 @@ var path = require('path')
 
 var webpack = require('webpack')
 
-var client = 'web';
+var client = 'web'
 
 var vendors = [
   'vue',
   'vue-router',
   'vuex',
-  'ZDPAEBank',
   'flexible',
-  'swiper',
   'fastclick',
   'aladdin',
-  'bow'
+  'bow',
+  'dante'
 ]
 
 function resolve (dir) {
@@ -29,7 +28,7 @@ module.exports = {
     filename: '[name].dll.js', // [name]的部分由entry的名字替换
     library: '[name]_[hash]'
   },
-  devtool: '#source-map',
+  // devtool: '#source-map',
   resolve: {
     extensions: ['*'],
     modules: [
@@ -37,13 +36,12 @@ module.exports = {
       resolve('node_modules')
     ],
     alias: {
-      'ZDPAEBank': path.resolve(__dirname, './src/assets/lib/zhida-paebank.js'),
       'flexible': path.resolve(__dirname, './src/assets/lib/flexible.js'),
-      'swiper': path.resolve(__dirname, './src/assets/lib/swiper.min.js'),
       'fastclick': path.resolve(__dirname, './src/assets/lib/fastclick.js'),
-      'aladdin': path.resolve(__dirname, client == 'native' ? './src/assets/lib/aladdin.min.js' : './src/assets/lib/aladdin.web.min.js'),
-      'aladdin': path.resolve(__dirname, './src/assets/lib/aladdin.min.js'),
-      'bow': path.resolve(__dirname, client == 'native' ? './src/assets/lib/bow.min.js' : './src/assets/lib/bow.web.min.js')
+      'aladdin': path.resolve(__dirname, client === 'native' ? './src/assets/lib/aladdin.min.js' : './src/assets/lib/aladdin.web.min.js'),
+      // 'bow': path.resolve(__dirname, client === 'native' ? './src/assets/lib/bow.min.js' : './src/assets/lib/bow.web.min.js'),
+      'bow': path.resolve(__dirname, './src/assets/lib/bow.min.js'),
+      'dante': path.resolve(__dirname, './src/assets/lib/dante.js')
     }
   },
   plugins: [

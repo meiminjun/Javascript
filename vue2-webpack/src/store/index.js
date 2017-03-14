@@ -12,27 +12,26 @@ import fund from './modules/fund'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production';
+const debug = process.env.NODE_ENV !== 'production'
 let store = new Vuex.Store({
-    state: {
-        title: '平安银行',
-        isLogin: false
-    },
-    // actions,
-    // getters,
-    modules: {
-        login,
-        common,
-        fund,
-        detail,
-        dhtDetail,
-        depositDetail
-    },
-    strict: debug,
-    plugins: debug ? [createLogger()] : []
-});
+  state: {
+    title: '平安银行',
+    isLogin: false
+  },
+  // actions,
+  // getters,
+  modules: {
+    login,
+    common,
+    fund,
+    detail,
+    dhtDetail,
+    depositDetail
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
+})
 
-window.__store = store;
+window.__store = store
 
-export default store;
-
+export default store

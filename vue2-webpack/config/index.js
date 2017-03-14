@@ -11,20 +11,18 @@ var client = process.argv[3] || 'web'
 client = client.replace(/--/g, '')
 console.log(process.env.NODE_ENV + ' | ' + process.argv[2] + ' | ' + env + ' ' + process.argv[3])
 
-var vendor = [
+var vendors = [
+  'babel-polyfill',
   'vue',
   'vue-router',
   'vuex',
-  'ZDPAEBank',
   'flexible',
-  'swiper',
-  'fastclick',
   'aladdin',
   'bow'
 ]
 const baseDir = '../src/container'
 var entries = {
-  'vendor': vendor
+  'vendor': vendors
 }
 var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir) => {
   const fullDir = path.join(__dirname, baseDir + '/' + dir)
@@ -32,15 +30,7 @@ var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir)
   // console.log(fullDir)
   const entry = path.join(fullDir, 'main.js')
   if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
-    // native只打包首页
-    if (client === 'native') {
-      if (dir === 'finance') {
-        entryObj.finance = entry
-        // chunks.push(dir)
-      }
-    } else {
-      entryObj[dir] = entry
-    }
+    entryObj[dir] = entry
   }
   return entryObj
 }, {})
@@ -48,11 +38,12 @@ var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir)
 // 结束
 
 module.exports = {
-  env:config.env, // 接口环境
-  hostname:config.hostname,
-  url:config.url, // 接口url
+  env: config.env, // 接口环境
+  hostname: config.hostname,
+  url: config.url, // 接口url
   templatesDir: path.resolve(__dirname, '../src/container'),
-  entry: entry,
+  entry: Object.assign({}, entries, entry),
+  // entry: entry,
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),

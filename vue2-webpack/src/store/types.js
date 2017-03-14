@@ -1,8 +1,5 @@
-
-
-
 //---------------------财富专区相关-----------------//
-export const WEALTH_LIST = 'WEALTH_LIST';
+export const WEALTH_LIST = 'WEALTH_LIST'
 
 // 理财产品
 // qryRushPurchaseFinanceList
@@ -81,9 +78,9 @@ export const DEPOSIT_BUY = 'DEPOSIT_BUY'//现金宝详情
 /*
 *现金宝转出
 * */
-export const CASH_INIT_REDEEM_LIST = 'CASH_INIT_REDEEM_LIST'; //转出初始化
-export const CASH_SHOW_BANK_LIST = 'CASH_SHOW_BANK_LIST'; //控制是否显示银行卡列表
-export const CASH_GET_CHOSEN_BANK = 'CASH_GET_CHOSEN_BANK'; //选择银行卡
+export const CASH_INIT_REDEEM_LIST = 'CASH_INIT_REDEEM_LIST' //转出初始化
+export const CASH_SHOW_BANK_LIST = 'CASH_SHOW_BANK_LIST' //控制是否显示银行卡列表
+export const CASH_GET_CHOSEN_BANK = 'CASH_GET_CHOSEN_BANK' //选择银行卡
 
 
 
@@ -103,7 +100,7 @@ export const CASH_USER_INFO = 'CASH_USER_INFO'
 
 
 //公共加载
-export const COMMON_LOADING = 'COMMON_LOADING';//触发加载效果
+export const COMMON_LOADING = 'COMMON_LOADING'//触发加载效果
 
 
 // 登录

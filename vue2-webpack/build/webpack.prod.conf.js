@@ -8,6 +8,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var env = config.build.env
 
+const HappyPack = require('happypack')
+const happyThreadPool = HappyPack.ThreadPool({ size: 5 })
 console.log(env)
 
 var plugins = [
@@ -65,10 +67,10 @@ var plugins = [
 ]
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  if (name !== 'app') {
-    // console.log(name,name=='finance',typeof(name))
+  // console.log(name)
+  if (name !== 'vendor') {
     plugins.push(new HtmlWebpackPlugin({
-      filename: (name == 'finance' ? 'index' : name) + '.html',
+      filename: name + '.html',
       template: config.templatesDir + '/' + name + '/index.html',
       inject: true,
       minify: {
@@ -81,7 +83,6 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
       chunks: [
-        'common',
         name
       ],
       env: env
@@ -89,6 +90,24 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   }
 })
 
+var happyPlugins = [
+  // createHappyPlugin('js-eslint', ['eslint-loader']),
+  // createHappyPlugin('vue-eslint', ['eslint-loader']),
+  createHappyPlugin('js', ['babel-loader'])
+  // createHappyPlugin('sass', ['sass-loader'])
+  // createHappyPlugin('vue-js', ['vue-loader'])
+]
+function createHappyPlugin (id, loaders) {
+  return new HappyPack({
+    id: id,
+    loaders: loaders,
+    threadPool: happyThreadPool,
+    // 开启缓存
+    cache: true,
+    // make happy more verbose with HAPPY_VERBOSE=1
+    verbose: true
+  })
+}
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -103,7 +122,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
-  plugins: plugins
+  plugins: plugins.concat(happyPlugins)
 })
 
 if (config.build.productionGzip) {
