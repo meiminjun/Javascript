@@ -154,7 +154,6 @@
 </template>
 
 <script>
-    let Dante = require('dante');
     import {
             mapState,
             mapActions

@@ -1,0 +1,148 @@
+import _extends from 'babel-runtime/helpers/extends';
+import _typeof from 'babel-runtime/helpers/typeof';
+var aladdin = require('aladdin');
+import bow from 'bow';
+
+import * as types from '../store/types';
+import { tryLogin } from './acc';
+
+function checkResponse(res) {}
+
+var requestCount = 0;
+var needLoginCode = ['291007', '291005', '291001'];
+
+export var http = {
+    request: function request(options, cb) {
+        if (requestCount++ === 0) {
+            window.__store.commit(types.COMMON_LOADING, true);
+        }
+        bow.http.request(options, function (err, res) {
+            if (requestCount === 0 || --requestCount === 0) {
+                window.__store.commit(types.COMMON_LOADING, false);
+            }
+
+            if (err) {
+                return console.info('服务器异常', err);
+            }
+
+            var json = void 0;
+            try {
+                json = JSON.parse(res.body);
+            } catch (e) {
+                json = null;
+            }
+            var responseCode = json && json.responseCode ? json.responseCode : '';
+
+            if (needLoginCode.indexOf(responseCode) != -1) {
+                tryLogin();
+            } else {
+                cb(json || {});
+            }
+        });
+    },
+
+    jsonp: function jsonp(options, cb) {
+        var name = void 0,
+            url = options.url,
+            params = options.params || {},
+            _parseData = function _parseData(data) {
+            var ret = "";
+            if (typeof data === "string") {
+                ret = data;
+            } else if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === "object") {
+                for (var key in data) {
+                    ret += "&" + key + "=" + encodeURIComponent(data[key]);
+                }
+            }
+
+            ret = ret.substr(1);
+            return ret;
+        },
+            _removeElement = function _removeElement(elem) {
+            var parent = elem.parentNode;
+
+            if (parent && parent.nodeType !== 11) {
+                parent.removeChild(elem);
+            }
+        };
+
+        url = url + (url.indexOf("?") === -1 ? "?" : "&") + _parseData(params);
+
+        var match = /callback=(\w+)/.exec(url);
+
+        if (match && match[1]) {
+            name = match[1];
+        } else {
+            name = options.jsonpCallback || "jsonp_" + new Date().getTime() + '_' + Math.random().toString().substr(2);
+            url = url.replace("callback=?", "callback=" + name);
+            url = url.replace("callback=%3F", "callback=" + name);
+        }
+
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.id = "id_" + name;
+
+        window[name] = function (json) {
+            window[name] = undefined;
+            var elem = document.getElementById("id_" + name);
+            _removeElement(elem);
+
+            cb(json);
+        };
+
+        var head = document.getElementsByTagName("head");
+        if (head && head[0]) {
+            head[0].appendChild(script);
+        }
+    }
+};
+
+export var navigator = {
+    forward: function forward(options) {
+        bow.navigator.forward(options);
+    },
+    back: function back() {
+        bow.navigator.back();
+    }
+};
+
+export var store = {
+    localStorage: {
+        setItem: function setItem(options, cb) {
+            aladdin.localStorage.setItem(options.key, options.value, true, '3DES', cb);
+        },
+        getItem: function getItem(key, cb) {
+            aladdin.localStorage.getItem(key, true, '3DES', cb);
+        },
+        removeItem: aladdin.localStorage.removeItem,
+        clear: aladdin.localStorage.clear
+    },
+    sessionStorage: {
+        setItem: aladdin.sessionStorage.setItem,
+        getItem: aladdin.sessionStorage.getItem,
+        removeItem: aladdin.sessionStorage.removeItem,
+        clear: aladdin.sessionStorage.clear
+    }
+};
+
+export var track = {
+    record: function record(options) {
+        console.info(options);
+        bow.talkingData.trackEvent({ eventId: options });
+    }
+};
+
+export var event = {
+    on: function on(event, cb) {
+        bow.on && bow.on(event, cb);
+    },
+    off: function off(event, cb) {
+        bow.on && bow.off(event, cb);
+    },
+    once: function once(event, cb) {
+        bow.on && bow.once(event, cb);
+    }
+};
+
+export var env = _extends({}, aladdin.env || {});

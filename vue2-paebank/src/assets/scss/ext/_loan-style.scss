@@ -1,0 +1,515 @@
+@charset "UTF-8";
+
+/*贷款首页功能*/
+
+@import "../core/reset";
+@import "../core/common";
+@import "../ext/btn";
+@import "../ext/datepicker";
+@import "../ext/form";
+@import "../ext/freedom-selection";
+@import "../ext/header";
+@import "icon";
+@import "../ext/loading";
+@import "messagebox";
+@import "navbar";
+@import "picker";
+// @import "../ext/pop-btn";由pwd、messagebox引入
+@import "../ext/pwd";
+@import "result";
+@import "simple-list";
+@import "slide";
+@import "tabbar";
+@import "toast";
+.icon-LoanCalculator,
+.icon-Progressquery,
+.icon-Myloan {
+    width: .48rem;
+    height: .46rem;
+    display: inline-block;
+    background: url("../../images/loan/icon-LoanCalculator.svg") no-repeat;
+    background-size: .48rem .46rem;
+}
+
+.icon-Progressquery {
+    background: url("../../images/loan/icon-Progressquery.svg") no-repeat;
+    background-size: .48rem .46rem;
+}
+
+.icon-Myloan {
+    background: url("../../images/loan/icon-Myloan.svg") no-repeat;
+    background-size: .48rem .46rem;
+}
+
+.icon-creditloan,
+.icon-housingloan,
+.icon-carloan,
+.icon-carloan2 {
+    width: .53rem;
+    height: .454rem;
+    display: inline-block;
+    background: url("../../images/loan/icon-creditloan.svg") no-repeat;
+    background-size: .53rem .45rem;
+    vertical-align: bottom;
+}
+.icon-housingloan {
+    background: url("../../images/loan/icon-housingloan.svg") no-repeat;
+    background-size: .53rem .45rem;
+}
+.icon-carloan {
+    background: url("../../images/loan/icon-carloan.svg") no-repeat;
+    background-size: .53rem .45rem;
+}
+.icon-carloan2 {
+    background: url("../../images/loan/icon-carloan2.svg") no-repeat;
+    background-size: .53rem .45rem;
+}
+.icon-loan01,
+.icon-loan02,
+.icon-loan03,
+.icon-loan04,
+.icon-loan05,
+.icon-loan06,
+.icon-loan07,
+.icon-loan08,
+.icon-loan09,
+.icon-loan10,
+.icon-loan11,
+.icon-loan12,
+.icon-loan13 {
+    width: 1.20rem;
+    height: 1.20rem;
+    display: inline-block;
+    background: url("../../images/loan/icon-loan01.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan02 {
+    background: url("../../images/loan/icon-loan02.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan03 {
+    background: url("../../images/loan/icon-loan03.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan04 {
+    background: url("../../images/loan/icon-loan04.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan05 {
+    background: url("../../images/loan/icon-loan05.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan06 {
+    background: url("../../images/loan/icon-loan06.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan07 {
+    background: url("../../images/loan/icon-loan07.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan08 {
+    background: url("../../images/loan/icon-loan08.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan09 {
+    background: url("../../images/loan/icon-loan09.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan10 {
+    background: url("../../images/loan/icon-loan10.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan11 {
+    background: url("../../images/loan/icon-loan11.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan12 {
+    background: url("../../images/loan/icon-loan12.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan13 {
+    background: url("../../images/loan/icon-loan13.png") no-repeat;
+    background-size: 1.20rem 1.20rem;
+}
+
+.icon-loan14 {
+    position: fixed;
+    bottom: 1.70rem;
+    right: .30rem;
+    width: 1.00rem;
+    height: 1.00rem;
+    display: inline-block;
+    background: url("../../images/loan/icon-loan14.png") no-repeat;
+    background-size: 1.00rem 1.00rem;
+}
+
+.pec-width190 {
+    width: 1.90rem!important;
+    min-width: 1.90rem!important;
+    max-width: 1.90rem!important;
+}
+
+.pec-width200 {
+    width: 2.00rem;
+}
+
+.pec-slidedown-tips {
+    padding-left: .30rem;
+    padding-right: .30rem;
+    background: $pec-color-FFFFFF;
+    .pec-slidedown-tips-in {
+        position: relative;
+        color: $pec-color-FFFFFF;
+        font-size: $pec-font-size24;
+        padding: .20rem .30rem;
+        border-radius: 0 0 .10rem .10rem;
+        background: $pec-color-F17940;
+        .icon-close2 {
+            position: absolute;
+            top: .25rem;
+            right: .20rem;
+        }
+    }
+}
+
+.pec-quota-list {
+    font-size: $pec-font-size28;
+    padding-top: .30rem;
+    padding-bottom: .30rem;
+    background: $pec-color-FFFFFF;
+    @extend %pec-space-between;
+    .pec-quota-item {
+        text-align: center;
+        border-right: 1px solid #E6E6E6;
+        @extend %pec-flex1;
+        &:last-child {
+            border-right: 0;
+        }
+        .money {
+            color: $pec-color-F17940;
+            font-size: $pec-font-size48;
+            span {
+                font-size: $pec-font-size24;
+            }
+        }
+        .p2 {
+            color: $pec-color-ABABAB;
+            font-size: $pec-font-size24;
+            margin-top: .10rem;
+        }
+    }
+    .inline-btn {
+        margin-top: .40rem;
+    }
+}
+
+.inline-btn {
+    color: $pec-color-F17940;
+    font-size: $pec-font-size22;
+    height: .40rem;
+    display: inline-block;
+    padding: 0 .20rem;
+    border-radius: .40rem;
+    border: .02rem solid $pec-color-F17940;
+    background: $pec-color-FFFFFF;
+}
+
+.pec-list-head-foot .icon-arrow {
+    vertical-align: initial;
+    margin-top: 0;
+}
+
+.pec-function-list {
+    font-size: $pec-font-size28;
+    padding-top: .40rem;
+    padding-bottom: .40rem;
+    background: $pec-color-FFFFFF;
+    @extend %pec-space-between;
+    .pec-function-item {
+        text-align: center;
+        @extend %pec-flex1;
+    }
+}
+
+.loan-tips {
+    font-size: $pec-font-size32;
+    line-height: 1.5;
+    background: $pec-color-FFFFFF;
+    padding: .30rem .30rem .30rem .60rem;
+    text-align: justify;
+    .p1 {
+        position: relative;
+        font-size: $pec-font-size28;
+        letter-spacing: 1px;
+    }
+    .p1:before {
+        position: absolute;
+        content: "*";
+        top: 0;
+        left: -.20rem;
+    }
+}
+
+.pec-loanrate-list,
+.pec-loan-list {
+    background: $pec-color-FFFFFF;
+    .pec-loanrate-item,
+    .pec-loan-item {
+        font-size: $pec-font-size28;
+        padding: .30rem;
+        border-bottom: 1px solid #E6E6E6;
+        @extend %pec-space-between;
+        &:last-child {
+            border-bottom: none;
+        }
+        .pec-loanrate-item-head,
+        .pec-loan-item-head {
+            width: 1.70rem;
+            .rate {
+                font-size: $pec-font-size48;
+                color: $pec-color-F17940;
+                span {
+                    font-size: $pec-font-size24;
+                }
+            }
+            .p1 {
+                font-size: $pec-font-size24;
+                margin-top: .08rem;
+            }
+            .p2 {
+                font-size: $pec-font-size24;
+            }
+            .p3 {
+                font-size: $pec-font-size24;
+                color: $pec-color-ABABAB;
+                letter-spacing: -1px;
+            }
+        }
+        .pec-loanrate-item-body,
+        .pec-loan-item-body {
+            @extend %pec-flex1;
+            p {
+                font-size: $pec-font-size32;
+                margin-bottom: .05rem;
+            }
+            .p1 {
+                font-size: $pec-font-size24;
+                margin-bottom: .20rem;
+                letter-spacing: -1px;
+            }
+            .p2 {
+                font-size: $pec-font-size24;
+                color: $pec-color-ABABAB;
+                line-height: 1.5;
+                letter-spacing: -1px;
+            }
+            .p3 {
+                font-size: $pec-font-size24;
+                color: $pec-color-ABABAB;
+                margin-top: .20rem;
+                letter-spacing: -1px;
+            }
+            .money {
+                font-size: $pec-font-size48;
+                margin-top: .15rem;
+                span {
+                    font-size: $pec-font-size24;
+                }
+            }
+        }
+        .pec-loanrate-item-foot,
+        .pec-loan-item-foot {
+            text-align: right;
+            .p1 {
+                font-size: $pec-font-size24;
+                color: $pec-color-ABABAB;
+                margin-bottom: .50rem;
+            }
+        }
+        .pec-loan-item-head {
+            width: 2.15rem;
+        }
+    }
+    .pec-loan-item {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: .30rem;
+        margin-right: .30rem;
+    }
+    .pec-loan-head {
+        height: .90rem;
+        padding-left: .30rem;
+        border-bottom: 1px solid $pec-color-E6E6E6;
+        @extend %pec-space-between;
+        .pec-loan-head-head {
+            font-size: $pec-font-size28;
+        }
+    }
+    .pec-loanrate-item {
+        @extend %pec-flex;
+        -webkit-box-align: initial;
+        -webkit-align-items: flex-start;
+        align-items: flex-start;
+    }
+}
+
+.calculate-title {
+    position: relative;
+    color: $pec-color-B2B2B2;
+    font-size: $pec-font-size24;
+    width: 1.20rem;
+    text-align: center;
+    margin: .70rem auto .20rem;
+}
+
+.calculate-title:before,
+.calculate-title:after {
+    position: absolute;
+    content: "";
+    top: .15rem;
+    width: 1.40rem;
+    height: 1px;
+    background: $pec-color-E6E6E6;
+}
+
+.calculate-title:before {
+    left: -1.50rem;
+}
+
+.calculate-title:after {
+    left: 1.30rem;
+}
+
+.calculate-tips {
+    color: $pec-color-B2B2B2;
+    font-size: $pec-font-size24;
+    line-height: 1.5;
+    padding-left: .30rem;
+    padding-right: .30rem;
+    letter-spacing: -1px;
+}
+
+.calculate-result {
+    padding-top: .10rem;
+    padding-left: .30rem;
+    padding-right: .30rem;
+    margin-bottom: .50rem;
+    background: $pec-color-FFFFFF;
+    .calculate-result-head {
+        font-size: $pec-font-size28;
+        height: 1.10rem;
+        line-height: 1.10rem;
+        margin-bottom: .35rem;
+        border-bottom: 1px solid $pec-color-E6E6E6;
+        span {
+            color: $pec-color-F17940;
+            font-size: $pec-font-size48;
+        }
+        i {
+            font-size: $pec-font-size24;
+        }
+    }
+    .calculate-result-list {
+        @extend %pec-space-between;
+        .calculate-result-item {
+            font-size: $pec-font-size24;
+            padding-left: .25rem;
+            border-left: 1px solid $pec-color-E6E6E6;
+            @extend %pec-flex1;
+            &:first-child {
+                padding-left: 0;
+                border-left: 0!important;
+            }
+            .p1 {
+                color: $pec-color-F17940;
+                font-size: $pec-font-size32;
+                margin-top: .05rem;
+            }
+        }
+    }
+}
+
+.myloan {
+    .money {
+        font-size: $pec-font-size48;
+        color: $pec-color-F17940;
+        span {
+            font-size: $pec-font-size24;
+        }
+    }
+    .pec-item-body {
+        .p1 {
+            color: $pec-color-B2B2B2;
+            font-size: $pec-font-size24;
+            margin-top: .10rem;
+            margin-bottom: .20rem;
+        }
+        .p2 {
+            font-size: $pec-font-size24;
+            line-height: 1.5;
+        }
+    }
+    .pec-item-foot {
+        .p1 {
+            font-size: $pec-font-size28;
+            margin-bottom: .60rem;
+        }
+    }
+}
+
+.bgc-F8F8F8 {
+    padding-top: .60rem;
+    padding-bottom: 1px;
+    background: $pec-color-F8F8F8;
+}
+
+.pec-loanrate-list .pec-loanrate-item .pec-loanrate-item-body .p1.pec-font-size28 {
+    font-size: $pec-font-size28;
+}
+
+.loan-introduce-list {
+    background: $pec-color-FFFFFF;
+    .loan-introduce-item {
+        height: 1.80rem;
+        margin: 0 .30rem;
+        border-bottom: 1px solid $pec-color-E6E6E6;
+        @extend %pec-align-center;
+        &:last-child {
+            border-bottom: 0!important;
+        }
+        .loan-introduce-item-head {
+            margin-right: .45rem;
+        }
+        .loan-introduce-item-body {
+            color: $pec-color-3F4246;
+            font-size: $pec-font-size36;
+            .p1 {
+                color: $pec-color-3F4246;
+                font-size: $pec-font-size24;
+            }
+        }
+    }
+}
+
+.loan-introduce-tips {
+    color: $pec-color-3F4246;
+    font-size: $pec-font-size24;
+    padding: .60rem;
+    line-height: 2;
+}
+
+.margin-bottom200 {
+    margin-bottom: 2.00rem;
+}
