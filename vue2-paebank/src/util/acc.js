@@ -36,7 +36,7 @@ export function getForwardUrl () {
 // 之前的登录
 /*  let forwardUrl = 'https://bank-static-stg.pingan.com.cn/pobing/index.html#/onelogin';
   forwardUrl = forwardUrl.split('#')
-  return forwardUrl[0] + '?returnURL=' + encodeURIComponent(returnUrl) + (forwardUrl[1] ? '#' + forwardUrl[1] : '')*/
+  return forwardUrl[0] + '?returnURL=' + encodeURIComponent(returnUrl) + (forwardUrl[1] ? '#' + forwardUrl[1] : '') */
 
 // 只做登录
 // https://bank-static-stg.pingan.com.cn/omm/mobile/login.html?backUrl=你想要跳回的地址(需要encodeURIComponent)
