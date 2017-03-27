@@ -1,3 +1,3 @@
 export * from './deposit'
-export * form './buy'
+export * from './buy'
 export * from './fund'

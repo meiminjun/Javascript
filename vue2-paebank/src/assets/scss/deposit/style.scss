@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 /*Live-by-pass*/
 
 @import "../core/reset";
@@ -22,7 +24,13 @@
   font-size: $pec-font-size26;
   text-align: center;
 }
-
+.icon-pabank{
+  width:.52rem;
+  height:.28rem;
+  display: block;
+  background: url("../../images/common/icon-bank-pa.png") no-repeat;
+  background-size: 100%;
+}
 .LBP-p2 {
   color: $pec-color-F17940;
   font-size: $pec-font-size48;
@@ -201,10 +209,10 @@
 @charset "UTF-8";
 
 /*add-ruansi*/
-.back-icon{position: relative; display: inline-block;margin-right:0.15rem;width:0.4rem;height:0.4rem;background: url("../../images/common/icon-step-ok.svg");background-size: 100%;}
-.back-icon2{position: relative; display: inline-block;margin-right:0.15rem;width:0.4rem;height:0.4rem;background: url("../../images/common/icon-check.svg");background-size: 100%;}
-.bord_h{position: absolute;top: 0.35rem;  left: 0.18rem;  width:0.03rem;  height:0.9rem;background:#1ab55b;}
-.bord_h2{position: absolute;top: 0.38rem;  left: 0.18rem;  width:0.03rem;  height:0.9rem;background:#c9c9c9;}
+.back-icon{position: relative; display: inline-block;margin-right:0.15rem;width:0.4rem;height:0.4rem;background: url("../../images/common/icon-step-ok2.svg");background-size: 100%;}
+.back-icon2{position: relative; display: inline-block;margin-right:0.15rem;width:0.4rem;height:0.4rem;background: url("../../images/common/icon-step-default.svg");background-size: 100%;}
+.bord_h{position: absolute;top: 0.35rem;  left: 0.18rem;  width:0.03rem;  height:1.2rem;background:#1ab55b;}
+.bord_h2{position: absolute;top: 0.38rem;  left: 0.18rem;  width:0.03rem;  height:1.2rem;background:#c9c9c9;}
 .pec-list .pec-list-item2:after {  left: 0.83rem;}
 
 /*我的定活通*/
@@ -248,3 +256,13 @@
 .bgColorGray {
   background: #D9D9D9 !important; }
 
+.icon-arrow.up {
+  margin-top: -.06rem;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.icon-arrow.down {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}

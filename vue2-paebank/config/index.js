@@ -1,7 +1,51 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
+var url = require('./url')
+var router = require('./router')
+const isproxy = false // 是否开启代理
+const noBuild = ['demo']  // 要排除的打包文件夹
+// 接口路由的环境配置
+const hostname = {
+  stg: {
+    default: 'https://rmb-stg.pingan.com.cn',
+    stg2: 'https://rmb-stg2.pingan.com.cn',
+    stg3: 'https://rmb-stg2.pingan.com.cn:6443'
+  },
+  prd: {
+    default: 'https://bank.pingan.com.cn'
+  }
+}
+
+// 跳转路由的环境配置,development是本地开发环境
+const routerhost = {
+  // 本地开发环境
+  development: {
+    login: 'https://bank-static-stg.pingan.com.cn', // app内部跳转登录不是用这个
+    pay: 'https://bank-static-stg.pingan.com.cn/omm/stg2/omm/mobile/'
+  },
+  // CMS中的dev环境
+  dev: {
+    login: 'https://bank-static-stg.pingan.com.cn', // app内部跳转登录不是用这个
+    default: 'http://bank-static-stg.pingan.com.cn:8480/aum_dhlc/pages/dev/deposit/mobile/',
+    pay: 'https://bank-static-stg.pingan.com.cn/omm/stg2/omm/mobile/'
+  },
+  // CMS中的stg2环境
+  stg: {
+    default: 'http://bank-static-stg.pingan.com.cn:8480/aum_dhlc/pages/stg2/deposit/mobile/',
+    pay: 'https://bank-static-stg.pingan.com.cn/omm/stg2/omm/mobile/'
+  },
+  prd: {
+    default: 'https://bank-static.pingan.com.cn/'
+  }
+}
 
 module.exports = {
+  url: url,
+  router: router,
+  hostname: hostname,
+  routerhost: routerhost,
+  isproxy: isproxy,
+  noBuild: noBuild,
   templatesDir: path.resolve(__dirname, '../src/container'),  // htmlplugin 的html模板地址
   build: {
     env: require('./prod.env'),

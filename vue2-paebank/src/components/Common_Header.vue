@@ -1,111 +1,102 @@
 <template>
-     <header v-if="show">
-        <div class="pec-header-left" @click="onLeft()">
-            <i class="icon-back"></i>
-        </div>
-        <div class="pec-header-title">
-            {{title}}
-        </div>
-        <div class="pec-header-right" v-if="isRightShow" @click="onRight()">
-            <i class="icon-header-more"></i>
-        </div>
-    </header>
+  <header class="page-head"  v-if="isShowHeader">
+    <div class="pec-header-left" @click="leftButtonCallback">
+      <i class="icon-back"></i>
+    </div>
+    <div class="pec-header-title">
+      {{this.options.title}}
+    </div>
+    <div class="pec-header-right" @click="rightButtonCallback" v-if="options.showIcon">
+      <i :class="options.rightButtonText?'':'icon-header-more'">{{options.rightButtonText}}</i>
+    </div>
+  </header>
 </template>
-
 <script>
-    import * as aladdin from 'aladdin';
-    /**
-     * 公共头部
-     *
-     */
-    export default {
-        props: {
-            title: {
-                type: String,
-                default: ''
-            },
-            onLeft: {
-                type: Function,
-                default: function () {
-                    aladdin.navigator.back();
-                }
-            },
-            onRight: {
-                type: Function,
-                default: function() {
-                    alert("暂无事件")
-                }
-            },
-            show: {
-                type: Boolean,
-                default: true
-            },
-            isRightShow: {
-                type: Boolean,
-                default:false
-            }
-        },
-        created: function() {
-            const processEnv = process.env.NODE_ENV
-            // console.log(ald.env);
-            if(processEnv == "dev" || aladdin.env.isBrowser) {
-                 console.log("浏览器环境");
-                 this.show = true;
-            }else if(aladdin.env.isMobile){
-                 console.log("手机环境")
-                 this.show = false;
-                 var options = {
-                    title: this.title,
-                    leftButtonText: "",
-                    rightButtonText: "。。。",
-                    color: "#F25E43",
-                    backgroundColor: "#FFFFFF",
-                    // fontSize: "16px",
-                    leftButtonVisible: true,
-                    rightButtonVisible: true,
-                    // leftButtonFontSize: "16px",
-                    // rightButtonFontSize: "16px",
-                    leftButtonTextColor: "#F25E43",
-                    leftButtonBackgroundColor: "#FFFFFF",
-                    rightButtonTextColor: "#F25E43",
-                    rightButtonBackgroundColor: "#FFF",
-                    leftButtonCallback:  null,
-                    rightButtonCallback: null
-                 };
-                 aladdin.header.config(options, function (err, data) {
-                    if (err) {
-                        alert("Native 返回报错")
-                    } else {
-                    
-                    }
-                });
-            }
-            // if (aladdin.env.isMobile) {
-                 
-            //  }else if(aladdin.env.isBrowser){
-            //      console.log("浏览器环境");
-            //      this.show = true;
-            //  }
-        },
-        methods: {
-            forward: function (item, eventId) {
-                aladdin.track.record(eventId);
-                if (item.native) {
-                    aladdin.navigator.forward({
-                        title: item.title,
-                        url: item.url,
-                        type: 'webapp'
-                    });
-                } else {
-                    aladdin.navigator.forward({
-                        title: item.title,
-                        showHeader: true,
-                        url: item.url,
-                        tabIndex: 2,
-                        tpl: 'webview'
-                    });
-                }
-            }
+  import * as aladdin from 'aladdin'
+  /**
+   * 公共头部
+   *
+   */
+  export default {
+    props: {
+      options:{
+        type: Object,
+        'default':{
+          title:"定活通(增强型)",
+          showIcon:false,
+          rightButtonText:'',
+          isSetBack:false,
+          setSelfShow:false
+
         }
-    };
+      },
+      methods: {}
+    },
+    computed: {
+      headerOptions:function(){
+
+        return Object.assign({},)
+      }
+    },
+    data:function(){
+      return {
+        isShowHeader: aladdin.env.isBrowser
+      }
+    },
+    created: function(){
+      if(!aladdin.env.isBrowser){
+        var IconUrl = "./bigAmount/assets/images/common/gathring_right_btn_img.png";
+        //var IconUrl = "/common/assets/images/icon-header-more.svg";
+        //var IconUrl = "/common/assets/images/gathring_right_btn_img.png";
+        var options={
+          title:this.options.title
+        };
+        options.leftButtonCallback = (function(){
+          this.leftButtonCallback();
+          //this.$emit('leftButtonCallback');
+        }).bind(this);
+        if(!this.options.setSelfShow){//如果用户自己设置了分享，将不处理右边按钮
+          if(this.options.showIcon&&this.options.rightButtonText==""){
+            options.rightButtonIcon = IconUrl;
+            options.rightButtonVisible = true;
+            options.rightButtonCallback = (function(){
+              this.rightButtonCallback();
+            }).bind(this)
+          }else{
+            if(!!this.options.rightButtonText){
+              options.rightButtonVisible = true;
+              options.rightButtonText = this.options.rightButtonText;
+              options.rightButtonCallback = (function(){
+                this.rightButtonCallback();
+              }).bind(this)
+            }else {
+              options.rightButtonText = "";
+              options.rightButtonVisible = false;
+            }
+          }
+        }
+        bow.header.config(options, function (err, data) {
+          if (err) {
+          } else {
+          }
+        });
+      }
+    },
+    methods: {
+      leftButtonCallback: function() {
+        if(this.options.isSetBack){
+          this.$emit('leftButtonCallback');
+        }else{
+//          if(!aladdin.env.isBrowser){
+//              bow.navigator.back();
+//          }else{
+          history.go(-1);
+//          }
+        }
+      },
+      rightButtonCallback:function(){
+        this.$emit('rightButtonCallback');
+      }
+    }
+  };
 </script>

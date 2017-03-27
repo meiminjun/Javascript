@@ -10,12 +10,13 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="format-detection" content="telephone=no" />
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
     </head>
     <body>
         <div id="app"></div>
- <!--         <% if (htmlWebpackPlugin.options.env !== 'dev') { %>
+         <% if (htmlWebpackPlugin.options.env !== 'development') { %>
             <script src="assets/js/runtime-check.js"></script>
-        <% } %> -->
+        <% } %>
+        <script src="assets/js/add-assets.js"></script>
+        <script src="https://bank-static-stg.pingan.com.cn/brop-cmp/act/assets/share/share-1.0.js"></script>
     </body>
 </html>

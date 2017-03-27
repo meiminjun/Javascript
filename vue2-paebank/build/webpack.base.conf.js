@@ -5,13 +5,12 @@ var vueLoaderConfig = require('./vue-loader.conf')
 var fs = require('fs')
 
 var vendors = [
-  './build/dev-client',
   'vue',
   'vue-router',
   'vuex',
   'flexible',
   'bow',
-  'aladdin',
+  'aladdin'
 ]
 const baseDir = '../src/container'
 var entries = {
@@ -20,9 +19,6 @@ var entries = {
 
 var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir) => {
   const fullDir = path.join(__dirname, baseDir + '/' + dir)
-  // console.log('----------')
-  // console.log(dir) // finance
-  // console.log(fullDir)
   const entry = path.join(fullDir, 'index.js')
   if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
     entryObj[dir] = entry
@@ -51,8 +47,8 @@ module.exports = {
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
       'flexible': resolve('src/assets/lib/flexible.js'),
-      'aladdin': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/aladdin.min.js' : 'src/assets/lib/aladdin.web.min.js'),
-      'bow': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/bow.min.js' : 'src/assets/lib/bow.web.min.js'),
+      'aladdin': resolve(process.env.NODE_ENV === 'production' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      'bow': resolve(process.env.NODE_ENV === 'production' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   module: {

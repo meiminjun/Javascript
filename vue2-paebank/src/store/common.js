@@ -1,22 +1,22 @@
-import * as types from './types'
+import * as types from './types';
 
 const state = {
-  loading: false
-}
+    loading: false
+};
 
 const mutations = {
-  [types.COMMON_LOADING] (state, payload) {
-    state.loading = payload
-  }
-}
+    [types.COMMON_LOADING] (state, payload) {
+        state.loading = payload
+    }
+};
 
-const getters = {}
+const getters = {};
 
-const actions = {}
+const actions = {};
 
 export default {
-  state,
-  getters,
-  actions,
-  mutations
+    state,
+    getters,
+    actions,
+    mutations
 }

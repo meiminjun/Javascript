@@ -2,10 +2,10 @@ import * as types from '../types';
 import { http } from '../../util/ald';
 import api from '../../api/urls';
 import  * as fit from '../../filters/deposit';
+import {PecMessageBox} from 'pa-ui/lib/index';
+import * as deposit_detail from '../../api/deposit_detail';
 
 const state = {
-    toast: {},
-
     //定活通
     orderDetail:{
         lists:{}
@@ -13,6 +13,7 @@ const state = {
     records:{
         lists:[]
     },
+    recordsFlag:true,
     withdraw:{
         data:{}
     },
@@ -29,8 +30,9 @@ const state = {
     toAccountAmt : {
       accountAmt : "0.00",
       drawInterest: "0.00"
-    }
-    //conHeight : ""
+    },
+    querySysFlag : "",
+    sysFlag : ""
 };
 
 // getters
@@ -44,237 +46,349 @@ const getters = {
     // }
     // funcNavs: state => state.funcNavs
 }
-
 // actions
 const actions = {
     getOrderDetail({ commit, state }, options){
         // console.log(options)
-        http.request({
-            method: 'POST',
-            url: api.orderDetail,
-            qs: {
-              //bussType:"9110",
-              depositNo:options.depositNo,
-              amt:options.amt,
-              bankCardSign:options.bankCardSign,
-              businessType : options.businessType,
-              orderType:options.orderType,
-              pageIndex:options.pageIndex,
-              pageSize:10,
-              //brcpSessionTicket:options.brcpSessionTicket
-            }
-        }, function (res) {
-            let result = res;
-            if (result && result.responseCode == '000000') {
-              //处理利率利息
-              for(var i = 0;i<result.data.rateInfoList.length;i++){
-                if(result.data.rateInfoList[i].type === "0"){
-                  result.data.timeDueRate = result.data.rateInfoList[i].rateInfo.drawRate*100;
+      let optionsReq = {
+        url:"orderDetail",
+        qs: {
+          bussType:"9110",
+          depSerialNo:options.depositNo,
+          amt:options.amt,
+          bankCardSign:options.bankCardSign,
+          businessType : options.businessType,
+          orderType:options.orderType,
+          pageIndex:options.pageIndex,
+          pageSize:5,
+          appType:"003"
+          //brcpSessionTicket:options.brcpSessionTicket
+        }
+      };
+
+      http.fetch(optionsReq).then(result => {
+
+        if (result.responseCode === '000000') {
+          //处理利率利息
+          result.data.TDueRate = "";
+          if(result.data.rateInfoList){
+            for(var i = 0;i<result.data.rateInfoList.length;i++){
+              if(result.data.rateInfoList[i].type === "0"){
+                if(result.data.rateInfoList[i].rateInfo){
+                  result.data.timeDueRate = result.data.rateInfoList[i].rateInfo.drawRate;
                   result.data.timeDueInterest = fit.formatMoneyNumber(result.data.rateInfoList[i].rateInfo.interest,"blur");
-                }else if(result.data.rateInfoList[i].type === "1"){
-                  result.data.TDueRate = result.data.rateInfoList[i].rateInfo.drawRate*100;
+                }
+
+              }else if(result.data.rateInfoList[i].type === "1"){
+                if(result.data.rateInfoList[i].rateInfo){
+                  result.data.TDueRate = result.data.rateInfoList[i].rateInfo.drawRate;
                   result.data.TDueInterest = fit.formatMoneyNumber(result.data.rateInfoList[i].rateInfo.interest,"blur");
-                }else if(result.data.rateInfoList[i].type === "2"){
-                  result.data.dueRate = result.data.rateInfoList[i].rateInfo.drawRate*100;
+                }
+
+              }else if(result.data.rateInfoList[i].type === "2"){
+                if(result.data.rateInfoList[i].rateInfo){
+                  result.data.dueRate = result.data.rateInfoList[i].rateInfo.drawRate;
                   result.data.dueInterest = fit.formatMoneyNumber(result.data.rateInfoList[i].rateInfo.interest,"blur");
                 }
               }
-              //处理交易明细
-              for(var i = 0; i<result.data.drawDetail.orders.length; i++){
-                let item = result.data.drawDetail.orders[i];
-                item.addMinus = item.businessType === "01"? "+" : "-";//存入+
-                item.orderStatusCH = fit.orderStatusFun(item.tranStatus,item.businessType);
-                item.orderTypeCH = fit.orderTypeFun(item.businessType);
-                item.transAmt = fit.formatMoneyNumber(item.transAmt,"blur")
+            }
+          }
+
+          result.data.recordsFlag = true;
+          //处理交易明细
+          let querySystem = false, querySystemFlag = false;
+          if(result.data.drawDetail){
+            for(var i = 0; i<result.data.drawDetail.orders.length; i++){
+              let item = result.data.drawDetail.orders[i];
+              //前5条没有支取的话 不展示交易记录
+              if(result.data.drawDetail.orders.length === 1 && item.businessType === "01"){
+                result.data.recordsFlag = false;
               }
 
-              result.data.saveDeadLine = fit.year(result.data.saveDeadLine);
-              result.data.currency = fit.monetaryUnit(result.data.currency);
-              result.data.transAmtFort = fit.formatMoneyNumber(result.data.transAmt,"blur");
-              result.data.transAmtCH = fit.chineseNum(result.data.transAmt);
-              // console.log(result)
-              //commit(types["CONHEIGHT"], "height:7rem");
-              commit(types["RECORDS"], { recordList: result.data.drawDetail.orders,pageNum:options.pageNum,total:result.data.drawDetail.totalNum });
-                result.data.lastFourNum = result.data.payeeAcctNo.substr(-4);
-                //result.data.remainCapitalFormated = fit.formatMoneyNumber(result.data.remainCapital,"blur");
-                // console.log(result)
-                commit(types["ORDER_DETAIL"], { payload: result.data });
-            } else {
-              alert({
-                title: res.responseMsg
+              item.addMinus = item.businessType === "01"? "+" : "-";//存入+
+              item.orderStatusCH = fit.orderStatusFun(item.tranStatus,item.businessType);
+              item.orderTypeCH = fit.orderTypeFun(item.businessType);
+              item.transAmtFort = fit.formatMoneyNumber(item.transAmt,"blur");
+              if(item.orderStatusCH === '处理中' && item.businessType === '03'){
+                querySystem = true;
+              }
+            }
+          }
+
+          if(querySystem){
+            if(result.data.drawDetail && result.data.drawDetail.totalNum>1){
+              deposit_detail.default.getSystemDateTime({
+                url:"getSystemDateTime",
+                qs:{}
+              },function(res){
+                querySystemFlag = res >= 9 && res < 16? true : false;
+                commit(types["QUERYSYSFLAG"], querySystemFlag);
               });
             }
-        });
+          }
+
+          result.data.expiryDateFort = result.data.expiryDate? `${result.data.expiryDate.substr(0,4)}-${result.data.expiryDate.substr(4,2)}-${result.data.expiryDate.substr(-2)}` :"";
+          result.data.orderTimeFort = result.data.orderTime? result.data.orderTime.substr(0,10) :"";
+          result.data.saveDeadLine = fit.year(result.data.saveDeadLine);
+          result.data.currency = fit.monetaryUnit(result.data.currency);
+          result.data.transAmtFort = fit.formatMoneyNumber(result.data.transAmt,"blur");
+          result.data.transAmtCH = fit.chineseNum(result.data.transAmt);
+
+          // console.log(result)
+          //commit(types["CONHEIGHT"], "height:7rem");
+          if(!result.data.drawDetail){
+            result.data.drawDetail = {orders:[]};
+          }
+          commit(types["RECORDS"], { recordList: result.data.drawDetail.orders,pageIndex:options.pageIndex,total:result.data.drawDetail.totalNum });
+          commit(types["ORDER_DETAIL"], { payload: result.data });
+          result.data.lastFourNum = result.data.payeeAcctNo? result.data.payeeAcctNo.substr(-4): "";
+
+        } else {
+          PecMessageBox.alert({
+            title: '温馨提示',
+            message: result.responseMsg
+          })
+        }
+      })
     },
     getRecords({ commit, state }, options){
         // console.log(options)
-        http.request({
-            method: 'POST',
-            url: api.records,
-            qs: {
+      let optionsReq = {
+        url:"records",
+        env:"stg3",
+        qs:{
+          bankCardSign: options.bankCardSign,
+          businessType : "00",
+          depSerialNo : options.depositNo,
+          orderType: "02",
+          pageIndex : options.pageIndex,
+          pageSize : 10
+        }
+      };
+      http.fetch(optionsReq).then(result => {
+        if (result.responseCode === '000000') {
+          let sys = false, sysFlag = false;
+          for(var i = 0; i<result.data.orders.length; i++){
+            let item = result.data.orders[i];
+            //前5条没有支取的话 不展示交易记录
+            item.addMinus = item.businessType === "01"? "+" : "-";//存入+
+            item.orderStatusCH = fit.orderStatusFun(item.tranStatus,item.businessType);
+            item.orderTypeCH = fit.orderTypeFun(item.businessType);
+            item.transAmtFort = fit.formatMoneyNumber(item.transAmt,"blur");
+            if(item.orderStatusCH === '处理中' && item.businessType === '03'){
+              sys = true;
             }
-        }, function (res) {
-            let result = res;
-
-            if (result && result.responseCode == '000000') {
-
-                if (result.data && typeof(result.data) == 'string') {
-                    result.data = JSON.parse(result.data);
-                }
-                for(var i = 0; i<result.data.pageData.length; i++){
-                    result.data.pageData[i].addMinus = result.data.pageData[i].orderType === "1.1"? "+" : "-";
-                    result.data.pageData[i].orderStatus = fit.orderStatusFun(result.data.pageData[i].orderStatus);
-                    result.data.pageData[i].orderType = fit.orderTypeFun(result.data.pageData[i].orderType);
-                    if(result.data.pageData[i].dealStatus === "1"){
-                        result.data.pageData[i].rightShow = "处理中";
-                    }else if (result.data.pageData[i].dealStatus === "2"){
-                        result.data.pageData[i].rightShow = result.data.pageData[i].orderStatus;
-                    }else if (result.data.pageData[i].dealStatus === "3"){
-                        result.data.pageData[i].rightShow = "处理失败";
-                    }
-                }
-                // console.log(result)
-                //commit(types["CONHEIGHT"], "height:7rem");
-                commit(types["RECORDS"], { recordList: result.data,pageNum:options.pageNum,total:result.data.total });
-                options.cb && options.cb();
-            } else {
-                commit(types.TOAST);
-            }
-        });
-    },
-    getWithdraw({ commit, state }, options){
-        // console.log(options) amt=10000&bussType=9110&ccy=RMB&queryType=0&cardNo=6230582000070450773&bussType=9110
-      // &ccy=RMB&depSerialNo=00001&queryType=0&ecifNo=&endDate=20170309
-      // ¤tDay=20170307&isDepositFlag=1&startDate=20170307&terminalType=2&tranId=00001&currentDay=20170101
-        http.request({
-            method: 'POST',
-            url: api.withdrawDeposit,
-            qs: {
-              amt:options.inputVal,
-              cardNo:options.cardNo,
-              currentDay:options.currentDay,
-              depSerialNo:options.depSerialNo,
-              endDate:options.endDate,
-              isDepositFlag:"0",
-              queryType:options.queryType,
-              startDate:options.startDate,
-              terminalType:"2",
-              tranId:options.tranId,
-              bussType:"9110",
-              ecifNo:options.ecifNo,
-              ccy:"RMB"
-            }
-        }, function (res) {
-            let result = res;
-            let radioData={};
-            if (result && result.responseCode == '000000') {
-                //result.data.lastFourNum = result.data.bankAcctNo.substr(-4);
-              if(options.flag === "calc"){
-                commit(types["WITHDRAWINTEREST"], {inputVal : options.inputVal,interest:result.data.interest} );
-              }
-
-                let protoShow = {};
-                // console.log(result)
-              if(options.queryType ==="0"){ //currentInterest
-                result.data.currentRate = result.data.drawRate*100;
-                commit(types["CURRENTINTEREST"], { payload: result.data.currentRate });
-              }else if(options.queryType === "1"){
-                if(result.data.isDrawFlag === "1"){
-                  radioData.iconCh  =  false;
-                  radioData.iconChed =  true;
-                  radioData.tFlag = "t1";
-                  protoShow.protoSh = true;
-                  protoShow.placeCon = result.data.placeholderAmt = fit.formatMoneyNumber(result.data.leastAmt,"blur") + "元起";
-                  //return {"icon-checked" : false, "icon-check" : true};
-                }else{
-                  radioData.iconCh  =  true;
-                  radioData.iconChed =  false;
-                  radioData.tFlag = "t0";
-                  protoShow.protoSh = false;
-                  protoShow.placeCon = result.data.placeholderAmt = "0.01元起";
-                  //return {"icon-checked" : true, "icon-check" : false};
-                }
-                result.data.tRate = result.data.drawRate*100;
-                commit(types["DHT_PROTOSHOW"], protoShow);
-                commit(types["DHT_WITHDRAWNUM"], result.data.placeholderAmt);
-                commit(types["RADIOCHECK"], { payload: radioData });
-                commit(types["WITHDRAW"], { payload: result.data });
-              }
-
-
-            } else {
-              alert({
-                title: res.responseMsg
+          }
+          if(sys){
+            if(result.data.drawDetail && result.data.drawDetail.totalNum>1){
+              deposit_detail.default.getSystemDateTime({
+                url:"getSystemDateTime",
+                qs:{}
+              },function(res){
+                sysFlag = res >= 9 && res < 16? true : false;
+                commit(types["SYSFLAG"], sysFlag);
               });
             }
-        });
-    },
-    getInterest({ commit, state }, options){
-      // console.log(options)
-      http.request({
-        method: 'GET',
-        url: api.withdrawInterest,
-        qs: {
-        }
-      }, function (result) {
-        if (result && result.responseCode == '000000') {
+          }
 
+
+          // console.log(result)
+          //commit(types["CONHEIGHT"], "height:7rem");
+          commit(types["RECORDS"], { recordList: result.data.orders,pageIndex:options.pageIndex,total:result.data.totalNum });
+          options.cb && options.cb();
+        } else {
+          PecMessageBox.alert({
+            title: '温馨提示',
+            message: result.responseMsg
+          })
+        }
+      })
+
+    },
+    getWithdraw({ commit, state }, options){
+       let optionsReq = {
+        url:"withdrawDeposit",
+        qs:{
+          amt:options.inputVal,
+          bankCardSign:options.bankCardSign,
+          currentDay:options.currentDay,
+          depSerialNo:options.depSerialNo,
+          isDepositFlag:"0",
+          queryType:options.queryType,
+          appType:"003",
+          bussType:"9110",
+          ccy:"RMB",
+          param:"sunqin"
+        }
+      };
+      http.fetch(optionsReq).then(result => {
+        if (result.responseCode === '000000') {
+          let protoShow = {};
+          let radioData = {};
+          result.data.isDrawFlagFinal = false;
+            result.data.currentRate = result.data.preDrawInfos[0].drawRate ? result.data.preDrawInfos[0].drawRate : "";
+            commit(types["CURRENTINTEREST"], { payload: result.data.currentRate });
+            let tempWork = result.data.preDrawInfos[1].nextWorkDay;
+            result.data.nextWorkDayFort = tempWork? `${tempWork.substr(0,4)}-${tempWork.substr(4,2)}-${tempWork.substr(-2)}` : "";
+
+            if(result.data.preDrawInfos[1].isDrawFlag === "1"){
+              result.data.isDrawFlagFinal = true;
+            }
+            if(result.data.isDrawFlagFinal){
+              radioData.iconCh  =  false;
+              radioData.iconChed =  true;
+              radioData.tFlag = "t1";
+              protoShow.protoSh = true;
+              protoShow.placeCon = result.data.placeholderAmt = fit.formatMoneyNumber(result.data.preDrawInfos[1].depositAmtMin,"blur") + "元起";
+              //return {"icon-checked" : false, "icon-check" : true};
+            }else{
+              radioData.iconCh  =  true;
+              radioData.iconChed =  false;
+              radioData.tFlag = "t0";
+              protoShow.protoSh = false;
+              protoShow.placeCon = result.data.placeholderAmt = "0.01元起";
+              //t+1提示语
+              // 90天 是否t1过判断
+              if(result.data.preDrawInfos[1].isDrawFlag !== "1"){
+                result.data.t1Content = fit.disableWithdraw(result.data.preDrawInfos[1].isDrawFlag);
+              }
+              //return {"icon-checked" : true, "icon-check" : false};
+            }
+            result.data.tRate = result.data.preDrawInfos[1].drawRate? result.data.preDrawInfos[1].drawRate : "";
+            if(options.flag !== "calc"){
+              commit(types["RADIOCHECK"], { payload: radioData });
+              commit(types["DHT_WITHDRAWNUM"], "");
+              commit(types["DHT_PROTOSHOW"], protoShow);
+              commit(types["WITHDRAW"], { payload: result.data });
+            }
 
         } else {
-          commit(types.TOAST);
+          let radioData = {iconCh:true,iconChed:false};
+          let protoShow={};
+          protoShow.protoSh = false;
+          protoShow.placeCon = "0.01元起";
+          commit(types["RADIOCHECK"], { payload: radioData });
+          commit(types["DHT_PROTOSHOW"], protoShow);
+          PecMessageBox.alert({
+            title: '温馨提示',
+            message: result.responseMsg
+          })
         }
-      });
+      })
     },
-  creatOrder({ commit, state }, options){
-    // console.log(options)
-    http.request({
-      method: 'GET',
-      url: api.createOrder,
-      qs: {
-        prdType:"09",
-        sourceAppId : "222222",
-        transAmt:options.transAmt,
-        transType:options.transType
+  queryDraw({commit,state},options){
+    let optionsReq = {
+      url:"queryDraw",
+      qs:{
+        amt:options.inputVal,
+        bankCardSign:options.bankCardSign,
+        depSerialNo:options.depSerialNo,
+        isDepositFlag:"0",
+        queryType:options.queryType,
+        appType:"003",
+        bussType:"9110",
+        ccy:"RMB",
+        transDate:options.transDate,
+        param:"sunqin"
       }
-    }, function (result) {
-      if (result && result.responseCode == '000000') {
-        options.cb && options.cb(result.data);
-
+    };
+    http.fetch(optionsReq).then(result => {
+      if (result.responseCode === '000000') {
+        let interestRes = '';
+        if(options.queryType === "0"){
+          interestRes = result.data.interest;
+        }else if(options.queryType === "1"){
+          interestRes = result.data.interest;
+        }
+        commit(types["WITHDRAWINTEREST"], {inputVal : options.inputVal,interest:interestRes} );
       } else {
-        alert({
-          title: res.responseMsg
-        });
+        PecMessageBox.alert({
+          title: '温馨提示',
+          message: result.responseMsg
+        })
       }
-    });
+    })
   },
-  getPaySearialNo({ commit, state }, options){
-    // console.log(options)
-    http.request({
-      method: 'GET',
-      url: api.getPaySearialNo,
-      qs: {
-        fundType :"09",
-        orderAmount:options.orderAmount,
-        orderNo:options.orderNo
+  canDraw({commit,state},options){
+    let optionsReq = {
+      url:"canDraw",
+      qs:{
+        amt:options.inputVal,
+        bankCardSign:options.bankCardSign,
+        currentDay:options.currentDay,
+        depSerialNo:options.depSerialNo,
+        isDepositFlag:"0",
+        queryType:options.queryType,
+        appType:"003",
+        bussType:"9110",
+        ccy:"RMB",
+        param:"sunqin"
       }
-    }, function (result) {
-      if (result && result.responseCode == '000000') {
+    };
+    http.fetch(optionsReq).then(result => {
+      if (result.responseCode === '000000') {
         options.cb && options.cb(result.data);
-
       } else {
-        alert({
-          title: res.responseMsg
-        });
+        PecMessageBox.alert({
+          title: '温馨提示',
+          message: result.responseMsg
+        })
       }
-    });
+    })
   },
+    creatOrder({ commit, state }, options){
+      let optionsReq = {
+        url:"createOrder",
+        env:"stg3",
+        qs:{
+          prdType:"09",
+          transAmt:options.transAmt,
+          transType:options.transType,
+          bankCardSign:options.bankCardSign,
+          depositNo : options.depositSerialNo,
+          terminalType:"003",
+          appType:"003",
+          valueDate:options.valueDate
+        }
+      };
+      http.fetch(optionsReq).then(result => {
+        if (result.responseCode === '000000') {
+          options.cb && options.cb(result.data);
+        } else {
+          PecMessageBox.alert({
+            title: '温馨提示',
+            message: result.responseMsg
+          })
+        }
+      })
+    },
+    getPaySearialNo({ commit, state }, options){
+      // console.log(options)
+      let optionsReq = {
+        url:"getPaySearialNo",
+        env:"stg3",
+        qs:{
+          fundType :"09",
+          orderAmount:options.orderAmount,
+          orderNo:options.orderNo,
+          bankCardSign : options.bankCardSign
+        }
+      };
+      http.fetch(optionsReq).then(result => {
+        if (result.responseCode === '000000') {
+          options.cb && options.cb(result.data);
+        } else {
+          PecMessageBox.alert({
+            title: '温馨提示',
+            message: result.responseMsg
+          })
+        }
+      })
+    }
 }
 
 // mutations
 const mutations = {
-    [types.TOAST](state, { payload }) {
-        state.toast = payload;
-    },
     [types.RADIOCHECK](state, { payload }) {
         // console.log(payload)
         state.radioCheck = payload;
@@ -282,14 +396,18 @@ const mutations = {
     [types.ORDER_DETAIL](state, { payload }) {
         // console.log(payload)
         state.orderDetail.lists = payload;
+        state.recordsFlag = payload.recordsFlag;
     },
-    //[types.CONHEIGHT](state,payload){
-    //    state.conHeight = payload;
-    //},
+    [types.QUERYSYSFLAG](state,payload){
+        state.querySysFlag = payload;
+    },
+    [types.SYSFLAG](state,payload){
+        state.sysFlag = payload;
+    },
     [types.RECORDS](state, payload) {
         // console.log(payload)
         //state.records.lists = payload.orderRecords;
-        if (payload.pageNum==1) {
+        if (payload.pageIndex==1) {
             state.records.lists = payload.recordList;
         } else{
             state.records.lists = state.records.lists.concat(payload.recordList);
@@ -301,7 +419,7 @@ const mutations = {
         } else{
             state.loadState = false;
         }
-        if (payload.pageNum*10>payload.total || payload.total<=10) {
+        if (payload.pageIndex*10>payload.total || payload.total<=10) {
             state.loading = 2;
             state.checkState = "已无更多数据";
         } else{
@@ -326,7 +444,7 @@ const mutations = {
     ['DHT_PROTOSHOWAGAIN'](state,payload){
         state.protoShow.protoSh = payload;
         if(payload){
-            state.protoShow.placeCon = fit.formatMoneyNumber(state.withdraw.data.leastAmt,"blur") + "元起";
+            state.protoShow.placeCon = fit.formatMoneyNumber(state.withdraw.data.preDrawInfos[1].depositAmtMin,"blur") + "元起";
         }else{
             state.protoShow.placeCon = "0.01元起";
         }

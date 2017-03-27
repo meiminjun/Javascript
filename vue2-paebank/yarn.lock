@@ -54,6 +54,10 @@ ajv@^4.11.2, ajv@^4.7.0, ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
+"aladdin@git+http://git-ma.paic.com.cn/Aladdin/aladdin.git":
+  version "1.0.7"
+  resolved "git+http://git-ma.paic.com.cn/Aladdin/aladdin.git#03f5b53befd13cbc5cd08d1be1a34304c86fce51"
+
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
   resolved "http://registry.npm.taobao.org/align-text/download/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
@@ -677,14 +681,6 @@ babel-plugin-transform-strict-mode@^6.22.0:
     babel-runtime "^6.22.0"
     babel-types "^6.22.0"
 
-babel-polyfill@^6.23.0:
-  version "6.23.0"
-  resolved "http://registry.npm.taobao.org/babel-polyfill/download/babel-polyfill-6.23.0.tgz#8364ca62df8eafb830499f699177466c3b03499d"
-  dependencies:
-    babel-runtime "^6.22.0"
-    core-js "^2.4.0"
-    regenerator-runtime "^0.10.0"
-
 babel-preset-env@^1.2.1:
   version "1.2.2"
   resolved "http://registry.npm.taobao.org/babel-preset-env/download/babel-preset-env-1.2.2.tgz#1dbc4d7f8a575691d301f45fa9b2f9698b1e3b92"
@@ -844,6 +840,10 @@ boom@2.x.x:
   resolved "http://registry.npm.taobao.org/boom/download/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
   dependencies:
     hoek "2.x.x"
+
+"bow@git+http://git-ma.paic.com.cn/kdwy-libs/bow.git":
+  version "1.0.8"
+  resolved "git+http://git-ma.paic.com.cn/kdwy-libs/bow.git#c677427b554c81cca52291954fae157caeeb8e5f"
 
 brace-expansion@^1.0.0:
   version "1.1.6"
@@ -1590,6 +1590,12 @@ ecc-jsbn@~0.1.1:
   resolved "http://registry.npm.taobao.org/ecc-jsbn/download/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
   dependencies:
     jsbn "~0.1.0"
+
+echarts@^3.3.2:
+  version "3.5.0"
+  resolved "http://registry.npm.taobao.org/echarts/download/echarts-3.5.0.tgz#2a63a7c6d58fe58022dca82137a92c13bfa0d7e9"
+  dependencies:
+    zrender "^3.4.0"
 
 editorconfig@^0.13.2:
   version "0.13.2"
@@ -2877,6 +2883,10 @@ lodash.camelcase@^4.3.0:
 lodash.clonedeep@^4.3.2:
   version "4.5.0"
   resolved "http://registry.npm.taobao.org/lodash.clonedeep/download/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "http://registry.npm.taobao.org/lodash.debounce/download/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 
 lodash.memoize@^4.1.0:
   version "4.1.2"
@@ -4632,6 +4642,14 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-echarts@^2.3.3:
+  version "2.3.3"
+  resolved "http://registry.npm.taobao.org/vue-echarts/download/vue-echarts-2.3.3.tgz#37bd2e36dfba58c4ca42b770fea155ec464a28cb"
+  dependencies:
+    echarts "^3.3.2"
+    lodash.debounce "^4.0.8"
+    vue "^2.0.1"
+
 vue-hot-reload-api@^2.0.11:
   version "2.0.11"
   resolved "http://registry.npm.taobao.org/vue-hot-reload-api/download/vue-hot-reload-api-2.0.11.tgz#bf26374fb73366ce03f799e65ef5dfd0e28a1568"
@@ -4681,7 +4699,7 @@ vue-template-es2015-compiler@^1.2.2:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.5.1.tgz#0c36cc57aa3a9ec13e846342cb14a72fcac8bd93"
 
-vue@^2.2.2:
+vue@^2.0.1, vue@^2.2.2:
   version "2.2.5"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.2.5.tgz#528eba68447d7eff99f86767b31176aa656c6963"
 
@@ -4902,3 +4920,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zrender@^3.4.0:
+  version "3.4.0"
+  resolved "http://registry.npm.taobao.org/zrender/download/zrender-3.4.0.tgz#aec7694e3adbb50b03535dc6a632eb212d01edc9"
