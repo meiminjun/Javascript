@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+/*freedom-selection*/
+
+.pec-freedom-selection-list {
+    font-size: 0;
+    padding: .30rem;
+    padding-right: 0;
+    background: $pec-color-FFFFFF;
+    .pec-freedom-selection-item {
+        width: 33.3333%;
+        display: inline-block;
+        padding-right: .30rem;
+        margin-bottom: .30rem;
+        .pec-freedom-btn {
+            color: $pec-color-3F4246;
+            font-size: $pec-font-size26;
+            height: .56rem;
+            text-align: center;
+            line-height: .56rem;
+            border-radius: .04rem;
+            border: 2px solid $pec-color-ABABAB;
+            &:nth-child(3n) {
+                padding-right: 0;
+            }
+        }
+        &.curr .pec-freedom-btn {
+            position: relative;
+            color: $pec-color-F17940;
+            border: 2px solid $pec-color-F17940;
+            &:after {
+                position: absolute;
+                content: "";
+                right: 0;
+                bottom: 0;
+                width: .38rem;
+                height: .36rem;
+                background: url("../../images/common/icon-bg-hook.svg") no-repeat;
+                background-size: .38rem .36rem;
+            }
+        }
+    }
+}

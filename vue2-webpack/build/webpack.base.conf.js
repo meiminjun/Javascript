@@ -29,9 +29,7 @@ module.exports = {
       'flexible': resolve('src/assets/lib/flexible.js'),
       'fastclick': resolve('src/assets/lib/fastclick.js'),
       'aladdin': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/aladdin.min.js' : 'src/assets/lib/aladdin.web.min.js'),
-      // 'bow': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/bow.min.js' : 'src/assets/lib/bow.web.min.js'),
-      'bow': resolve('src/assets/lib/bow.min.js'),
-      'dante': resolve('src/assets/lib/dante.js')
+      'bow': resolve(process.env.NODE_ENV === 'production' ? 'src/assets/lib/bow.min.js' : 'src/assets/lib/bow.web.min.js'),
     }
   },
   module: {

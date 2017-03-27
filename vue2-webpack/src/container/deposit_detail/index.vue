@@ -156,6 +156,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
   let Dante = require('dante');
   import {
     mapState,
@@ -174,6 +175,24 @@
   import {share} from '../../util/share';
   export default {
     data: function () {
+=======
+    import {
+            mapState,
+            mapActions
+    } from 'vuex';
+    import * as ald from '../../util/ald';
+    import * as acc from '../../util/acc';
+    import api from '../../api/urls';
+//    import myHeader from './MyHeader.vue';
+    import Hd from '../../components/Common_Header.vue';
+    import {PecMessageBox} from 'pa-ui/lib/index';
+    import bow from 'bow';
+    import fit from '../../filters/deposit';
+    import {tryLogin} from '../../util/acc';
+    import {checkLogin} from '../../util/acc';
+    export default {
+        data: function () {
+>>>>>>> f56a139e6e84fbd4c4b48de6cd51854977a7a977
 
       var htmlFontSize = +document.getElementsByTagName("html")[0].style.fontSize.replace("px", "");
 

@@ -12,7 +12,6 @@ client = client.replace(/--/g, '')
 console.log(process.env.NODE_ENV + ' | ' + process.argv[2] + ' | ' + env + ' ' + process.argv[3])
 
 var vendors = [
-  'babel-polyfill',
   'vue',
   'vue-router',
   'vuex',
@@ -28,7 +27,7 @@ var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir)
   const fullDir = path.join(__dirname, baseDir + '/' + dir)
   // console.log(dir) // finance
   // console.log(fullDir)
-  const entry = path.join(fullDir, 'main.js')
+  const entry = path.join(fullDir, 'index.js')
   if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
     entryObj[dir] = entry
   }
@@ -36,14 +35,14 @@ var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir)
 }, {})
 
 // 结束
-
 module.exports = {
   env: config.env, // 接口环境
   hostname: config.hostname,
   url: config.url, // 接口url
   templatesDir: path.resolve(__dirname, '../src/container'),
-  entry: Object.assign({}, entries, entry),
   // entry: entry,
+  // entry: Object.assign({}, entry,entries),
+  entry: entry,
   build: {
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),

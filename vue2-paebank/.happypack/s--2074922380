@@ -1,0 +1,62 @@
+import _defineProperty from 'babel-runtime/helpers/defineProperty';
+
+var _orderDetail$records$;
+
+var ENV = 'stg';
+var hostname = {
+    dev: {
+        paebank: 'https://bank.pingan.com.cn',
+        rmb: 'https://rmb-stg.pingan.com.cn',
+        news: '',
+        static: ''
+    },
+    stg: {
+        paebank: 'https://ibp-uat5.pingan.com.cn',
+        rmb: 'https://rmb-stg.pingan.com.cn',
+        news: 'http://stg5.pingan.com.cn:60880',
+        static: 'http://bank-static-stg.pingan.com.cn:8480/aum_dhlc/pages/stg1/deposit/mobile/'
+    },
+    prd: {
+        paebank: 'https://bank.pingan.com.cn',
+        rmb: 'https://rmb.pingan.com.cn',
+        news: 'https://b.pingan.com',
+        static: 'https://bank-static.pingan.com.cn'
+    }
+};
+
+export default (_orderDetail$records$ = {
+    orderDetail: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd-uat5/dhtCommon/queryOrderDetail.do?' : 'orderDetail.json'),
+    records: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/dhtCommon/queryDrawDetail.do' : 'records.json'),
+    withdrawDeposit: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd-uat5/dhtCommon/preDraw.do?' : 'withdraw.json'),
+    withdraw: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/orderDetail.do' : 'withdraw.json'),
+    withdrawSubmit: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/orderDetail.do' : 'withdrawSubmit.json'),
+    withdrawInterest: hostname["dev"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/orderDetail.do' : 'withdrawInterest.json'),
+    getPaySearialNo: 'https://rmb-stg2.pingan.com.cn:6443/bron/ibank/cust/bron-ibank-pd/deposit/checkLogin/getPaySearialNo.do',
+
+    mylivedead: hostname["dev"].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/mylivedead.do' : 'mylivedead.json'),
+
+    mylivedead_card: hostname["dev"].rmb + (ENV == 'prd' ? '/brop/tpp/cust/brop_tpp_casher_intf.getPayList' : 'mylivedead_card.json'),
+
+    queryFixedCurrentLinkList: hostname["stg"].rmb + (ENV == 'stg' ? '/bron/ibank/cust/bron-ibank-pd-uat5/superDht/queryFixedCurrentLinkList.do' : 'qryEbankSysTime.json'),
+    queryDrawHistory: hostname["stg"].rmb + '/bron/ibank/cust/bron-ibank-pd-uat5/dhtCommon/queryDrawHistory.do',
+
+    createOrder: 'https://rmb-stg2.pingan.com.cn:6443/bron/ibank/cust/bron-ibank-pd/deposit/checkLogin/createOrder.do',
+    queryOrderStatus: 'https://rmb-stg2.pingan.com.cn:6443/bron/ibank/cust/bron-ibank-pd/dhtCommon/checkLogin/queryOrderStatus.do',
+
+    qryRecPrdListInfo: hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/queryArea.do' : '/bron/ibank/cust/bron-ibank/fund/bootpage/queryArea.do'),
+
+    queryArea: hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/queryArea.do' : '/bron/ibank/cust/bron-ibank/fund/bootpage/queryArea.do'),
+
+    queryFund: hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/fund/bootpage/queryFund.do' : '/bron/ibank/cust/bron-ibank/fund/bootpage/queryFund.do'),
+
+    homeNews: hostname[ENV].news + (ENV == 'prd' ? '/zixun/jsondata/financialInfo.json' : '/pacms/c3/yinhang/weixin/financialInfo.json'),
+
+    news_more: hostname[ENV].news + (ENV == 'prd' ? '/zixun/financial/financialList.shtml?type=cl&app=kd' : '/pacms/c3/yinhang/weixin/financialNews/financialList.shtml?type=cl&app=kd'),
+
+    queryCashInfo: hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/cash/queryCashInfo.do' : 'bron/ibank/cust/bron-ibank/cash/queryCashInfo.do')
+}, _defineProperty(_orderDetail$records$, 'queryCashInfo', hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/cash/queryCashRate.do' : 'bron/ibank/cust/bron-ibank/cash/queryCashRate.do')), _defineProperty(_orderDetail$records$, 'queryMyInCome', hostname[ENV].rmb + (ENV == 'prd' ? '/bron/ibank/cust/bron-ibank-pd/cash/checkLogin/queryMyInCome.do' : '/bron/ibank/cust/bron-ibank/cash/checkLogin/queryMyInCome.do')), _defineProperty(_orderDetail$records$, 'current_more', '/newFinancialProducts/index.html#saveFinancial/save/toSave'), _defineProperty(_orderDetail$records$, 'fixed_more', hostname[ENV].static + '/omm/mobile/fund_more.html'), _defineProperty(_orderDetail$records$, 'fixed_detail', '/newFundMarket/index.html#newFundMarket/fundDetail/index'), _defineProperty(_orderDetail$records$, 'fund_more', '/newFundMarket/index.html#/newFundMarket/newFundMarket/toFundsList'), _defineProperty(_orderDetail$records$, 'gold_more', '/goldAccount/index.html#goldAccount/myGoldAccount/index'), _defineProperty(_orderDetail$records$, 'gold_icon', '/goldAccount/index.html#goldAccount/myGoldAccount/index'), _defineProperty(_orderDetail$records$, 'info_icon', '/infoManage/index.html#infoManage/index/index'), _defineProperty(_orderDetail$records$, 'commodity_icon', '/commodityExchange/index.html#commodityExchange/index/index'), _defineProperty(_orderDetail$records$, 'fund_info_detail', '/infoManage/index.html#infoManage/index/infoDetail/'), _defineProperty(_orderDetail$records$, 'finance_detail', '/financialProducts/index.html#financialProducts/proIndex/toDetail/'), _defineProperty(_orderDetail$records$, 'finance_hot_detail', '/financialProducts/index.html#financialProducts/proIndex/purchaseDetail/'), _defineProperty(_orderDetail$records$, 'pa_profit_detail', '/pinganyingOptimize/index.html#pinganyingOptimize/proIndex/noLoginIndex'), _defineProperty(_orderDetail$records$, 'daily_profit_detail', '/dailyProfit/index.html#dailyProfit/index/index'), _defineProperty(_orderDetail$records$, 'fund_public_detail', '/newFundMarket/index.html#newFundMarket/fundDetail/index/'), _defineProperty(_orderDetail$records$, 'fund_my', '/newFundMarket/index.html#newFundMarket/newFundMarket/toMyFundList'), _defineProperty(_orderDetail$records$, 'fund_theme', '/newFundMarket/index.html#newFundMarket/newFundMarket/toThemeFund'), _defineProperty(_orderDetail$records$, 'fixed_aip', '/newFundMarket/index.html#newFundMarket/fundDetail/index/'), _defineProperty(_orderDetail$records$, 'fund_my_collect', '/newFundMarket/index.html#newFundMarket/newFundMarket/collect'), _defineProperty(_orderDetail$records$, 'fund_hot_icon', hostname[ENV].static + '/omm/mobile/mylivedead.html'), _defineProperty(_orderDetail$records$, 'fund_hot_detail', hostname[ENV].static + '/pobing-v2/products/jxjj/details.html'), _defineProperty(_orderDetail$records$, 'onelogin', hostname[ENV].static + '/pobing/index.html#/onelogin'), _defineProperty(_orderDetail$records$, 'fund_first_icon', hostname[ENV].static + '/pobing-v2/products/ipojj/fundIpoList.html'), _defineProperty(_orderDetail$records$, 'fund_first_detail', hostname[ENV].static + '/pobing-v2/products/ipojj/fundIpoDetails.html'), _defineProperty(_orderDetail$records$, 'fund_fixed_icon', hostname[ENV].static + '/omm/mobile/fund_aip.html'), _defineProperty(_orderDetail$records$, 'fund_index_icon', hostname[ENV].static + '/omm/mobile/fund_index.html'), _defineProperty(_orderDetail$records$, 'fund_rank_icon', hostname[ENV].static + '/omm/mobile/exchange_detail.html'), _defineProperty(_orderDetail$records$, 'orderDetailPage', hostname[ENV].static + 'order_detail.html'), _defineProperty(_orderDetail$records$, 'exchangeDetail', hostname[ENV].static + 'exchange_detail.html'), _defineProperty(_orderDetail$records$, 'withdrawPage', hostname[ENV].static + '/withdraw.html'), _defineProperty(_orderDetail$records$, 'withdrawResult', hostname[ENV].static + 'withdraw_result.html'), _defineProperty(_orderDetail$records$, 'mylivedead', hostname[ENV].static + 'mylivedead.html'), _defineProperty(_orderDetail$records$, 'deposit_buy', hostname[ENV].static + 'deposit_buy.html'), _defineProperty(_orderDetail$records$, 'deposit_success', hostname[ENV].rmb + 'deposit_success.html'), _defineProperty(_orderDetail$records$, 'search', hostname[ENV].static + '/omm/mobile/search_details.html'), _defineProperty(_orderDetail$records$, 'insurance_icon', 'https://bank.pingan.com/app/baoxian-h5.html'), _defineProperty(_orderDetail$records$, 'my_assets_icon', ENV == 'prd' ? hostname[ENV].paebank + '/static/financial/account10/assetList.html' : hostname[ENV].paebank + '/ibp/PAEBank257/FinancialAccount/assetList.html'), _defineProperty(_orderDetail$records$, 'my_orders_icon', ENV == 'prd' ? hostname[ENV].paebank + '/static/financial/account10/assetListIndent.html' : hostname[ENV].paebank + '/ibp/PAEBank257/FinancialAccount/assetListIndent.html'), _defineProperty(_orderDetail$records$, 'cash_detail', hostname[ENV].static + '/omm/mobile/cash_detail.html'), _defineProperty(_orderDetail$records$, 'cash_buy', hostname[ENV].static + '/omm/mobile/cash_buy.html'), _defineProperty(_orderDetail$records$, 'pay_cards', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.getPayList'), _defineProperty(_orderDetail$records$, 'pay_recharge', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.recharge'), _defineProperty(_orderDetail$records$, 'pay_bindedCards', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.qryUserBindedCardsOfNetwork'), _defineProperty(_orderDetail$records$, 'pay_orderPay', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.orderPay'), _defineProperty(_orderDetail$records$, 'pay_vailPWD', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.chkTradePwd'), _defineProperty(_orderDetail$records$, 'pay_timeMap', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.getServerTimestamp'), _defineProperty(_orderDetail$records$, 'pay_bindCard', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.addNewCardStep1'), _defineProperty(_orderDetail$records$, 'pay_bindCardPay', hostname[ENV].rmb + '/brop/tpp/cust/brop_tpp_casher_intf.addNewCardEnd'), _orderDetail$records$);
+
+function nativeOrWeb() {
+    var ua = window.navigator.userAgent;
+    return ua.indexOf("AladdinHybrid") > 0 ? "" : hostname[ENV].static;
+}

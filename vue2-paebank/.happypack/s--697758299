@@ -1,0 +1,62 @@
+import _defineProperty from 'babel-runtime/helpers/defineProperty';
+import _extends from 'babel-runtime/helpers/extends';
+
+var _mutations;
+
+import financeService from '../../api/deposit_detail';
+import * as types from '../types';
+import api from '../../api/urls.js';
+import * as fit from '../../filters/deposit';
+
+var state = {
+    aipFund: {
+        lists: []
+    },
+    history: {
+        lists: []
+    }
+};
+
+var actions = {
+    getAipRecommend: function getAipRecommend(_ref) {
+        var commit = _ref.commit;
+        var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        financeService.getAipRecommend(_extends({
+            productClass: '1'
+        }, params), function (data) {
+            commit(types.DEPOSIT_DETAIL, {
+                lists: data.productList[0],
+                pageNum: "1"
+            });
+        });
+    },
+    queryOrderStatus: function queryOrderStatus(_ref2) {
+        var commit = _ref2.commit;
+        var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        financeService.queryOrderStatus(_extends({
+            signCardNo: '6230582000070450773',
+            subTradeOrderNo: '20170308120426100000000'
+        }, params), function (data) {
+            commit(types.DEPOSIT_BUY, {
+                lists: data
+            });
+        });
+    }
+};
+
+var mutations = (_mutations = {}, _defineProperty(_mutations, types.DEPOSIT_DETAIL, function (state, payload) {
+    state.aipFund.lists = payload.lists;
+    state.aipFund.lists.ccy = fit.monetaryUnit(state.aipFund.lists.ccy);
+    state.aipFund.lists.saveDeadline = fit.year(state.aipFund.lists.saveDeadline);
+    state.aipFund.lists.interestRate = Number(state.aipFund.lists.interestRate).toFixed(3) + '%';
+}), _defineProperty(_mutations, types.DEPOSIT_BUY, function (state, payload) {
+    state.history.lists = payload.lists;
+}), _mutations);
+
+export default {
+    state: state,
+    actions: actions,
+    mutations: mutations
+};
