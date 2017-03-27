@@ -5,14 +5,15 @@ import Vuex from 'vuex';
 import common from '../../store/common';
 import dhtDetail from '../../store/modules/order';
 import app from './index.vue'
-import 'assets/scss/deposit/style.scss'
+import '../../assets/scss/deposit/style';
 import createLogger from 'vuex/dist/logger';
-//import { Loadmore, Spinner } from 'mint-ui';
-//import { InfiniteScroll } from 'mint-ui'
-//
-//Vue.use(InfiniteScroll);
-//Vue.component(Loadmore.name, Loadmore);
-//Vue.component(Spinner.name, Spinner);
+import { Loadmore, Spinner } from 'mint-ui';
+
+import 'mint-ui/lib/loadmore/style.css'
+import 'mint-ui/lib/spinner/style.css'
+
+Vue.component(Loadmore.name, Loadmore);
+Vue.component(Spinner.name, Spinner);
 
 
 Vue.use(Vuex);
