@@ -40,38 +40,42 @@ var plugins = [
   // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
-  new FriendlyErrorsPlugin(),
-  new webpack.DllReferencePlugin({
-    context: path.join(__dirname),
-    // name: '[name]',
-    manifest: require('./dist/vendor-manifest.json')
-  })
+  // https://github.com/ampedandwired/html-webpack-plugin
+  // new HtmlWebpackPlugin({
+  //   filename: 'index.html',
+  //   template: 'index.html',
+  //   inject: true
+  // }),
+  new FriendlyErrorsPlugin()
+  // new HappyPack({
+  //   id: 'js',
+  //   tempDir: '.happypackDev/',
+  //   loaders: ['babel'],
+  //   threadPool: happyThreadPool,
+  //   cache: true,
+  //   verbose: true
+  // }),
 ]
 
 console.log('________测试_____')
 console.log(config.dev.env)
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-  // console.log(name,name=='finance',typeof(name))
-  // var templatesHtmlFile = config.assetsRoot + '/' + name + '/index.html'
-  // console.log('模板文件路径')
-  // console.log(templatesHtmlFile)
-  console.log(name);
-  plugins.push(new HtmlWebpackPlugin({
-    filename: name + '.html',
-    template: config.templatesDir + '/' + name + '/index.html',
-    chunks: [
-      name
-    ],
-    env: 'dev',
-    title: name + ' App'
-    // inject: true
-    // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
-  }))
-  // console.log(config.build.buildDir + '/vendor.dll.js')
-  // console.log('路径')
-  // console.log(require.resolve('./dist/vendor.dll.js'))
+  if (name !== 'app') {
+    // console.log(name,name=='finance',typeof(name))
+    plugins.push(new HtmlWebpackPlugin({
+      filename: (name === 'finance' ? 'index' : name) + '.html',
+      template: config.templatesDir + '/' + name + '/index.html',
+      chunks: [
+        'common',
+        name
+      ],
+      env: config.dev.env,
+      title: name + ' App',
+      inject: true
+      // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
+    }))
+  }
 })
 
 plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./dist/vendor.dll.js'), hash: true }))

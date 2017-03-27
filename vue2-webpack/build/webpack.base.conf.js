@@ -34,23 +34,22 @@ module.exports = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.(js|vue)$/,
-      //   loader: 'eslint-loader',
-      //   enforce: 'pre',
-      //   include: [resolve('src'), resolve('test')],
-      //   options: {
-      //     formatter: require('eslint-friendly-formatter')
-      //   }
-      // },
+      {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [resolve('src'), resolve('test')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
       }, {
         test: /\.js$/,
-        // loader: 'babel-loader',
-        loader: 'happypack/loader?id=js',
+        loader: 'babel-loader?cacheDirectory',
         include: [resolve('src'), resolve('test')]
       }, {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
