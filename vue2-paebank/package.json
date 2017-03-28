@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "export NODE_ENV=web && node build/dev-server.js",
     "stg": "export NODE_ENV=stg && node build/dev-server.js",
-    "build": "node build/build.js",
+    "build:dev": "export NODE_ENV=stg && node build/build.js --dev --native",
+    "build:stg": "export NODE_ENV=stg && node build/build.js --stg --native",
+    "build:prd": "export NODE_ENV=prd && node build/build.js",
+    "dll": "NODE_ENV=native webpack --config build/webpack.dll.conf.js --progress",
+    "dll:web":"NODE_ENV=web webpack --config build/webpack.dll.conf.js --progress",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

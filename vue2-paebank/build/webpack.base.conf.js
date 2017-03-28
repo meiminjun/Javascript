@@ -4,31 +4,33 @@ var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var fs = require('fs')
 
-var vendors = [
-  'vue',
-  'vue-router',
-  'vuex',
-  'flexible',
-  'bow',
-  'aladdin'
-]
-const baseDir = '../src/container'
-var entries = {
-  'vendor': vendors
-}
+console.log('测试')
+console.log(process.env.NODE_ENV)
 
-var entry = fs.readdirSync(path.join(__dirname, baseDir)).reduce((entryObj, dir) => {
-  const fullDir = path.join(__dirname, baseDir + '/' + dir)
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+// var vendors = [
+//   'vue',
+//   'vue-router',
+//   'vuex',
+//   'flexible',
+//   'bow',
+//   'aladdin'
+// ]
+// var entries = {
+//   'vendor': vendors
+// }
+// const baseDir = '../src/container'
+
+var entry = fs.readdirSync(path.join(__dirname, config.baseDir)).reduce((entryObj, dir) => {
+  const fullDir = path.join(__dirname, config.baseDir + '/' + dir)
   const entry = path.join(fullDir, 'index.js')
   if (fs.statSync(fullDir).isDirectory() && fs.existsSync(entry)) {
     entryObj[dir] = entry
   }
   return entryObj
 }, {})
-
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
 
 module.exports = {
   entry: entry,
@@ -46,9 +48,9 @@ module.exports = {
       '@': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'flexible': resolve('src/assets/lib/flexible.js'),
-      'aladdin': resolve(process.env.NODE_ENV === 'production' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
-      'bow': resolve(process.env.NODE_ENV === 'production' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
+      'flexible': resolve('src/assets/lib/flexible.js')
+      // 'aladdin': resolve(process.env.NODE_ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      // 'bow': resolve(process.env.NODE_ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   module: {

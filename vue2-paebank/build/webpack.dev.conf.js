@@ -7,10 +7,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var path = require('path')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 var HappyPack = require('happypack')
-var happyThreadPool = HappyPack.ThreadPool({ size: 5 })
+var os = require('os')
+var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 
 function _createHappyPlugin (id, loaders) {
   return new HappyPack({
@@ -30,15 +30,14 @@ var plugins = [
     DEBUG: true
   }),
   new CopyWebpackPlugin([
-    { from: 'src/assets/lib/add-assets.js', to: 'assets/js' },
-    { from: 'src/assets/lib/share.js', to: 'assets/js' },
-    { from: 'src/assets/lib/zepto.js', to: 'assets/js' }
+    { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
+    { from: 'src/assets/lib/share.js', to: 'static/js' },
+    { from: 'src/assets/lib/zepto.js', to: 'static/js' }
   ]),
   _createHappyPlugin('js', ['babel-loader']),
   new webpack.DllReferencePlugin({
-    context: path.join(__dirname),
-    // name: '[name]',
-    manifest: require('./web/vendor-manifest.json')
+    context: __dirname,
+    manifest: require(config.dev.dll.manifest)
   })
 ]
 
@@ -46,9 +45,7 @@ console.log('打印环境')
 var env = config.dev.env
 console.log(env.NODE_ENV)
 console.log(env)
-
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  console.log(name)
   if (name !== 'vendor') {  // 这个if可以在开发环境删除
     baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
     // console.log(baseWebpackConfig.entry)
@@ -60,8 +57,9 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
       ],
       // env: env.NODE_ENV,
       env: 'development',
-      title: name + ' App'
-      // inject: true
+      title: name + ' App',
+      inject: true,
+      chunksSortMode: 'dependency'
       // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
     }))
   }
@@ -70,7 +68,20 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 console.log('*****入口打印********')
 console.log(baseWebpackConfig.entry)
 
-plugins.push(new AddAssetHtmlPlugin({ filepath: require.resolve('./web/vendor.dll.js'), hash: true }))
+console.log(path.resolve(__dirname, config.dev.dll.fileName))
+console.log(path.join(config.dev.dll.outputPath))
+console.log(path.join(config.dev.dll.publicPath))
+
+plugins.push(new AddAssetHtmlPlugin({
+  filepath: require.resolve(config.dev.dll.fileName),
+  hash: true
+}))
+// plugins.push(new AddAssetHtmlPlugin([{
+//   filepath: path.resolve(__dirname, config.dev.dll.fileName),
+//   outputPath: path.join(config.dev.dll.outputPath),
+//   publicPath: path.join(config.dev.dll.publicPath),
+//   includeSourcemap: true
+// }]))
 
 // var happyPlugins = [
 //   // createHappyPlugin('js-eslint', ['eslint-loader']),
@@ -85,8 +96,14 @@ module.exports = merge(baseWebpackConfig, {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   // cheap-module-eval-source-map is faster for development
-  devtool: '#cheap-module-eval-source-map',
+  // devtool: '#cheap-module-eval-source-map',
+  devtool: 'cheap-eval-source-map',
   // devtool: '#source-map',
+  output: {
+    path: config.dev.assetsRoot,
+    filename: utils.assetsPath('js/[name].js'),
+    chunkFilename: utils.assetsPath('js/chunk.[id].js')
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
