@@ -15,18 +15,17 @@ const debug = process.env.NODE_ENV !== 'production'
 let store = new Vuex.Store({
     // actions,
     // getters,
-    modules: {
-        common,
-        fund,
-        detail,
-        dhtDetail,
-        depositDetail
-    },
-    strict: debug,
-    plugins: debug ? [createLogger()] : []
-});
+  modules: {
+    common,
+    fund,
+    detail,
+    dhtDetail,
+    depositDetail
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
+})
 
-window.__store = store;
+window.__store = store
 
-export default store;
-
+export default store

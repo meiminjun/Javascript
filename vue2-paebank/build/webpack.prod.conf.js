@@ -8,8 +8,53 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var UglifyJsParallelPlugin = require('webpack-uglify-parallel')  // 还未添加
+var os = require('os')
+var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+var HappyPack = require('happypack')
+var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+
+function _createHappyPlugin (id, loaders) {
+  return new HappyPack({
+    id: id,
+    loaders: loaders,
+    threadPool: happyThreadPool,
+    // 开启缓存
+    cache: false,
+    // make happy more verbose with HAPPY_VERBOSE=1
+    verbose: true
+  })
+}
 
 var env = config.build.env
+// console.log('--------=====')
+// console.log(env.NODE_ENV)
+
+var plugins = []
+Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+  console.log(name)
+  // if (name !== 'vendor') {  // 这个if可以在开发环境删除
+  baseWebpackConfig.entry[name] = baseWebpackConfig.entry[name]
+    // console.log(baseWebpackConfig.entry)
+  plugins.push(new HtmlWebpackPlugin({
+    filename: name + '.html',
+    template: config.templatesDir + '/' + name + '/index.html',
+    chunks: [
+      'manifest', 'vendor', name
+    ],
+    env: 'production',
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+    },
+    chunksSortMode: 'dependency',
+    inject: true
+  }))
+  // }
+})
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -36,6 +81,17 @@ var webpackConfig = merge(baseWebpackConfig, {
       },
       sourceMap: true
     }),
+    // new UglifyJsParallelPlugin({
+    //   workers: os.cpus().length,
+    //   mangle: true,
+    //   compressor: {
+    //     warnings: true,
+    //     drop_console: false,
+    //     drop_debugger:true
+    //   },
+    //   sourceMap: true
+    // }),
+
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
@@ -50,20 +106,20 @@ var webpackConfig = merge(baseWebpackConfig, {
     // generate dist index.html with correct asset hash for caching.
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
-      },
-      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
-    }),
+    // new HtmlWebpackPlugin({
+    //   filename: config.build.index,
+    //   template: 'index.html',
+    //   inject: true,
+    //   minify: {
+    //     removeComments: true,
+    //     collapseWhitespace: true,
+    //     removeAttributeQuotes: true
+    //     // more options:
+    //     // https://github.com/kangax/html-minifier#options-quick-reference
+    //   },
+    //   // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+    //   chunksSortMode: 'dependency'
+    // }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -90,10 +146,30 @@ var webpackConfig = merge(baseWebpackConfig, {
         from: path.resolve(__dirname, '../static'),
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
-      }
-    ])
-  ]
+      },
+      { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
+      { from: 'src/assets/lib/zepto.js', to: 'static/js' },
+      { from: 'src/assets/lib/runtime-check.js', to: 'static/js' },
+      { from: 'src/assets/lib/aladdin.min.js', to: 'static/js' },
+      { from: 'src/assets/lib/aladdin.web.min.js', to: 'static/js' },
+      { from: 'src/assets/lib/bow.min.js', to: 'static/js' },
+      { from: 'src/assets/lib/bow.web.min.js', to: 'static/js' },
+      { from: 'src/assets/lib/aladdin.loading.min.js', to: 'static/js' },
+      { from: 'src/assets/lib/aladdin.loading.web.min.js', to: 'static/js' }
+    ]),
+    _createHappyPlugin('js', ['babel-loader']),
+    // new webpack.DllReferencePlugin({
+    //   context: __dirname,
+    //   // name: '[name]',
+    //   manifest: require(config.build.dll.manifest)
+    // })
+  ].concat(plugins)
 })
+
+// webpackConfig.plugins.push(new AddAssetHtmlPlugin({
+//   filepath: require.resolve(config.build.dll.fileName),
+//   hash: true
+// }))
 
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')

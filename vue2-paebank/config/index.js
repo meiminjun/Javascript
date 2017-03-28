@@ -4,6 +4,15 @@ var url = require('./url')
 var router = require('./router')
 const isproxy = false // 是否开启代理
 const noBuild = ['demo']  // 要排除的打包文件夹
+var distPath = path.resolve(__dirname, '..', 'dist')
+// 渠道部署
+var client = process.argv[3] || 'web'
+client = client.replace(/--/g, '')
+
+console.log('渠道部署')
+console.log(process.argv)
+console.log(client)
+
 // 接口路由的环境配置
 const hostname = {
   stg: {
@@ -46,14 +55,22 @@ module.exports = {
   routerhost: routerhost,
   isproxy: isproxy,
   noBuild: noBuild,
+  baseDir: '../src/container',
   templatesDir: path.resolve(__dirname, '../src/container'),  // htmlplugin 的html模板地址
   build: {
+    dll: {
+      basePath: '../common/' + client,
+      fileName: '../common/' + client + '/lib.js',
+      manifest: '../common/' + client + '/manifest.json',
+      outputPath: '/static/common/' + client,  // 生成目录
+      publicPath: '/static/common/' + client   // 注入地址
+    },
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(distPath),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -64,15 +81,24 @@ module.exports = {
     // View the bundle analyzer report after build finishes:
     // `npm run build --report`
     // Set to `true` or `false` to always turn it on or off
-    bundleAnalyzerReport: process.env.npm_config_report,
+    bundleAnalyzerReport: process.env.npm_config_report
     // buildDir: path.resolve(__dirname, '../bulid')
   },
   dev: {
+    dll: {
+      basePath: '../common/' + client,
+      fileName: '../common/' + client + '/lib.js',
+      manifest: '../common/' + client + '/manifest.json',
+      outputPath: '/static/common/' + client,  // 生成目录
+      publicPath: '/static/common/' + client   // 注入地址
+    },
     env: require('./dev.env'),
     port: 8080,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    staticPath: '../common',
+    assetsRoot: path.resolve(distPath),
     proxyTable: {
       // '/api': 'http://localhost:3000'
     },
