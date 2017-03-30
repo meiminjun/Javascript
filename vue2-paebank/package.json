@@ -5,13 +5,13 @@
   "author": "meiminjun <251222845@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "export NODE_ENV=web && node build/dev-server.js",
-    "stg": "export NODE_ENV=stg && node build/dev-server.js",
-    "build:dev": "export NODE_ENV=stg && node build/build.js --dev --native",
-    "build:stg": "export NODE_ENV=stg && node build/build.js --stg --native",
-    "build:prd": "export NODE_ENV=prd && node build/build.js",
-    "dll": "NODE_ENV=native webpack --config build/webpack.dll.conf.js --progress",
-    "dll:web":"NODE_ENV=web webpack --config build/webpack.dll.conf.js --progress",
+    "dev": "export ENV=web && node build/dev-server.js",
+    "stg": "export ENV=stg && node build/dev-server.js",
+    "build:dev": "export ENV=stg && node build/build.js --dev --web",
+    "build:stg": "export ENV=stg && node build/build.js --stg --native",
+    "build:prd": "export ENV=prd && node build/build.js",
+    "dll": "ENV=native webpack --config build/webpack.dll.conf.js --progress",
+    "dll:web":"ENV=web webpack --config build/webpack.dll.conf.js --progress",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -22,7 +22,6 @@
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
     "aladdin": "git+http://git-ma.paic.com.cn/Aladdin/aladdin.git",
-    "pa-ui": "git+http://git-ma.paic.com.cn/dhlc/pa-ui.git",
     "autoprefixer": "^6.7.2",
     "axios": "^0.15.3",
     "babel-core": "^6.22.1",

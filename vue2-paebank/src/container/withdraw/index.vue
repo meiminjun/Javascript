@@ -60,8 +60,9 @@ import types from '../../store/types.js'
 import * as ald from '../../util/ald'
 import CommonHeader from '../../components/Common_Header'
 import * as deposit_detail from '../../api/deposit_detail'
-import {PecKeyboard} from 'pa-ui/lib/index';
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {PecKeyboard} from 'pa-ui/lib/index';
+// import {PecMessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 import  * as fit from '../../filters/deposit';
 let cardSignData = JSON.parse(localStorage.getItem("cardSignData"));
 
@@ -281,7 +282,7 @@ export default {
           let self = this;
           if((self.inputFlag && self.agreeFlag && self.dhtDetail.radioCheck.tFlag === "t1") || (self.inputFlag && self.dhtDetail.radioCheck.tFlag==="t0")){
             //if(self.dhtDetail.radioCheck.tFlag === "t1" && self.residueFlag.indexOf("剩余") !==-1){
-            //  PecMessageBox.alert({
+            //  MessageBox.alert({
             //    title: ""
             //  });
             //  return;
@@ -309,7 +310,7 @@ export default {
                 cb:function(dte){
                   if(dte.isDrawFlag !== "1"){
                     let co = fit.disableWithdraw(dte.isDrawFlag);
-                    PecMessageBox.alert({
+                    MessageBox.alert({
                       title: '温馨提示',
                       message: co
                     })
@@ -325,7 +326,7 @@ export default {
       remindBox(rd){
         let self = this;
         if(rd >= 23 || rd < 2){
-          PecMessageBox.confirm({
+          MessageBox.confirm({
             title:'温馨提示',
             message: '请您注意: 我行系统正在进行每日日终清算处理,如现在支取,系统将视为提前支取,为了避免利息损失,建议您三个小时后再支取。',
             leftText:'继续支取',

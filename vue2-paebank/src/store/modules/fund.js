@@ -1,7 +1,9 @@
 import * as types from '../types';
 import { http } from '../../util/ald';
 import api from '../../api/urls';
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {PecMessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
+
 const state = {
   toast: {},
   //定活通
@@ -70,7 +72,7 @@ const actions = {
         }
         options.cb && options.cb();
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -106,7 +108,7 @@ const actions = {
         }
         options.cb && options.cb();
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })

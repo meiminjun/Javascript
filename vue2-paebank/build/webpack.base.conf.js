@@ -42,15 +42,16 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'], // 只解析的目录
     extensions: ['.js', '.vue', '.json', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'flexible': resolve('src/assets/lib/flexible.js')
-      // 'aladdin': resolve(process.env.NODE_ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
-      // 'bow': resolve(process.env.NODE_ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
+      'flexible': resolve('src/assets/lib/flexible.js'),
+      'aladdin': resolve(process.env.ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      'bow': resolve(process.env.ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   module: {

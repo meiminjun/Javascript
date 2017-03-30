@@ -166,8 +166,7 @@
   import types from '../../store/types.js';
   import * as ald from '../../util/ald';
   import bow from 'bow';
-  import {PecMessageBox} from 'pa-ui/lib/index';
-  import {Loadmore} from 'pa-ui/lib/index';
+import { MessageBox, Loadmore } from 'mint-ui'
   export default {
     components: {
       SelectCard,
@@ -301,7 +300,7 @@
       this.$store.dispatch("getMyliveCards",{}).then(res=>{
         if(res.data.length==0){
         carId=res.car_id;
-        PecMessageBox.confirm({
+        MessageBox.confirm({
           message:"您当前没有可用的银行卡账户,无法存入定活宝-定活通,请先开通互联网账户",
           leftText:'取消',
           rightText:'前往开通',

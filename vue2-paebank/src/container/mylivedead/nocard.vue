@@ -96,7 +96,9 @@
   import * as ald from '../../util/ald';
   import bow from 'bow';
   import {date} from '../../util'
-  import {Loadmore} from 'pa-ui/lib/index';
+  // import {Loadmore} from 'pa-ui/lib/index';
+import { Loadmore } from 'mint-ui'
+
 
   export default {
     props: {

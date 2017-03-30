@@ -5,24 +5,19 @@
       "id": 0,
       "meta": {}
     },
-    "../node_modules/bow/dist/bow.min.js": {
+    "../node_modules/process/browser.js": {
       "id": 1,
       "meta": {}
     },
-    "../node_modules/fastclick/lib/fastclick.js": {
+    "../node_modules/bow/dist/bow.min.js": {
       "id": 2,
       "meta": {}
     },
-    "../node_modules/vue-router/dist/vue-router.esm.js": {
+    "../node_modules/fastclick/lib/fastclick.js": {
       "id": 3,
-      "meta": {
-        "harmonyModule": true
-      },
-      "exports": [
-        "default"
-      ]
+      "meta": {}
     },
-    "../node_modules/vue/dist/vue.runtime.esm.js": {
+    "../node_modules/vue-router/dist/vue-router.esm.js": {
       "id": 4,
       "meta": {
         "harmonyModule": true
@@ -31,8 +26,17 @@
         "default"
       ]
     },
-    "../node_modules/vuex/dist/vuex.esm.js": {
+    "../node_modules/vue/dist/vue.runtime.esm.js": {
       "id": 5,
+      "meta": {
+        "harmonyModule": true
+      },
+      "exports": [
+        "default"
+      ]
+    },
+    "../node_modules/vuex/dist/vuex.esm.js": {
+      "id": 6,
       "meta": {
         "harmonyModule": true
       },
@@ -46,11 +50,11 @@
       ]
     },
     "../src/assets/lib/flexible.js": {
-      "id": 6,
+      "id": 7,
       "meta": {}
     },
     "../node_modules/webpack/buildin/global.js": {
-      "id": 7,
+      "id": 8,
       "meta": {}
     }
   }

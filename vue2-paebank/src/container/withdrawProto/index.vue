@@ -48,7 +48,6 @@ import api from '../../api/urls.js'
 import types from '../../store/types.js'
 import * as ald from '../../util/ald';
 import CommonHeader from '../../components/Common_Header'
-import {PecMessageBox} from 'pa-ui/lib/index';
 
 
 export default {

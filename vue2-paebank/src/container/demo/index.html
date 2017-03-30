@@ -9,12 +9,14 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="format-detection" content="telephone=no" />
+        <!-- <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"> -->
+        <meta content="maximum-dpr=1" name="flexible" />
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     </head>
     <body>
         <div id="app"></div>
-         <% if (htmlWebpackPlugin.options.env !== 'development') { %>
+        <!--  <% if (htmlWebpackPlugin.options.env !== 'development') { %>
             <script src="assets/js/runtime-check.js"></script>
-        <% } %>
+        <% } %> -->
     </body>
 </html>

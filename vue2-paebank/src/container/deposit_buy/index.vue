@@ -86,7 +86,8 @@
   import bow from 'bow';
   import Hd from '../../components/Common_Header.vue';
   import * as deposit_detail from '../../api/deposit_detail';
-  import {PecMessageBox} from 'pa-ui/lib/index';
+  // import {MessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 
 //  import peckeyboard from 'pa-ui/lib/index';
   //    import depositDetail from '../../store/modules/depositDetail';
@@ -307,7 +308,7 @@
         let me = this;
         deposit_detail.default.getSystemDateTime({url:'getSystemDateTime'},function(res){
           if(res >= 23 && res <= 24){
-            PecMessageBox.confirm({
+            MessageBox.confirm({
               title:'温馨提示',
               message: '请您注意：我行系统正在进行每日日终清算处理，如现在存入，系统将在清算处理完毕后受理，可能导致起存日期为次日？',
               leftText:'继续存入',

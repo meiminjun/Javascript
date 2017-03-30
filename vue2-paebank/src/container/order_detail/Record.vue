@@ -36,7 +36,8 @@ import  api from '../../api/urls';
 import * as ald from '../../util/ald';
 //import Loading from '../../components/Loading.vue';
 import { mapState,mapActions } from 'vuex';
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {PecMessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 import * as deposit_detail from '../../api/deposit_detail';
 
 

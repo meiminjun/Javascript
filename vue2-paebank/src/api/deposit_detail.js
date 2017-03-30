@@ -1,6 +1,7 @@
 import * as ald from '../util/ald';
 import api from './urls';
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {PecMessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 
 export default {
   //定活通详情查询
@@ -9,7 +10,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -22,7 +23,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -34,7 +35,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -47,7 +48,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -66,7 +67,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })
@@ -78,7 +79,7 @@ export default {
       if (res.code === '000000') {
         cb(new Date(res.data.current_date_time).getHours(),res.data.current_date_time)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.msg
         })
@@ -90,7 +91,7 @@ export default {
       if (res.responseCode === '000000') {
         cb(res.data)
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: res.responseMsg
         })

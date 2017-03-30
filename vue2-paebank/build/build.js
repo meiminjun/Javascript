@@ -1,6 +1,9 @@
 require('./check-versions')()
 
-// process.env.NODE_ENV = 'production'
+process.env.NODE_ENV = 'production'
+// 渠道部署
+var client = process.argv[3] || 'web'
+client = client.replace(/--/g, '')
 
 var ora = require('ora')
 var rm = require('rimraf')
@@ -10,10 +13,11 @@ var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
 
-var spinner = ora('building for ' + process.env.NODE_ENV + '...')
+var spinner = ora('building for ' + client + '...')
 spinner.start()
 
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
+// 清除dist中的文件
+rm(path.join(config.build.assetsRoot), err => {
   if (err) throw err
   webpack(webpackConfig, function (err, stats) {
     spinner.stop()

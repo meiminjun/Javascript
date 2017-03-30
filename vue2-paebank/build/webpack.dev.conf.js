@@ -5,12 +5,21 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-var path = require('path')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 var HappyPack = require('happypack')
 var os = require('os')
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+// 渠道部署
+var client = process.argv[3] || 'web'
+client = client.replace(/--/g, '')
+var dll = {
+  basePath: '../common/' + client,
+  fileName: '../common/' + client + '/lib.js',
+  manifest: '../common/' + client + '/manifest.json',
+  outputPath: '/static/common/' + client,  // 生成目录
+  publicPath: '/static/common/' + client   // 注入地址
+}
 
 function _createHappyPlugin (id, loaders) {
   return new HappyPack({
@@ -26,18 +35,16 @@ function _createHappyPlugin (id, loaders) {
 
 var plugins = [
   new webpack.DefinePlugin({
-    ENV: JSON.stringify(process.env.NODE_ENV),  // 环境
-    DEBUG: true
+    ENV: JSON.stringify(process.env.NODE_ENV)  // 接口环境
   }),
   new CopyWebpackPlugin([
     { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
-    { from: 'src/assets/lib/share.js', to: 'static/js' },
     { from: 'src/assets/lib/zepto.js', to: 'static/js' }
   ]),
   _createHappyPlugin('js', ['babel-loader']),
   new webpack.DllReferencePlugin({
     context: __dirname,
-    manifest: require(config.dev.dll.manifest)
+    manifest: require(dll.manifest)
   })
 ]
 
@@ -58,22 +65,22 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
       // env: env.NODE_ENV,
       env: 'development',
       title: name + ' App',
-      inject: true,
+      // inject: true,
       chunksSortMode: 'dependency'
       // favicon: path.join(__dirname, 'assets', 'images', 'favicon.ico'),
     }))
   }
 })
 
-console.log('*****入口打印********')
-console.log(baseWebpackConfig.entry)
+// console.log('*****入口打印********')
+// console.log(baseWebpackConfig.entry)
 
-console.log(path.resolve(__dirname, config.dev.dll.fileName))
-console.log(path.join(config.dev.dll.outputPath))
-console.log(path.join(config.dev.dll.publicPath))
+// console.log(path.resolve(__dirname, config.dev.dll.fileName))
+// console.log(path.join(config.dev.dll.outputPath))
+// console.log(path.join(config.dev.dll.publicPath))
 
 plugins.push(new AddAssetHtmlPlugin({
-  filepath: require.resolve(config.dev.dll.fileName),
+  filepath: require.resolve(dll.fileName),
   hash: true
 }))
 // plugins.push(new AddAssetHtmlPlugin([{
@@ -107,7 +114,7 @@ module.exports = merge(baseWebpackConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.dev.env,
-      'ENV': JSON.stringify(process.env.NODE_ENV),  // 部署环境
+      'ENV': JSON.stringify(process.env.ENV),  // 部署环境
       'DEBUG': true
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage

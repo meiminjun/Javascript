@@ -4,15 +4,11 @@ var url = require('./url')
 var router = require('./router')
 const isproxy = false // 是否开启代理
 const noBuild = ['demo']  // 要排除的打包文件夹
+
+// console.log('渠道部署')
+// console.log(process.argv)
+// console.log(client)
 var distPath = path.resolve(__dirname, '..', 'dist')
-// 渠道部署
-var client = process.argv[3] || 'web'
-client = client.replace(/--/g, '')
-
-console.log('渠道部署')
-console.log(process.argv)
-console.log(client)
-
 // 接口路由的环境配置
 const hostname = {
   stg: {
@@ -58,19 +54,12 @@ module.exports = {
   baseDir: '../src/container',
   templatesDir: path.resolve(__dirname, '../src/container'),  // htmlplugin 的html模板地址
   build: {
-    dll: {
-      basePath: '../common/' + client,
-      fileName: '../common/' + client + '/lib.js',
-      manifest: '../common/' + client + '/manifest.json',
-      outputPath: '/static/common/' + client,  // 生成目录
-      publicPath: '/static/common/' + client   // 注入地址
-    },
     env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(distPath),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    productionSourceMap: false,
+    productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -85,13 +74,6 @@ module.exports = {
     // buildDir: path.resolve(__dirname, '../bulid')
   },
   dev: {
-    dll: {
-      basePath: '../common/' + client,
-      fileName: '../common/' + client + '/lib.js',
-      manifest: '../common/' + client + '/manifest.json',
-      outputPath: '/static/common/' + client,  // 生成目录
-      publicPath: '/static/common/' + client   // 注入地址
-    },
     env: require('./dev.env'),
     port: 8080,
     autoOpenBrowser: true,

@@ -65,7 +65,8 @@ import api from '../../api/urls.js'
 import types from '../../store/types.js'
 import * as ald from '../../util/ald';
 import CommonHeader from '../../components/Common_Header'
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {MessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 
 import {Toast} from 'mint-ui';
 
@@ -173,7 +174,7 @@ export default {
             qs:{}
           },function(res){
             if(res<9 || res>=16){
-              PecMessageBox.alert({
+              MessageBox.alert({
                 title: '撤销功能仅支持在9:00-16:00之间使用'
               });
               self.sysTime = true;

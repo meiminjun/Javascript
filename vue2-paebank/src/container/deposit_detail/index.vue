@@ -168,7 +168,9 @@
   import api from '../../api/urls';
   //    import myHeader from './MyHeader.vue';
   import Hd from '../../components/Common_Header.vue';
-  import {PecMessageBox} from 'pa-ui/lib/index';
+  // import {MessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
+
   import bow from 'bow';
   import * as fit from '../../filters/deposit';
   //  import {tryLogin} from '../../util/acc';
@@ -533,7 +535,7 @@
 //            ald.nav.forward({url:'deposit_buy'});
             location.href = './deposit_buy.html';
           } else {
-            PecMessageBox.confirm({
+            MessageBox.confirm({
               title: '温馨提示',
               message: '您当前没有可用银行账号，无法存入定活宝-定活通。请先开通互联网账户',
               leftText: '前往开通',

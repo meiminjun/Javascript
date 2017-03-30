@@ -1,9 +1,11 @@
 var path = require('path')
 var webpack = require('webpack')
 
-const isDebug = false
+const isDebug = true  // 开发环境为true,生产环境为false
 
-const outputpath = process.env.NODE_ENV === 'web' ? path.join(__dirname, '../common/web') : path.join(__dirname, '../common/native')
+console.log(process.env.ENV)
+
+const outputpath = process.env.ENV === 'web' ? path.join(__dirname, '../common/web') : path.join(__dirname, '../common/native')
 const plugin = [
   new webpack.DllPlugin({
     /**
@@ -20,12 +22,18 @@ const plugin = [
     name: '[name]',
     context: __dirname
   })
+  // new webpack.ProvidePlugin({
+  //   aladdin: 'aladdin',
+  //   bow: 'bow'
+  // })
 ]
 
 if (!isDebug) {
   plugin.push(
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
@@ -71,8 +79,8 @@ module.exports = {
     ],
     alias: {
       'flexible': resolve('./src/assets/lib/flexible.js'),
-      'aladdin': resolve(process.env.NODE_ENV === 'native' ? './node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
-      'bow': resolve(process.env.NODE_ENV === 'native' ? './node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
+      'aladdin': resolve(process.env.ENV === 'native' ? './node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      'bow': resolve(process.env.ENV === 'native' ? './node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   plugins: plugin

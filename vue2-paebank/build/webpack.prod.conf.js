@@ -13,6 +13,22 @@ var os = require('os')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var HappyPack = require('happypack')
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+var env = config.build.env
+
+// 渠道部署
+var client = process.argv[3] || 'web'
+client = client.replace(/--/g, '')
+
+console.log('------渠道为：---')
+console.log(client)
+
+var dll = {
+  basePath: '../common/' + client,
+  fileName: '../common/' + client + '/lib.js',
+  manifest: '../common/' + client + '/manifest.json',
+  outputPath: '/static/common/' + client,  // 生成目录
+  publicPath: '/static/common/' + client   // 注入地址
+}
 
 function _createHappyPlugin (id, loaders) {
   return new HappyPack({
@@ -20,19 +36,18 @@ function _createHappyPlugin (id, loaders) {
     loaders: loaders,
     threadPool: happyThreadPool,
     // 开启缓存
-    cache: false,
+    cache: true,
     // make happy more verbose with HAPPY_VERBOSE=1
     verbose: true
   })
 }
 
-var env = config.build.env
 // console.log('--------=====')
 // console.log(env.NODE_ENV)
 
 var plugins = []
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-  console.log(name)
+  // console.log(name)
   // if (name !== 'vendor') {  // 这个if可以在开发环境删除
   baseWebpackConfig.entry[name] = baseWebpackConfig.entry[name]
     // console.log(baseWebpackConfig.entry)
@@ -73,7 +88,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env,
-      'ENV': JSON.stringify(process.env.NODE_ENV)
+      'ENV': JSON.stringify(process.env.ENV)
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -148,26 +163,26 @@ var webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       },
       { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
-      { from: 'src/assets/lib/zepto.js', to: 'static/js' },
-      { from: 'src/assets/lib/runtime-check.js', to: 'static/js' },
-      { from: 'src/assets/lib/aladdin.min.js', to: 'static/js' },
-      { from: 'src/assets/lib/aladdin.web.min.js', to: 'static/js' },
-      { from: 'src/assets/lib/bow.min.js', to: 'static/js' },
-      { from: 'src/assets/lib/bow.web.min.js', to: 'static/js' },
-      { from: 'src/assets/lib/aladdin.loading.min.js', to: 'static/js' },
-      { from: 'src/assets/lib/aladdin.loading.web.min.js', to: 'static/js' }
+      { from: 'src/assets/lib/zepto.js', to: 'static/js' }
+      // { from: 'src/assets/lib/runtime-check.js', to: 'static/js' },
+      // { from: 'src/assets/lib/aladdin.min.js', to: 'static/js' },
+      // { from: 'src/assets/lib/aladdin.web.min.js', to: 'static/js' },
+      // { from: 'src/assets/lib/bow.min.js', to: 'static/js' },
+      // { from: 'src/assets/lib/bow.web.min.js', to: 'static/js' },
+      // { from: 'src/assets/lib/aladdin.loading.min.js', to: 'static/js' },
+      // { from: 'src/assets/lib/aladdin.loading.web.min.js', to: 'static/js' }
     ]),
-    _createHappyPlugin('js', ['babel-loader']),
+    _createHappyPlugin('js', ['babel-loader'])
     // new webpack.DllReferencePlugin({
     //   context: __dirname,
     //   // name: '[name]',
-    //   manifest: require(config.build.dll.manifest)
+    //   manifest: require(dll.manifest)
     // })
   ].concat(plugins)
 })
 
 // webpackConfig.plugins.push(new AddAssetHtmlPlugin({
-//   filepath: require.resolve(config.build.dll.fileName),
+//   filepath: require.resolve(dll.fileName),
 //   hash: true
 // }))
 

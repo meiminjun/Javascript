@@ -45,8 +45,7 @@ import  api from '../../api/urls';
 import * as ald from '../../util/ald';
 import { mapState,mapActions } from 'vuex';
 import CommonHeader from '../../components/Common_Header'
-import {PecMessageBox} from 'pa-ui/lib/index';
-import {Loadmore} from 'pa-ui/lib/index';
+
 import * as deposit_detail from '../../api/deposit_detail';
 
 let cardSignData = JSON.parse(localStorage.getItem("cardSignData"));

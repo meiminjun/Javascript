@@ -1,15 +1,17 @@
 <template id="template">
   <div>
-    {{name}}
+    <mt-header title="平安银行">
+    </mt-header>
     <div>
+    {{name}}
      <div class="btn" @click="jumpOther">跳转方式</div>
+     <div class="btn" @click="jumpOther">跳转到第二页</div>
     </div>
 
   </div>
 </template>
-
 <script>
- import * as ald from '../../util/ald'
+import * as ald from '../../util/ald'
 export default {
   data: function () {
     return {
@@ -20,7 +22,6 @@ export default {
   },
   methods: {
     jumpOther: function () {
-      debugger
       ald.nav.back()
     }
   }

@@ -2,7 +2,8 @@ import * as types from '../types';
 import { http } from '../../util/ald';
 import api from '../../api/urls';
 import  * as fit from '../../filters/deposit';
-import {PecMessageBox} from 'pa-ui/lib/index';
+// import {MessageBox} from 'pa-ui/lib/index';
+import { MessageBox } from 'mint-ui'
 import * as deposit_detail from '../../api/deposit_detail';
 
 const state = {
@@ -144,7 +145,7 @@ const actions = {
           result.data.lastFourNum = result.data.payeeAcctNo? result.data.payeeAcctNo.substr(-4): "";
 
         } else {
-          PecMessageBox.alert({
+          MessageBox.alert({
             title: '温馨提示',
             message: result.responseMsg
           })
@@ -197,7 +198,7 @@ const actions = {
           commit(types["RECORDS"], { recordList: result.data.orders,pageIndex:options.pageIndex,total:result.data.totalNum });
           options.cb && options.cb();
         } else {
-          PecMessageBox.alert({
+          MessageBox.alert({
             title: '温馨提示',
             message: result.responseMsg
           })
@@ -269,7 +270,7 @@ const actions = {
           protoShow.placeCon = "0.01元起";
           commit(types["RADIOCHECK"], { payload: radioData });
           commit(types["DHT_PROTOSHOW"], protoShow);
-          PecMessageBox.alert({
+          MessageBox.alert({
             title: '温馨提示',
             message: result.responseMsg
           })
@@ -302,7 +303,7 @@ const actions = {
         }
         commit(types["WITHDRAWINTEREST"], {inputVal : options.inputVal,interest:interestRes} );
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: result.responseMsg
         })
@@ -329,7 +330,7 @@ const actions = {
       if (result.responseCode === '000000') {
         options.cb && options.cb(result.data);
       } else {
-        PecMessageBox.alert({
+        MessageBox.alert({
           title: '温馨提示',
           message: result.responseMsg
         })
@@ -355,7 +356,7 @@ const actions = {
         if (result.responseCode === '000000') {
           options.cb && options.cb(result.data);
         } else {
-          PecMessageBox.alert({
+          MessageBox.alert({
             title: '温馨提示',
             message: result.responseMsg
           })
@@ -378,7 +379,7 @@ const actions = {
         if (result.responseCode === '000000') {
           options.cb && options.cb(result.data);
         } else {
-          PecMessageBox.alert({
+          MessageBox.alert({
             title: '温馨提示',
             message: result.responseMsg
           })

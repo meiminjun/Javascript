@@ -72,7 +72,7 @@ export const http = {
         return
       }
       hostname = config.hostname[interfaceEnv].default
-      if (!DEBUG) {
+      if (process.env.NODE_ENV !== 'development') {
         // 如果接口，有其他环境，请自行添加config/index中的hostname中stg对象中添加对应的域名
         // 请检查stg测试接口中是否有除default的其他环境接口，如果有，那么请检查生产环境prd下是不是也会有同样的情况，有的话也一定要在config/index中的hostname中prd中加上同样的生产域名
         if (interfaceEnv !== 'prd' && options.env) {
