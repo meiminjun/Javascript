@@ -1,8 +1,8 @@
 <template id="template">
   <div>
-    <mt-header title="定活通">
+    <mt-header title="存入表单">
     </mt-header>
-    <mt-button class='btn' type="primary" size="large" @click.native="login">存入</mt-button>
+    <mt-button class='btn' type="primary" size="large" @click.native="login">进入收银台</mt-button>
     <div>
     </div>
   </div>
@@ -18,17 +18,9 @@ export default {
   created: function () {
 
   },
-  mounted: function () {
-    alert(11)
-  },
   methods: {
     login: function () {
-      let flat = sessionStorage.getItem('login')
-      if (flat === '1') {
-        location.href = 'form.html'
-      } else {
-        location.href = 'login.html'
-      }
+      location.href = 'pay.html'
     }
   }
 }

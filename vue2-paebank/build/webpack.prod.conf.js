@@ -16,11 +16,11 @@ var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 var env = config.build.env
 
 // 渠道部署
-var client = process.argv[3] || 'web'
-client = client.replace(/--/g, '')
-
-console.log('------渠道为：---')
-console.log(client)
+var deployEnv = process.argv[2]
+deployEnv = deployEnv.replace(/--/g, '')
+var client = 'debug'
+console.log('------部署环境---')
+console.log(deployEnv)
 
 var dll = {
   basePath: '../common/' + client,
@@ -62,7 +62,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
       removeComments: true,
       collapseWhitespace: true,
       removeAttributeQuotes: true
-        // more options:
+        // 更多选项请参考:
         // https://github.com/kangax/html-minifier#options-quick-reference
     },
     chunksSortMode: 'dependency',
@@ -80,7 +80,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
-    path: config.build.assetsRoot,
+    // path: config.build.assetsRoot,
+    path: path.resolve(config.build.assetsRoot, deployEnv),
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
@@ -106,8 +107,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     //   },
     //   sourceMap: true
     // }),
-
-    // extract css into its own file
+    // 分离 .css 文件输出路径
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')
     }),
@@ -157,13 +157,19 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
+      // {
+      //   from: path.resolve(__dirname, '../static'),
+      //   to: config.build.assetsSubDirectory,
+      //   ignore: ['.*']
+      // },
       {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
+        from: path.resolve(__dirname, '../static/lib'),
+        // to: config.build.assetsSubDirectory + '/js',
+        to: 'static/js',
         ignore: ['.*']
-      },
-      { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
-      { from: 'src/assets/lib/zepto.js', to: 'static/js' }
+      }
+      // { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
+      // { from: 'src/assets/lib/zepto.js', to: 'static/js' },
       // { from: 'src/assets/lib/runtime-check.js', to: 'static/js' },
       // { from: 'src/assets/lib/aladdin.min.js', to: 'static/js' },
       // { from: 'src/assets/lib/aladdin.web.min.js', to: 'static/js' },
@@ -172,19 +178,19 @@ var webpackConfig = merge(baseWebpackConfig, {
       // { from: 'src/assets/lib/aladdin.loading.min.js', to: 'static/js' },
       // { from: 'src/assets/lib/aladdin.loading.web.min.js', to: 'static/js' }
     ]),
-    _createHappyPlugin('js', ['babel-loader'])
-    // new webpack.DllReferencePlugin({
-    //   context: __dirname,
-    //   // name: '[name]',
-    //   manifest: require(dll.manifest)
-    // })
+    _createHappyPlugin('js', ['babel-loader']),
+    new webpack.DllReferencePlugin({
+      context: __dirname,
+      // name: '[name]',
+      manifest: require(dll.manifest)
+    })
   ].concat(plugins)
 })
 
-// webpackConfig.plugins.push(new AddAssetHtmlPlugin({
-//   filepath: require.resolve(dll.fileName),
-//   hash: true
-// }))
+webpackConfig.plugins.push(new AddAssetHtmlPlugin({
+  filepath: require.resolve(dll.fileName),
+  hash: true
+}))
 
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')

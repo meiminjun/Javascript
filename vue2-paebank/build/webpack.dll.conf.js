@@ -1,11 +1,18 @@
+var config = require('../config')
 var path = require('path')
 var webpack = require('webpack')
+var lib = [
+  'vue',
+  'vue-router',
+  'vuex',
+  'fastclick',
+  'flexible'
+]
+const isDebug = process.env.DEBUG || false // 开发环境为true,生产环境为false
 
-const isDebug = true  // 开发环境为true,生产环境为false
+console.log(process.env.DEBUG)
 
-console.log(process.env.ENV)
-
-const outputpath = process.env.ENV === 'web' ? path.join(__dirname, '../common/web') : path.join(__dirname, '../common/native')
+const outputpath = isDebug ? path.join(__dirname, '../common/debug') : path.join(__dirname, '../common/js')
 const plugin = [
   new webpack.DllPlugin({
     /**
@@ -22,13 +29,14 @@ const plugin = [
     name: '[name]',
     context: __dirname
   })
-  // new webpack.ProvidePlugin({
-  //   aladdin: 'aladdin',
-  //   bow: 'bow'
-  // })
 ]
 
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
+
 if (!isDebug) {
+  console.log('-----prd----')
   plugin.push(
     new webpack.DefinePlugin({
       'process.env': {
@@ -37,28 +45,14 @@ if (!isDebug) {
     }),
     new webpack.optimize.UglifyJsPlugin({
       mangle: {
-        except: ['$', 'exports', 'require']
+        except: ['$super', '$', 'exports', 'require']  // 防止这些变量被改变
       },
-      exclude: /\.min\.js$/,
-      // mangle:true,
+      exclude: /\.min\.js$/,  // 排除一些文件
       compress: {warnings: false},
-      output: {comments: false}
+      output: {comments: false},
+      sourceMap: true // 这里要和webpack.prod.conf.js 中的保持一直
     })
   )
-}
-
-var lib = [
-  'vue',
-  'vue-router',
-  'vuex',
-  'flexible',
-  'fastclick',
-  'aladdin',
-  'bow'
-]
-
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
@@ -70,7 +64,8 @@ module.exports = {
     filename: '[name].js', // [name]的部分由entry的名字替换
     library: '[name]'
   },
-  devtool: '#source-map',
+  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  // devtool: '#source-map',
   resolve: {
     extensions: ['*', '.js'],
     modules: [
@@ -78,9 +73,9 @@ module.exports = {
       resolve('node_modules')
     ],
     alias: {
-      'flexible': resolve('./src/assets/lib/flexible.js'),
-      'aladdin': resolve(process.env.ENV === 'native' ? './node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
-      'bow': resolve(process.env.ENV === 'native' ? './node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
+      'flexible': resolve('./static/lib/flexible.js')
+      // 'aladdin': resolve(process.env.ENV === 'native' ? './node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      // 'bow': resolve(process.env.ENV === 'native' ? './node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   plugins: plugin

@@ -1,0 +1,175 @@
+@charset "UTF-8";
+
+/*按钮类*/
+
+button.pec-primary-btn,
+button.pec-secondary-btn,
+button.pec-weak-btn {
+    color: $pec-color-FFFFFF;
+    background: $pec-color-F17940;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+button.pec-secondary-btn {
+    color: $pec-color-F17940;
+    background: $pec-color-FFFFFF;
+    border: 1px solid $pec-color-F17940;
+}
+
+button[size="big"].pec-primary-btn,
+button[size="big"].pec-secondary-btn {
+    font-size: $pec-font-size34;
+    height: .90rem;
+    border-radius: .90rem;
+    padding-left: .72rem;
+    padding-right: .72rem;
+}
+
+button[size="mid"].pec-primary-btn,
+button[size="mid"].pec-secondary-btn {
+    font-size: $pec-font-size26;
+    height: .60rem;
+    border-radius: .60rem;
+    padding-left: .36rem;
+    padding-right: .36rem;
+}
+
+button[size="small"].pec-primary-btn,
+button[size="small"].pec-secondary-btn {
+    font-size: $pec-font-size22;
+    height: .40rem;
+    border-radius: .40rem;
+    padding-left: .24rem;
+    padding-right: .24rem;
+    font-family: arial;
+}
+
+button.pec-weak-btn {
+    font-size: $pec-font-size32;
+    height: .90rem;
+    border-radius: .90rem;
+    padding-left: .72rem;
+    padding-right: .72rem;
+    color: $pec-color-63666B;
+    background: $pec-color-FFFFFF;
+    border: 1px solid $pec-color-63666B;
+}
+
+button.pec-primary-btn:active {
+    background: $pec-color-D85F2A;
+}
+
+button.pec-secondary-btn:active {
+    color: $pec-color-D85F2A;
+    border-color: $pec-color-D85F2A;
+}
+
+button[disabled].pec-primary-btn {
+    background: #D9D9D9!important;
+}
+
+button[disabled].pec-secondary-btn {
+    color: #D9D9D9!important;
+    border-color: #D9D9D9!important;
+}
+
+.pec-btn-zone {
+    font-size: 0;
+    padding-left: .30rem;
+    padding-right: .30rem;
+    @extend %pec-align-center;
+    .pec-primary-btn,
+    .pec-secondary-btn {
+        @extend %pec-flex1;
+    }
+    button + button {
+        margin-left: .30rem;
+    }
+}
+
+.pec-by-vertical {
+    display: block;
+    button {
+        width: 100%;
+    }
+    button + button {
+        margin-top: .30rem;
+        margin-left: 0;
+    }
+}
+
+.pec-fiexd-btn {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-top: .20rem;
+    padding-bottom: .20rem;
+    border-top: 1px solid $pec-color-E6E6E6;
+    background: $pec-color-FFFFFF;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.pec-inline-btn {
+    color: $pec-color-F17940;
+    font-size: $pec-font-size26;
+    min-width: 1.20rem;
+    height: .60rem;
+    line-height: .60rem;
+    text-align: center;
+    padding: 0 .30rem;
+    border-radius: .60rem;
+    border: .02rem solid $pec-color-F17940;
+    &:active {
+        color: $pec-color-D85F2A;
+        background: $pec-color-FFFFFF;
+        border: 1px solid $pec-color-D85F2A;
+    }
+}
+
+.pec-inline-disabled-btn {
+    color: $pec-color-B2B2B2;
+    font-size: $pec-font-size26;
+    width: 1.20rem;
+    height: .60rem;
+    line-height: .60rem;
+    text-align: center;
+    border-radius: .60rem;
+    border: 2px solid $pec-color-B2B2B2;
+}
+
+
+/*开关*/
+
+.pec-switch {
+    position: relative;
+    width: 1.10rem;
+    height: .24rem;
+    border-radius: .24rem;
+    border: 1px solid $pec-color-B2B2B2;
+    background: $pec-color-E6E6E6;
+    &:before {
+        position: absolute;
+        content: "";
+        top: -.2rem;
+        left: -.06em;
+        width: .55rem;
+        height: .55rem;
+        border-radius: 100%;
+        border: 1px solid $pec-color-E6E6E6;
+        background: $pec-color-FFFFFF;
+        box-shadow: 0px 0.06rem 0px 0px #f3f3f3;
+    }
+    &.on {
+        transition: background .3s;
+        border: 1px solid $pec-color-28B45F;
+        background: $pec-color-28B45F;
+    }
+    &.on:before {
+        transition: left .3s;
+        left: .52rem;
+    }
+}

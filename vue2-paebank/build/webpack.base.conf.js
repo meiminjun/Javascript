@@ -4,24 +4,11 @@ var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var fs = require('fs')
 
-console.log('测试')
-console.log(process.env.NODE_ENV)
-
+// console.log('测试')
+// console.log(process.env.NODE_ENV)
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-// var vendors = [
-//   'vue',
-//   'vue-router',
-//   'vuex',
-//   'flexible',
-//   'bow',
-//   'aladdin'
-// ]
-// var entries = {
-//   'vendor': vendors
-// }
-// const baseDir = '../src/container'
 
 var entry = fs.readdirSync(path.join(__dirname, config.baseDir)).reduce((entryObj, dir) => {
   const fullDir = path.join(__dirname, config.baseDir + '/' + dir)
@@ -49,9 +36,9 @@ module.exports = {
       '@': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'flexible': resolve('src/assets/lib/flexible.js'),
-      'aladdin': resolve(process.env.ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
-      'bow': resolve(process.env.ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
+      'flexible': resolve('static/lib/flexible.js')
+      // 'aladdin': resolve(process.env.ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
+      // 'bow': resolve(process.env.ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   module: {
@@ -93,5 +80,10 @@ module.exports = {
         }
       }
     ]
+  },
+  // 加载外部lib
+  externals: {
+    aladdin: 'aladdin',
+    bow: 'bow'
   }
 }

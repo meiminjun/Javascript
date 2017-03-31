@@ -1,0 +1,94 @@
+@charset "UTF-8";
+
+/*picker*/
+
+.pec-pop-picker {
+    position: fixed;
+    z-index: 30;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: $pec-color-FFFFFF;
+    .pec-picker-title {
+        position: relative;
+        height: 1.10rem;
+        line-height: 1.10rem;
+        border-bottom: 1px solid $pec-color-E6E6E6;
+        .pec-picker-title-head {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0 .30rem;
+            height: 1.10rem;
+            line-height: 1.10rem;
+            color: $pec-color-ABABAB;
+            font-size: $pec-font-size28;
+        }
+        .pec-picker-title-body {
+            font-size: $pec-font-size36;
+            text-align: center;
+            padding: 0 2rem;
+        }
+        .pec-picker-title-foot {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0 .30rem;
+            height: 1.10rem;
+            line-height: 1.10rem;
+            color: $pec-color-F17940;
+            font-size: $pec-font-size28;
+        }
+    }
+    .pec-picker-list {
+        max-height: 7.20rem;
+        position: relative;
+        overflow-y: auto;
+    }
+    .pec-picker-item {
+        position: relative;
+        min-height: 1.20rem;
+        line-height: 1;
+        padding-top: .30rem;
+        padding-bottom: .30rem;
+        padding-left: .30rem;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        @extend %pec-space-between;
+        &:after {
+            position: absolute;
+            display: block;
+            content: '';
+            z-index: 1;
+            bottom: 0;
+            left: .30rem;
+            right: .30rem;
+            height: 1px;
+            background: $pec-color-E6E6E6;
+        }
+        &:last-child:after{
+            height: 0;
+        }
+        .pec-picker-item-head {
+            width: .52rem;
+            margin-right: .30rem;
+            img {
+                width: 100%;
+            }
+        }
+        .pec-picker-item-body {
+            color: $pec-color-3F4246;
+            font-size: $pec-font-size28;
+            margin-right: .30rem;
+            @extend %pec-flex1;
+        }
+        .pec-picker-item-foot {
+            margin-right: .30rem;
+        }
+        .pec-picker-item-tips {
+            color: $pec-color-B2B2B2;
+            font-size: $pec-font-size24;
+            margin-top: .1rem;
+        }
+    }
+}

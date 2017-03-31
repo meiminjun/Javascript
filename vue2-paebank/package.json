@@ -1,17 +1,17 @@
 {
   "name": "vue2-paebank",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "amazing",
   "author": "meiminjun <251222845@qq.com>",
   "private": true,
   "scripts": {
-    "dev": "export ENV=web && node build/dev-server.js",
-    "stg": "export ENV=stg && node build/dev-server.js",
-    "build:dev": "export ENV=stg && node build/build.js --dev --web",
-    "build:stg": "export ENV=stg && node build/build.js --stg --native",
-    "build:prd": "export ENV=prd && node build/build.js",
-    "dll": "ENV=native webpack --config build/webpack.dll.conf.js --progress",
-    "dll:web":"ENV=web webpack --config build/webpack.dll.conf.js --progress",
+    "mock": "export ENV=web && node build/dev-server.js",
+    "dev": "export ENV=stg && node build/dev-server.js",
+    "build:dev": "export ENV=stg && node build/build.js --dev",
+    "build:stg": "export ENV=stg && node build/build.js --stg",
+    "build:prd": "export ENV=prd && node build/build.js --prd",
+    "dll": "webpack --config build/webpack.dll.conf.js --progress",
+    "dll:debug":"DEBUG=true webpack --config build/webpack.dll.conf.js --progress",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {

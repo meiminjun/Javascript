@@ -1,24 +1,16 @@
 {
   "name": "lib",
   "content": {
-    "../node_modules/aladdin/aladdin.min.js": {
+    "../node_modules/process/browser.js": {
       "id": 0,
       "meta": {}
     },
-    "../node_modules/process/browser.js": {
+    "../node_modules/fastclick/lib/fastclick.js": {
       "id": 1,
       "meta": {}
     },
-    "../node_modules/bow/dist/bow.min.js": {
-      "id": 2,
-      "meta": {}
-    },
-    "../node_modules/fastclick/lib/fastclick.js": {
-      "id": 3,
-      "meta": {}
-    },
     "../node_modules/vue-router/dist/vue-router.esm.js": {
-      "id": 4,
+      "id": 2,
       "meta": {
         "harmonyModule": true
       },
@@ -27,7 +19,7 @@
       ]
     },
     "../node_modules/vue/dist/vue.runtime.esm.js": {
-      "id": 5,
+      "id": 3,
       "meta": {
         "harmonyModule": true
       },
@@ -36,7 +28,7 @@
       ]
     },
     "../node_modules/vuex/dist/vuex.esm.js": {
-      "id": 6,
+      "id": 4,
       "meta": {
         "harmonyModule": true
       },
@@ -49,12 +41,12 @@
         "default"
       ]
     },
-    "../src/assets/lib/flexible.js": {
-      "id": 7,
+    "../static/lib/flexible.js": {
+      "id": 5,
       "meta": {}
     },
     "../node_modules/webpack/buildin/global.js": {
-      "id": 8,
+      "id": 6,
       "meta": {}
     }
   }
