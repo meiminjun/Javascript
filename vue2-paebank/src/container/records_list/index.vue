@@ -41,7 +41,6 @@
 </style>
 <script>
 import bow from 'bow';
-import  api from '../../api/urls';
 import * as ald from '../../util/ald';
 import { mapState,mapActions } from 'vuex';
 import CommonHeader from '../../components/Common_Header'

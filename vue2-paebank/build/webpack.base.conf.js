@@ -29,19 +29,22 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules'], // 只解析的目录
+    // 只解析的目录
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     extensions: ['.js', '.vue', '.json', '.scss'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
       'assets': resolve('src/assets'),
       'components': resolve('src/components'),
-      'flexible': resolve('static/lib/flexible.js')
+      'flexible': resolve('src/assets/lib/flexible.js')
       // 'aladdin': resolve(process.env.ENV === 'prd' ? '../node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
       // 'bow': resolve(process.env.ENV === 'prd' ? '../node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }
   },
   module: {
+    // 这些库都是不依赖其它库的库 不需要解析他们可以加快编译速度
+    noParse: /src\/assets\/lib\/(zepto|runtime-check|add-assets|aladdin.loading|aladdin|bow|dante|flexible|\.js)/,
     rules: [
       // {
       //   test: /\.(js|vue)$/,

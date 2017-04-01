@@ -73,7 +73,7 @@ module.exports = {
       resolve('node_modules')
     ],
     alias: {
-      'flexible': resolve('./static/lib/flexible.js')
+      'flexible': resolve('./src/assets/lib/flexible.js')
       // 'aladdin': resolve(process.env.ENV === 'native' ? './node_modules/aladdin/aladdin.min.js' : './node_modules/aladdin/aladdin.web.min.js'),
       // 'bow': resolve(process.env.ENV === 'native' ? './node_modules/bow/dist/bow.min.js' : './node_modules/bow/dist/bow.web.min.js')
     }

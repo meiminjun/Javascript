@@ -1,20 +1,64 @@
-# 定活理财
+# 定活理财规范文档
 
 ## 快速开始
 
-### 启动挡板
+```
+npm install  // 下载依赖
+```
+> bow 和 aladdin需要内网环境
+
+### 启动
 
 ```
-yarn run dev  // 挡板
-yarn run stg  // 运行测试环境
+npm run dev  // 挡板
+npm run stg  // 运行测试环境
 ```
 
-### 编译 stg 环境 native包
+### 编译
 
 ```
-yarn run build:dev
-yarn run build:stg
-yarn run build:prd
+npm run build:dev // 部署开发环境
+npm run build:stg // 部署测试环境
+npm run build:prd // 部署生产环境
+```
+
+### 编译分析
+
+```
+npm run build:stats
+```
+
+将编译结果文件stats.json上传到[analyse](https://webpack.github.io/analyse/)即可得出结果
+
+## 文件结构
+
+```
+.
+├── README.md             // 说明文件
+├── build                 // 构建文件
+├── common                // dll 文件生成目录
+├── config                // 配置文件目录
+│   ├── dev.env.js        // 开发环境全局配置
+│   ├── index.js          // 配置主文件
+│   ├── prod.env.js       // 生产环境全局配置
+│   ├── router.js         // 多页面的路由配置文件（后期可能会移除）
+│   └── url.js            // 接口url配置文件
+├── dist                  // 构建输出目录
+├── index.html            // 单页项目的template文件（暂时未用到）
+├── mock                  // 挡板数据目录
+├── node_modules          // 依赖包
+├── package.json          // 库配置文件
+├── src                   // 源代码文件
+│   ├── api               // 接口请求公共方法服务
+│   ├── assets            // css、image等资源目录
+│   ├── components        // 公共组件目录
+│   ├── container         // 多页集合目录
+│   ├── filters           // 过滤器公共文件目录
+│   ├── router            // 单页路由文件目录（有使用到vue-router时使用）
+│   ├── store             // vuex数据目录
+│   └── util              // 公共方法目录
+├── static                // 外部静态资源目录
+└── yarn.lock             // yarn 文件
 ```
 
 ## 开发规范
@@ -38,10 +82,10 @@ yarn run build:prd
    * 每次创建一个功能开发时候，按`alt+command+f`触发创建流程，并创建feature分支进行开发
    * feature功能模块开发完成后,`alt+command+f`选择完成，代码自动合并到develop分支，并删除feature分支
 
-## 开发环境规范
+## 开发编码环境规范
 
-编码相关：
-* sublime_text:编码工具
+### 编码相关：
+* sublime_text（官方推荐）
     1. 添加中文包：
     ![](https://ww1.sinaimg.cn/large/006tKfTcgy1fdomtqjy8fj311c0fwwmh.jpg)
     2. 将LocalizedMenu.sublime-package放进目录
@@ -49,19 +93,20 @@ yarn run build:prd
     ![](https://ww4.sinaimg.cn/large/006tKfTcgy1fdonjremb6j30vu0tgagb.jpg)
 * source_tree:版本管理
 * dash：api文档工具
-> 本人提供的破解版密码为：xclient.info
+> 破解版密码为：`xclient.info`
 
-上传cms：
+### 上传cms：
 * firefox浏览器（51版本）
 * java自行安装
 
-其他
+### 其他
 * visualDiff:对比工具
 * charles:测试工具
 * chrome:开发调试浏览器（自行下载）
 
-[下载地址](https://pan.baidu.com/s/1o8RUlgI )
-密码: mixt
+下载链接: https://pan.baidu.com/s/1mhY45mw 密码: wjts
+
+### 相关配置说明
 
 **安装package control插件(安装之后才能安装其他插件)**
 
@@ -104,9 +149,10 @@ import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.
 
     ![](https://ww4.sinaimg.cn/large/006tKfTcgy1fdooelzu7oj30a805ct8v.jpg)
 6. Markdown Preview : 对.md文件的预览
+
 > 设置完下面的快捷键后，使用alt+m生效
 
-7. Theme - Flatland(推荐，以下配置需要用的)
+7. Theme - Flatland(推荐)
 8. Terminal 快速开启终端命令
 
 如果是iTerm
@@ -129,7 +175,6 @@ sublime用户配置设置：
 
 ```
 {
-  "color_scheme": "Packages/User/SublimeLinter/Flatland Monokai (SL).tmTheme",
   "default_line_ending": "unix",
   "draw_minimap_border": true,
   "font_face": "monaco",
@@ -143,7 +188,6 @@ sublime用户配置设置：
   "line_padding_bottom": 1,
   "line_padding_top": 1,
   "tab_size": 2,
-  "theme": "Flatland Dark.sublime-theme",
   "trim_trailing_white_space_on_save": true,
   "update_check": false,
   "word_wrap": "true"
@@ -170,15 +214,13 @@ sublime用户快捷键设置:
 ## CMS开发部署规范(一定要遵守)
 
 1. 在本地构建一个dev的包并部署到dev，自测整个流程通过后再进行下一步骤
-2. 完成1流程后，构建stg包并部署到测试环境
-
+2. 完成上一流程后，构建stg包并部署到测试环境
 
 ## 配置项(config文件)
 
 1. 如果要排除打的包，请配置config中的noBuild
 
-## 参考文档
-
+## api参考文档
  * aladdin
     * wiki: http://10.20.20.177/wiki/wiki/
     * git: http://git-ma.paic.com.cn/groups/Aladdin
@@ -187,4 +229,5 @@ sublime用户快捷键设置:
     * git: http://git-ma.paic.com.cn/kdwy-libs/bow
  * vuejs: https://vuejs.org
  * vuex: http://vuex.vuejs.org
-
+ * webpack2(中文): https://doc.webpack-china.org/guides/get-started/
+ * webpack2: https://webpack.js.org/plugins/

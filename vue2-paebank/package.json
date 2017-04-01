@@ -9,6 +9,7 @@
     "dev": "export ENV=stg && node build/dev-server.js",
     "build:dev": "export ENV=stg && node build/build.js --dev",
     "build:stg": "export ENV=stg && node build/build.js --stg",
+    "build:stats": "export ENV=stg && node build/build.js --stg --json --profile > stats.json",
     "build:prd": "export ENV=prd && node build/build.js --prd",
     "dll": "webpack --config build/webpack.dll.conf.js --progress",
     "dll:debug":"DEBUG=true webpack --config build/webpack.dll.conf.js --progress",

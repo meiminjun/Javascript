@@ -1,7 +1,6 @@
 import aladdin from 'aladdin'
 import config from '../../config'
 import bow from 'bow'
-import api from '../api/urls'
 import * as ald from './ald'
 
 const ua = navigator.userAgent + ''

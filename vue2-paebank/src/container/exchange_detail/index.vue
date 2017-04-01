@@ -61,7 +61,6 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import api from '../../api/urls.js'
 import types from '../../store/types.js'
 import * as ald from '../../util/ald';
 import CommonHeader from '../../components/Common_Header'

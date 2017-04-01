@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 
 import common from './common'
-import detail from './modules/detail'
 import depositDetail from './modules/depositDetail'
 import dhtDetail from './modules/order'
 import fund from './modules/fund'
@@ -18,7 +17,6 @@ let store = new Vuex.Store({
   modules: {
     common,
     fund,
-    detail,
     dhtDetail,
     depositDetail
   },

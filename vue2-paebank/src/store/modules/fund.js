@@ -1,6 +1,6 @@
 import * as types from '../types';
 import { http } from '../../util/ald';
-import api from '../../api/urls';
+// import api from '../../api/urls';
 // import {PecMessageBox} from 'pa-ui/lib/index';
 import { MessageBox } from 'mint-ui'
 

@@ -31,7 +31,6 @@
 <script>
 
 //import * as filters from '../../filters/fund';
-import  api from '../../api/urls';
 //import * as finance from '../../util/finance';
 import * as ald from '../../util/ald';
 //import Loading from '../../components/Loading.vue';

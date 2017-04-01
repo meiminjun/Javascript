@@ -1,5 +1,4 @@
 import * as ald from '../util/ald';
-import api from './urls';
 // import {PecMessageBox} from 'pa-ui/lib/index';
 import { MessageBox } from 'mint-ui'
 

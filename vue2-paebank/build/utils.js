@@ -49,7 +49,8 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    // 第二个为load 参数，详情请参考：https://webpack.js.org/loaders/sass-loader/
+    sass: generateLoaders('sass', { indentedSyntax: true, include: path.join(__dirname, '..', 'src', 'scss') }),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')

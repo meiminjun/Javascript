@@ -8,19 +8,20 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+var cssnano = require('cssnano')
 var HappyPack = require('happypack')
 var os = require('os')
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 // 渠道部署
 // var client = process.argv[3] || 'web'
 // client = client.replace(/--/g, '')
-var client = 'debug'
+var flag = 'debug'
 var dll = {
-  basePath: '../common/' + client,
-  fileName: '../common/' + client + '/lib.js',
-  manifest: '../common/' + client + '/manifest.json',
-  outputPath: '/static/common/' + client,  // 生成目录
-  publicPath: '/static/common/' + client   // 注入地址
+  basePath: '../common/' + flag,
+  fileName: '../common/' + flag + '/lib.js',
+  manifest: '../common/' + flag + '/manifest.json',
+  outputPath: '/static/common/' + flag,  // 生成目录
+  publicPath: '/static/common/' + flag   // 注入地址
 }
 
 function _createHappyPlugin (id, loaders) {
@@ -41,9 +42,8 @@ var plugins = [
   }),
   new CopyWebpackPlugin([
     {
-      from: path.resolve(__dirname, '../static/lib'),
-      // to: config.build.assetsSubDirectory + '/js',
-      to: 'static/js',
+      from: path.resolve(__dirname, '../src/assets/lib'),
+      to: config.build.assetsSubDirectory + '/js',
       ignore: ['.*']
     }
   ]),
@@ -51,6 +51,31 @@ var plugins = [
   new webpack.DllReferencePlugin({
     context: __dirname,
     manifest: require(dll.manifest)
+  }),
+  new webpack.LoaderOptionsPlugin({
+    options: {
+      postcss: function () {
+        return [
+          cssnano({
+            autoprefixer: {
+              // 兼容级别
+              browsers: ['iOS >= 5', 'android >= 4.0', 'Safari >= 3.1', 'IE >= 8'],
+              add: true,
+              // 禁止移除样式
+              remove: false
+            },
+            discardComments: {
+              // 删除标记为重要的所有评论
+              removeAll: true
+            },
+            // 禁止使用不安全的options 注意！！！
+            safe: true,
+            // 是否输出.map文件
+            sourcemap: false
+          })
+        ]
+      }
+    }
   })
 ]
 

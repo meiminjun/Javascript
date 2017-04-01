@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var cssnano = require('cssnano')
 var UglifyJsParallelPlugin = require('webpack-uglify-parallel')  // 还未添加
 var os = require('os')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
@@ -18,16 +19,16 @@ var env = config.build.env
 // 渠道部署
 var deployEnv = process.argv[2]
 deployEnv = deployEnv.replace(/--/g, '')
-var client = 'debug'
+var flag = 'js'
 console.log('------部署环境---')
 console.log(deployEnv)
 
 var dll = {
-  basePath: '../common/' + client,
-  fileName: '../common/' + client + '/lib.js',
-  manifest: '../common/' + client + '/manifest.json',
-  outputPath: '/static/common/' + client,  // 生成目录
-  publicPath: '/static/common/' + client   // 注入地址
+  basePath: '../common/' + flag,
+  fileName: '../common/' + flag + '/lib.js',
+  manifest: '../common/' + flag + '/manifest.json',
+  outputPath: '/static/common/' + flag,  // 生成目录
+  publicPath: '/static/common/' + flag   // 注入地址
 }
 
 function _createHappyPlugin (id, loaders) {
@@ -41,9 +42,6 @@ function _createHappyPlugin (id, loaders) {
     verbose: true
   })
 }
-
-// console.log('--------=====')
-// console.log(env.NODE_ENV)
 
 var plugins = []
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -93,9 +91,41 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        // 在UglifyJs删除没有用到的代码时不输出警告
+        warnings: false,
+        // 删除所有的 `console` 语句，可以兼容ie浏览器
+        drop_console: true,
+        // 内嵌定义了但是只用到一次的变量
+        collapse_vars: true,
+        // 提取出出现多次但是没有定义成变量去引用的静态值
+        reduce_vars: true
       },
       sourceMap: true
+    }),
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        postcss: function () {
+          return [
+            cssnano({
+              autoprefixer: {
+                // 兼容级别
+                browsers: ['iOS >= 5', 'android >= 4.0', 'Safari >= 3.1', 'IE >= 8'],
+                add: true,
+                // 禁止移除样式
+                remove: false
+              },
+              discardComments: {
+                // 删除标记为重要的所有评论
+                removeAll: true
+              },
+              // 禁止使用不安全的options 注意！！！
+              safe: true,
+              // 是否输出.map文件
+              sourcemap: false
+            })
+          ]
+        }
+      }
     }),
     // new UglifyJsParallelPlugin({
     //   workers: os.cpus().length,
@@ -157,26 +187,11 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
-      // {
-      //   from: path.resolve(__dirname, '../static'),
-      //   to: config.build.assetsSubDirectory,
-      //   ignore: ['.*']
-      // },
       {
-        from: path.resolve(__dirname, '../static/lib'),
-        // to: config.build.assetsSubDirectory + '/js',
-        to: 'static/js',
+        from: path.resolve(__dirname, '../src/assets/lib'),
+        to: config.build.assetsSubDirectory + '/js',
         ignore: ['.*']
       }
-      // { from: 'src/assets/lib/add-assets.js', to: 'static/js' },
-      // { from: 'src/assets/lib/zepto.js', to: 'static/js' },
-      // { from: 'src/assets/lib/runtime-check.js', to: 'static/js' },
-      // { from: 'src/assets/lib/aladdin.min.js', to: 'static/js' },
-      // { from: 'src/assets/lib/aladdin.web.min.js', to: 'static/js' },
-      // { from: 'src/assets/lib/bow.min.js', to: 'static/js' },
-      // { from: 'src/assets/lib/bow.web.min.js', to: 'static/js' },
-      // { from: 'src/assets/lib/aladdin.loading.min.js', to: 'static/js' },
-      // { from: 'src/assets/lib/aladdin.loading.web.min.js', to: 'static/js' }
     ]),
     _createHappyPlugin('js', ['babel-loader']),
     new webpack.DllReferencePlugin({

@@ -165,7 +165,6 @@
   import * as ald from '../../util/ald';
   import * as aladdin from 'aladdin'
   import * as acc from '../../util/acc';
-  import api from '../../api/urls';
   //    import myHeader from './MyHeader.vue';
   import Hd from '../../components/Common_Header.vue';
   // import {MessageBox} from 'pa-ui/lib/index';

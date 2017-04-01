@@ -82,7 +82,6 @@
   import * as fit from '../../filters/deposit';
   import * as ald from '../../util/ald';
   import * as aladdin from 'aladdin'
-  import api from '../../api/urls';
   import bow from 'bow';
   import Hd from '../../components/Common_Header.vue';
   import * as deposit_detail from '../../api/deposit_detail';

@@ -41,7 +41,7 @@
         "default"
       ]
     },
-    "../static/lib/flexible.js": {
+    "../src/assets/lib/flexible.js": {
       "id": 5,
       "meta": {}
     },

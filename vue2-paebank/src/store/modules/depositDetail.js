@@ -1,6 +1,5 @@
 import financeService from '../../api/deposit_detail';
 import * as types from '../types';
-import api from '../../api/urls.js';
 import * as fit from '../../filters/deposit';
 
 const state = {

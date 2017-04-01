@@ -162,7 +162,6 @@
   import {date} from '../../util'
   import nocard from './nocard.vue';
   import nocarda from './nocarda.vue';
-  import api from '../../api/urls.js'
   import types from '../../store/types.js';
   import * as ald from '../../util/ald';
   import bow from 'bow';

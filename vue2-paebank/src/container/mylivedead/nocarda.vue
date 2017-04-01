@@ -95,7 +95,6 @@
   } from 'vuex';
   import SelectCard from './SelectCard.vue';
   import * as types from '../../store/types'
-  import api from '../../api/urls.js'
   import * as ald from '../../util/ald';
   import bow from 'bow';
   import {date} from '../../util'

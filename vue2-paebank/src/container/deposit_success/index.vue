@@ -64,7 +64,6 @@
     import * as aladdin from 'aladdin'
     import bow from 'bow';
     import * as ald from '../../util/ald';
-    import api from '../../api/urls';
 //    import fit from '../../filters/deposit';
 import CommonHeader from '../../components/Common_Header'
 import  * as fit from '../../filters/deposit';
