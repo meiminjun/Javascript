@@ -1,11 +1,11 @@
 <template>
-    <div >
-   <div v-for="item in data" @click="toExchangeDetail('exchangeDetail')" class="pec-list-item pec-list-item2">
+    <div>
+<div v-for= "(item,index) in data"  :data-index = "index" @click= "toExchangeDetail" class= "pec-list-item pec-list-item2" >
       <i v-if="item.tranStatus === '01'" class="back-icon"> <div class="bord_h"></div></i>
       <i v-else class="back-icon2"> <div class="bord_h2"></div></i>
       <div class="pec-item-body">
       <p>{{item.createdDate}}</p>
-    <p class="pec-tips">{{item.orderTypeCH}}&nbsp;&nbsp;{{item.addMinus}}{{item.transAmt}}元</p>
+    <p class="pec-tips">{{item.orderTypeCH}}&nbsp;&nbsp;{{item.addMinus}}{{item.transAmtFort}}元</p>
     </div>
     <div class="pec-item-body pec-text-right">
       <p>{{item.orderStatusCH}}</p>
@@ -15,9 +15,6 @@
       <i class="icon-arrow"></i>
       </div>
       </div>
-
-
-
   </div>
 
 
@@ -77,23 +74,13 @@ export default {
         ...mapActions([
             'getRecords'
         ]),
-        toExchangeDetail(item) {
-          return;
-            if (true) {
-                ald.navigator.forward({
-                    url: api[item],
-                    title: api[item],
-                    type: 'webapp'
-                });
-            } else {
-                ald.navigator.forward({
-                    title: api[item],
-                    showHeader: true,
-                    url: api[item],
-                    tabIndex: 2,
-                    tpl: 'webview'
-                });
-            }
+      toExchangeDetail(e) {
+        var index = event.currentTarget.getAttribute("data-index");
+        localStorage.setItem("dhtRecordItem",JSON.stringify(this.data[index]));
+        ald.navigator.forward({
+          url: api.exchangeDetail,
+          type: 'webapp'
+        });
         },
         //loadMore: function(){
         //    /*this.isLoadMore = true;

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createLogger from 'vuex/dist/logger'
 
+import login from './modules/login'
+
 import common from './common'
 import detail from './modules/detail'
 import depositDetail from './modules/depositDetail'
@@ -10,23 +12,26 @@ import fund from './modules/fund'
 
 Vue.use(Vuex)
 
-const debug = process.env.NODE_ENV !== 'production';
-
+const debug = process.env.NODE_ENV !== 'production'
 let store = new Vuex.Store({
-    // actions,
-    // getters,
-    modules: {
-        common,
-        fund,
-        detail,
-        dhtDetail,
-        depositDetail
-    },
-    strict: debug,
-    plugins: debug ? [createLogger()] : []
-});
+  state: {
+    title: '平安银行',
+    isLogin: false
+  },
+  // actions,
+  // getters,
+  modules: {
+    login,
+    common,
+    fund,
+    detail,
+    dhtDetail,
+    depositDetail
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
+})
 
-window.__store = store;
+window.__store = store
 
-export default store;
-
+export default store

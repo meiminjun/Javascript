@@ -1,23 +1,5 @@
-//----------------------理财首页----------------//
-//活期理财推荐
-export const INDEX_CURRENT_RECOMMEND_LIST = 'INDEX_CURRENT_RECOMMEND_LIST';
-//定期理财推荐
-export const INDEX_FIXED_RECOMMEND_LIST = 'INDEX_FIXED_RECOMMEND_LIST';
-//平安优选基金
-export const INDEX_FUND_RECOMMEND_LIST = 'INDEX_FUND_RECOMMEND_LIST';
-//财富专区
-export const INDEX_WEALTH_RECOMMEND_LIST = 'INDEX_WEALTH_RECOMMEND_LIST';
-//黄金
-export const INDEX_GOLD_RECOMMEND_LIST = 'INDEX_GOLD_RECOMMEND_LIST';
-//资讯
-export const INDEX_NEWS_RECOMMEND_LIST = 'INDEX_NEWS_RECOMMEND_LIST';
-//最近浏览
-export const INDEX_RECENTLY_VIEW = 'INDEX_RECENTLY_VIWED';
-//读取首页产品缓存数据
-export const INDEX_GET_PRODUCTS_CACHE = 'INDEX_GET_PRODUCTS_CACHE';
-
 //---------------------财富专区相关-----------------//
-export const WEALTH_LIST = 'WEALTH_LIST';
+export const WEALTH_LIST = 'WEALTH_LIST'
 
 // 理财产品
 // qryRushPurchaseFinanceList
@@ -74,43 +56,12 @@ export const SEARCH_FUND_LIST = 'SEARCH_FUND_LIST' //
 //精选基金
 export const CHOSEN_FUND_LIST = 'CHOSEN_FUND_LIST' //
 
-/*
-* 基金排行
-* */
-export const FUND_RANKING_INITIAL='FUND_RANKING_INITIAL'//首发基金
-export const FUND_RANKING_ALL='FUND_RANKING_ALL'//全部
-export const FUND_RANKING_SELLING='FUND_RANKING_SELLING'//热销
-export const FUND_RANKING_STOCK='FUND_RANKING_STOCK'//股票
-export const FUND_RANKING_BLEND='FUND_RANKING_BLEND'//混合型
-export const FUND_RANKING_BOND='FUND_RANKING_BOND'//债券型
-export const FUND_RANKING_CAPITAL='FUND_RANKING_CAPITAL'//保本型
-export const FUND_RANKING_MONEY='FUND_RANKING_MONEY'//货币型
-export const FUND_RANKING_ETF='FUND_RANKING_ETF'//指数型
-export const FUND_RANKING_QDII='FUND_RANKING_QDII'//QDII型
+// export const TARGETHOST = {
+//     'bank-static': ENV == 'prd'
+//         ? 'https://bank-static.pingan.com.cn'
+//         : 'https://bank-static-stg.pingan.com.cn'
+// }
 
-/*
-* 收银台
-* */
-export const PAY_PREPAYID = 'PAY_PREPAYID'//预付号
-export const PAY_SECURITYSIGN ='PAY_SECURITYSIGN'//加密串
-export const PAY_CARDS = 'PAY_CARDS'//银行卡列表
-export const PAY_RECHARGE ='PAY_RECHARGE'//充值
-export const PAY_BINDEDCARDS ='PAY_BINDEDCARDS'//绑定的二类卡
-export const PAY_ORDERPAY ='PAY_ORDERPAY'//支付
-export const PAY_RESERVE_CARDS ='PAY_RESERVE_CARDS'//重排的银行列表
-export const PAY_CHECK_STATE ='PAY_CHECK_STATE'//check状态
-
-export const TARGETHOST = {
-    'bank-static': ENV == 'prd'
-        ? 'https://bank-static.pingan.com.cn'
-        : 'https://bank-static-stg.pingan.com.cn'
-}
-
-/*
-* 现金宝收益
-* */
-export const XJB_INCOME = 'XJB_INCOME'//我的收益列表
-export const XJB_SHOWLOADING = 'XJB_SHOWLOADING'//loading显示
 
 /*
  * 现金宝详情
@@ -127,9 +78,9 @@ export const DEPOSIT_BUY = 'DEPOSIT_BUY'//现金宝详情
 /*
 *现金宝转出
 * */
-export const CASH_INIT_REDEEM_LIST = 'CASH_INIT_REDEEM_LIST'; //转出初始化
-export const CASH_SHOW_BANK_LIST = 'CASH_SHOW_BANK_LIST'; //控制是否显示银行卡列表
-export const CASH_GET_CHOSEN_BANK = 'CASH_GET_CHOSEN_BANK'; //选择银行卡
+export const CASH_INIT_REDEEM_LIST = 'CASH_INIT_REDEEM_LIST' //转出初始化
+export const CASH_SHOW_BANK_LIST = 'CASH_SHOW_BANK_LIST' //控制是否显示银行卡列表
+export const CASH_GET_CHOSEN_BANK = 'CASH_GET_CHOSEN_BANK' //选择银行卡
 
 
 
@@ -142,6 +93,21 @@ export const NOCARD = 'NOCARD'//银行卡列表
 export const NOMYLIVE_DEAD = 'NOMYLIVE_DEAD'//列表没数据
 
 
+export const CASH_DETAIL_INFO = 'CASH_DETAIL_INFO'
+export const CASH_USER_INFO = 'CASH_USER_INFO'
+
+
+
+
 //公共加载
-export const COMMON_LOADING = 'COMMON_LOADING';//触发加载效果
+export const COMMON_LOADING = 'COMMON_LOADING'//触发加载效果
+
+
+// 登录
+export const LOGIN_SUCESS = 'LOGIN_SUCESS'
+export const UPDATEUSERNAME = 'UPDATEUSERNAME'
+export const UPDATEPASSWORD = 'UPDATEPASSWORD'
+export const GET_TASK = 'ET_TASK'
+export const ADD_TASK = 'DD_TASK'
+export const DELATE_TASK = 'ELATE_TASK'
 

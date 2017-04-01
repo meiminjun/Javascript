@@ -3,7 +3,7 @@
     <common-header :title=title :onLeft='leftClick'></common-header>
     <section>
     <div class="order-details-over">
-        <p class="momey">{{corpusBalance}}</p>
+        <p class="momey">{{cardSign.corpusBal}}</p>
     <p>剩余本金(元)</p>
     </div>
     <div class="pec-list">
@@ -44,7 +44,7 @@
     </div>
     <div v-show="exchangeShow">
 
-        <Record v-if="dhtDetail.total != 0" :data="dhtDetail.records.lists"></Record>
+        <Record v-if="dhtDetail.total != 0 && dhtDetail.recordsFlag" :data="dhtDetail.records.lists"></Record>
         <div v-else class="pec-list-item">
         <div class="pec-item-body pec-text-center pec-color-ABABAB">
         暂无交易
@@ -52,7 +52,11 @@
         </div>
     </div>
 
-
+  <div v-if='dhtDetail.total>5' class="pec-list-foot">
+  <div class="pec-list-foot-body">
+  <p class="pec-link pec-text-center">查看更多</p>
+  </div>
+  </div>
 
     </div>
 
@@ -69,7 +73,7 @@
         银行账号
         </div>
         <div class="pec-item-body">
-        平安银行账户  尾号({{resRender.lastFourNum}})
+  {{cardSign.cardnoMask}}({{resRender.lastFourNum}})
     </div>
     </div>
     <div class="pec-list-item">
@@ -85,7 +89,7 @@
         到期利率
         </div>
         <div class="pec-item-body">
-        3.575%
+  {{resRender.dueRate}}%
         </div>
         </div>
         <div class="pec-list-item">
@@ -142,9 +146,9 @@
 
         </div>
         <div @click="forward('withdrawPage')" class="pec-btn-zone pec-fiexd-btn pec-display-block">
-        <button v-if="resRender.remainCapital === '0'" size="big" class="pec-primary-btn pec-width100" style="background: #D9D9D9 !important;">支取</button>
+        <button v-if="cardSign.data.corpusBalance === 0" size="big" class="pec-primary-btn pec-width100" style="background: #D9D9D9 !important;">支取</button>
         <button v-else size="big" class="pec-primary-btn pec-width100" >支取</button>
-        <p class="pec-font-size24 pec-margin-top20 pec-text-center" v-if="resRender.remainCapital === '0'" >您的剩余本金为零,已无可支取金额</p>
+        <p class="pec-font-size24 pec-margin-top20 pec-text-center" v-if="corpusBalance === '0'" >您的剩余本金为零,已无可支取金额</p>
 
     </div>
         </section>
@@ -159,6 +163,8 @@ import types from '../../store/types.js'
 import * as ald from '../../util/ald'
 import Record from './Record.vue'
 import bow from 'bow';
+import  * as fit from '../../filters/deposit';
+let cardSignData  = JSON.parse(localStorage.getItem("cardSignData"));
 
 export default {
     data: function () {
@@ -166,15 +172,16 @@ export default {
             title:"定存宝-定活通",
             "arrowUpDown" :{
                 "icon-arrow" : true,
-                "curr":true
+                "down":true,
+                "up":false
             },
             "exchangeShow" : true,
             "orderArrow" :{
-                "icon-arrow" : true,
-                "curr":true
+              "icon-arrow" : true,
+              "down":true,
+              "up":false
             },
-            "orderContainer" : true,
-            "corpusBalance":"2000"
+            "orderContainer" : true
 
         };
     },
@@ -184,79 +191,62 @@ export default {
         ]),
         resRender : function(){
             return this.dhtDetail.orderDetail.lists;
-        }
+        },
+      cardSign:function(){
+        cardSignData.corpusBal = fit.formatMoneyNumber(cardSignData.data.corpusBalance,"blur");
+        cardSignData.data.corpusBalance = Number(cardSignData.data.corpusBalance);
+        return cardSignData;
+      }
     },
     created () {
-      let cardSignData = bow.sharedMemory.getItem("cardSignData");
-        //let self = this;
 //amt=10000&bankCardSign=6230582000070450773&bussType=9110&ccy=RMB&depositNo=00001&queryType=0&businessType=00&orderType=00&pageIndex=1&pageSize=10&depositSerialNo=00001&queryType=0
         this.getOrderDetail({
-          depositNo: cardSignData.data.depositSerialNo||"00001",
-          amt: cardSignData.data.corpusBalance||"1000",
-          bankCardSign: cardSignData.cardnoMask || "6230582000070450831",
+          depositNo: cardSignData.data.depositSerialNo,
+          amt: cardSignData.data.corpusBalance,
+          bankCardSign: cardSignData.cardMask,
           businessType : "00",
           orderType:"00",
           pageIndex:1,
           //brcpSessionTicket:"1111"
         });
-        //this.getRecords({pageNum:1});
     },
     mounted:function(){
-        //console.log(this.$store.getters.fundOnDate)
-        // console.log(this.fund)
-
     },
     methods: {
         ...mapActions([
             'getOrderDetail',
             'getRecords'
         ]),
-        //getOrderDetail : api.getOrderDetail,
-
-        toWithdraw() {
-            location.href = "withdraw.html";
-        },
         showOrHide(){
-            let self = this;
-            if(self.arrowUpDown.curr){
-                self.arrowUpDown.curr = self.exchangeShow = false;
-            }else{
-                self.arrowUpDown.curr = self.exchangeShow = true;
-            }
+            this.showHide("arrowUpDown");
         },
         orderShowHide (){
-            let self = this;
-            if(self.orderArrow.curr){
-                self.orderArrow.curr = self.orderContainer = false;
-            }else{
-                self.orderArrow.curr = self.orderContainer = true;
-            }
+            this.showHide("orderArrow");
+        },
+        showHide(item){
+          let self = this;
+          if(self[item].down){
+            self[item].down = self.exchangeShow = false;
+            self[item].up = true;
+          }else{
+            self[item].down = self.exchangeShow = true;
+            self[item].up = false;
+          }
         },
         forward: function(item) {
             if(item ==="withdrawPage"){
-                if(this.resRender.remainCapital === "0"){
+                if(cardSignData.data.corpusBalance === "0"){
                     return;
                 }
             }
-            //ald.track.record(item);
-            if (true) {
-                ald.navigator.forward({
-                    url: api[item],
-                    title: api[item],
-                    type: 'webapp'
-                });
-            } else {
-                ald.navigator.forward({
-                    title: api[item],
-                    showHeader: true,
-                    url: api[item],
-                    tabIndex: 2,
-                    tpl: 'webview'
-                });
-            }
+            ald.navigator.forward({
+              url: api[item],
+              type: 'webapp'
+            });
         },
         // 左边头部按钮
         leftClick:function() {
+          //alert 需清除掉cardSignData
           ald.navigator.forward({
             url: api.mylivedead,
             type: 'webapp'

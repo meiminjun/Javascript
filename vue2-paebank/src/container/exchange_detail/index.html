@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>交易详情</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <meta name="x5-orientation" content="portrait" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+</head>
+<style>
+  .mint-toast-text {
+    font-size: 0.38rem!important;
+    display: block;
+    text-align: center;
+  }
+
+  .mint-toast{
+    position: fixed;
+    max-width: 80%;
+    width:4.9rem!important;
+    border-radius: .1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    box-sizing: border-box;
+    text-align: center;
+    z-index: 1000;
+    -webkit-transition: opacity .3s linear;
+    transition: opacity .3s linear;
+    line-height:1.5;
+    padding: .40rem .60rem!important;
+  }
+  </style>
+<body>
+<div id="app"></div>
+<% if (htmlWebpackPlugin.options.env !== 'development') { %>
+<script src="assets/js/runtime-check.js"></script>
+<% } %>
+</body>
+</html>

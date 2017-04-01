@@ -5,11 +5,11 @@
         <div class="pec-list pec-LBP-list pec-margin-top20">
             <div class="pec-list-item">
             <div class="pec-item-head">交易类型</div>
-            <div class="pec-item-body">T+1到账支取</div>
+            <div class="pec-item-body">{{dhtRecordItem.orderTypeCH}}</div>
         </div>
         <div class="pec-list-item">
             <div class="pec-item-head">银行账号</div>
-            <div class="pec-item-body">平安银行互联网账户(8888)</div>
+            <div class="pec-item-body">平安银行互联网账户({{dhtRecordItem.payeeAcctNoFour}})</div>
             </div>
             <div class="pec-list-item">
             <div class="pec-item-head">币种</div>
@@ -18,34 +18,34 @@
             <div class="pec-list-item">
             <div class="pec-item-head">支取金额</div>
             <div class="pec-item-body">
-            <p><span class="pec-color-F17940">10,000.00元</span></p>
-        <p class="pec-abs-tips">壹万元整</p>
+            <p><span class="pec-color-F17940">{{dhtRecordItem.transAmtFort}}元</span></p>
+        <p class="pec-abs-tips">{{dhtRecordItem.transAmtCH}}</p>
             </div>
             </div>
             <div class="pec-list-item">
             <div class="pec-item-head">到账金额</div>
             <div class="pec-item-body">
-            <p><span class="pec-color-F17940">10,056.00元</span></p>
-        <p class="pec-abs-tips">壹万伍拾陆元整</p>
+            <p><span class="pec-color-F17940">{{dhtRecordItem.interestFort}}元</span></p>
+        <p class="pec-abs-tips">{{dhtRecordItem.interestCH}}</p>
             </div>
             </div>
         </div>
     <div class="pec-list pec-LBP-list pec-margin-top20">
             <div class="pec-list-item">
             <div class="pec-item-head">提交时间</div>
-            <div class="pec-item-body">2017-12-10 12:00</div>
+            <div class="pec-item-body">{{dhtRecordItem.createdDate}}</div>
         </div>
-        <div v-if="resultCH !=='正在处理'" class="pec-list-item">
+        <div v-if="dhtRecordItem.orderStatusCH !=='处理中'" class="pec-list-item">
             <div class="pec-item-head">处理时间</div>
-            <div class="pec-item-body">2017-12-10 17:00</div>
+            <div class="pec-item-body">{{dhtRecordItem.updatedDate}}</div>
         </div>
         <div class="pec-list-item">
             <div class="pec-item-head">处理结果</div>
-            <div :class="resultClass">{{resultCH}}</div>
+            <div :class="resultClass">{{dhtRecordItem.orderStatusCH}}</div>
             </div>
             <div class="pec-list-item">
             <div class="pec-item-head">指令序号</div>
-            <div class="pec-item-body">8967348482343854354354</div>
+            <div class="pec-item-body">{{dhtRecordItem.bizSeqNo}}</div>
             </div>
             </div>
 
@@ -65,6 +65,12 @@ import types from '../../store/types.js'
 import * as ald from '../../util/ald';
 import CommonHeader from '../../components/Common_Header'
 import {PecMessageBox} from 'pa-ui/lib/index';
+import {Toast} from 'pa-ui/lib/index';
+import  * as fit from '../../filters/deposit';
+import * as deposit_detail from '../../api/deposit_detail';
+let dhtRecordItem= JSON.parse(localStorage.getItem("dhtRecordItem"));
+let cardSignData  = JSON.parse(localStorage.getItem("cardSignData"));
+
 
 export default {
     data: function () {
@@ -83,6 +89,7 @@ export default {
     },
     computed: {
         resultCH : function(){
+
             if(localStorage.getItem("testClass") === "succ"){
                 return "支取成功";
             }else if (localStorage.getItem("testClass") === "ing"){
@@ -90,10 +97,38 @@ export default {
             }else if (localStorage.getItem("testClass") === "fail"){
                 return "支取失败";
             }
-        }
+        },
+      dhtRecordItem : function(){
+        //dhtRecordItem.payeeAcctNoFour = dhtRecordItem.payeeAcctNo.substr(-4);
+        //dhtRecordItem.transAmtCH = fit.chineseNum(dhtRecordItem.transAmt);
+        //let interest = Number(dhtRecordItem.interest) + Number(dhtRecordItem.transAmt);
+        //dhtRecordItem.interestFort = fit.formatMoneyNumber(interest,"blur");
+        //dhtRecordItem.interestCH = fit.chineseNum(interest);
+        return dhtRecordItem;
+      }
     },
     created () {
+      let self = this;
+        let url = window.location.href;
+        if(url.split("?")[1] === 'check=1'){
+          let subTradeOrderNo = dhtRecordItem.subTradeOrderNo;
+          deposit_detail.default.queryOrderStatus({
+            cancelOrderFlag : "Y",
+            subTradeOrderNo:subTradeOrderNo
+          },function(res){
+            let title = res.transStatus === "04"? "撤销成功": "撤销失败";
+            PecMessageBox.alert({
+              title: title
+            });
+            if(res.transStatus === "04"){
+              setTimeout(()=>{
+                self.leftClick();
+              },2000)
+            }
 
+
+          });
+        }
     },
     methods: {
       ...mapActions([
@@ -101,17 +136,19 @@ export default {
       ]),
         toWithdraw() {
             let self = this;
-            if(new Date().getHours() >= 16){
-              PecMessageBox.alert({
-                title: '撤销功能仅支持在16:00之前使用'
-              });
-                this.submitClass.bgColorGray = true;
-                return;
-            }
+            //if(new Date().getHours() >= 16){
+            //  PecMessageBox.alert({
+            //    title: '撤销功能仅支持在16:00之前使用'
+            //  });
+            //    this.submitClass.bgColorGray = true;
+            //    return;
+            //}
           self.getPaySearialNo({
-            orderAmount:"1000",
-            orderNo :"1234455",
+            bankCardSign:cardSignData.cardMask,
+            orderAmount:"10000",
+            orderNo :dhtRecordItem.tradeOrderNo,
             cb:function(res){
+              localStorage.setItem("subTradeOrderNo_withdraw",res.subTradeOrderNo);
               ald.navigator.forward({
                 title: '定活宝-定活通',
                 showHeader: true,
@@ -126,12 +163,10 @@ export default {
             if (true) {
                 ald.navigator.forward({
                     url: api.orderDetailPage,
-                    title: api.orderDetailPage,
                     type: 'webapp'
                 });
             } else {
                 ald.navigator.forward({
-                    title: api.orderDetailPage,
                     showHeader: true,
                     url: api.orderDetailPage,
                     tabIndex: 2,

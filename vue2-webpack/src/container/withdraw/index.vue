@@ -19,7 +19,7 @@
         <div class="pec-item-body">
         <p class="pec-color-6C7684">T+1到账支取</p>
     <p v-if="withdrawData.isDrawFlag==='1'" class="pec-tips pec-margin-top10">当前利率{{withdrawData.tRate}}%&emsp;预计到账时间：后端待定 前</p>
-    <p v-else class="pec-tips pec-margin-top10">不满90天提示语</p>
+    <p v-else class="pec-tips pec-margin-top10">{{t1Content}}</p>
 
 </div>
     <div class="pec-item-foot">
@@ -61,11 +61,12 @@ import * as ald from '../../util/ald'
 import CommonHeader from '../../components/Common_Header'
 import  * as fit from '../../filters/deposit';
 let dante = require('dante');
+let cardSignData = JSON.parse(localStorage.getItem("cardSignData"));
 
 export default {
     data: function () {
         return {
-            title:"定存宝-定活通",
+            title:"定活宝-定活通",
             "agreeIcon" : {
                 "icon-checked" : true,
                 "icon-check" : false
@@ -91,7 +92,6 @@ export default {
         //t0
         iconCheck : function(){
             return this.dhtDetail.radioCheck;
-
         },
         chineseNumWithdraw : function(){
             return this.dhtDetail.chineseNumWithdraw;
@@ -105,43 +105,42 @@ export default {
         toAccountAmt : function(){
             return this.dhtDetail.toAccountAmt;
         },
-      currentInterest : function(){
-        return this.dhtDetail.currentInterest;
-      }
-
-
+        currentInterest : function(){
+          return this.dhtDetail.currentInterest;
+        },
+        t1Content : function(){
+          if(this.dhtDetail.isDrawFlag !== "1"){
+            return "存款满90天后，交易日9:00-16:00可用";
+          }
+          //字段未定义
+          //if(this.dhtDetail){
+          //  return "同一天只能提交一笔T+1到账支取";
+          //}
+        }
     },
     created () {
         //let self = this;
-      let cardSignData = bow.sharedMemory.getItem("cardSignData");
-
+      let dt = new Date();
+      let dty = dt.getFullYear()+"";
+      let dtm = dt.getMonth()+1>10? dt.getMonth()+1+"":"0"+(dt.getMonth()+1);
+      let dtd = dt.getDate()+"";
+      let currentDate = dty + dtm + dtd;
         this.getWithdraw({
           queryType: "1",
           inputVal:0,
-          cardNo: cardSignData.bankCardSign||"6230582000070450773",
-          currentDay:"20170309",
-          depSerialNo: cardSignData.depositSerialNo ||"00013",
-          endDate:"20140101",
-          startDate:"20170101",
-          tranId:cardSignData.depositSerialNo ||"00013",
-          ecifNo:"630000312134",
+          bankCardSign: cardSignData.cardMask,
+          currentDay:currentDate,
+          depSerialNo: cardSignData.data.depositSerialNo
         });
         this.getWithdraw({
           queryType:"0",
           inputVal:0,
-          cardNo: cardSignData.bankCardSign||"6230582000070450773",
-          currentDay:"20170309",
-          depSerialNo: cardSignData.depositSerialNo ||"00013",
-          endDate:"20140101",
-          startDate:"20170101",
-          tranId:cardSignData.depositSerialNo ||"00013",
-          ecifNo:"630000312134",
+          bankCardSign: cardSignData.cardMask,
+          currentDay:currentDate,
+          depSerialNo: cardSignData.data.depositSerialNo
         });
     },
     mounted:function(){
-        //console.log(this.$store.getters.fundOnDate)
-        // console.log(this.fund)
-        //this.getWithdraw({});
     },
     methods: {
         ...mapActions([
@@ -157,6 +156,9 @@ export default {
             this.changeFlag = false;
             this.$store.commit("DHT_PROTOSHOWAGAIN", true);
             this.trueOrFalse(this.value,"t1");
+          if(this.inputFlag){
+            this.checkInterest("1");
+          }
         },
         //t0
         checkFun(){
@@ -166,6 +168,9 @@ export default {
             this.changeFlag = true;
             this.$store.commit("DHT_PROTOSHOWAGAIN", false);
             this.trueOrFalse(this.value,"t0");
+          if(this.inputFlag){
+            this.checkInterest("0");
+          }
         },
         agreeFun (){
             if(this.agreeIcon["icon-checked"]){
@@ -179,7 +184,6 @@ export default {
                     this.btnClass["bgColorGray"] = false;
                 }
             }
-
         },
         validateInputVal(item) {
             let self = this;
@@ -188,25 +192,30 @@ export default {
             if(!this.inputFlag){
                 return;
             }
-            self.inputFlag = true;
-            let queryTypeTran = self.dhtDetail.radioCheck.tFlag ==="t0"? "02":"03";
-          let cardSignData = bow.sharedMemory.getItem("cardSignData");
-            self.getWithdraw({
-              queryType:queryTypeTran,
-              flag:"calc",
-              inputVal:inputVal,
-              cardNo: cardSignData.bankCardSign||"6230582000070450773",
-              currentDay:"20170309",
-              depSerialNo: cardSignData.depositSerialNo ||"00013",
-              endDate:"20140101",
-              startDate:"20170101",
-              tranId:cardSignData.depositSerialNo ||"00013",
-              ecifNo:"620079418271",
-            });
+            let queryTypeTran = self.dhtDetail.radioCheck.tFlag === "t1" ? "1" : "0";
+            self.checkInterest(queryTypeTran);
             if(self.agreeFlag){
                 self.btnClass["bgColorGray"] = false;
             }
         },
+      checkInterest(queryTypeTran){
+        let self = this;
+        let inputVal = self.value.replace(/[^\d|\.]/g, '');
+
+        let dt = new Date();
+        let dty = dt.getFullYear()+"";
+        let dtm = dt.getMonth()+1>10? dt.getMonth()+1+"":"0"+(dt.getMonth()+1);
+        let dtd = dt.getDate()+"";
+        let currentDate = dty + dtm + dtd;
+        self.getWithdraw({
+          queryType:queryTypeTran,
+          flag:"calc",
+          inputVal:inputVal,
+          bankCardSign: cardSignData.cardMask,
+          currentDay:currentDate,
+          depSerialNo: cardSignData.data.depositSerialNo
+        });
+      },
         trueOrFalse(inputVal,tFlag){
             let self = this,content = "";
             inputVal = inputVal.replace(/[^\d|\.]/g, '');
@@ -224,7 +233,7 @@ export default {
                 self.btnClass["bgColorGray"] = true;
             }
 
-            let compareCapital = tFlag === "t0" ? self.withdrawData.capital - 1000 : self.withdrawData.capital;
+            let compareCapital = Number(cardSignData.data.corpusBalance);
             if(Number(inputVal) > compareCapital){
                 content = `最多可支取${compareCapital}元`;
                 self.inputFlag = false;
@@ -253,18 +262,17 @@ export default {
         },
         toSuccessPage() {
             let self = this;
-
             //if(self.dhtDetail.radioCheck.tFlag === "t1" && !self.withdrawData.amountQuota){
             //    alert("对不起,系统T+1到账支取总额度已用完,请您改用实时支取方式");
             //    return;
             //}
-          let tFlagCH = self.dhtDetail.radioCheck.tFlag ==="t0"? "02":"03";
+          let tFlagCH = self.dhtDetail.radioCheck.tFlag === "t0" ? "02" : "03";
             if(self.inputFlag && self.agreeFlag){
-              let cardSignData = bow.sharedMemory.getItem("cardSignData");
                 self.creatOrder({
                   transAmt: self.value,
                   transType :tFlagCH,
-                  bankCardSign:"e0c16e089852e27368e52e5ac5287f26",
+                  bankCardSign:cardSignData.cardMask,
+                  depositSerialNo : cardSignData.data.depositSerialNo,
                   cb:function(res){
                     ald.navigator.forward({
                       title: '定活宝-定活通',
@@ -272,42 +280,25 @@ export default {
                       url: "https://bank-static-stg.pingan.com.cn/omm/stg2/omm/mobile/pay.html?prepayId="+res.paySearialNo+'&'+'securitySign='+res.paySign,
                       tpl: 'webview'
                     });
+                    localStorage.setItem("subTradeOrderNo", res.subTradeOrderNo);
+                    localStorage.setItem("paySearialNo", res.paySearialNo);
                   }
                 })
-                //if (true) {
-                //    ald.navigator.forward({
-                //        url: api.withdrawResult,
-                //        title: api.withdrawResult,
-                //        type: 'webapp'
-                //    });
-                //} else {
-                //    ald.navigator.forward({
-                //        title: api.withdrawResult,
-                //        showHeader: true,
-                //        url: api.withdrawResult,
-                //        tabIndex: 2,
-                //        tpl: 'webview'
-                //    });
-                //}
             }
         },
         toAgreement (){
             console.log("agreement");
-            location.href = "agreement.html";
+            //location.href = "agreement.html";
         },
         keyBoardShow (){
             let opts = {
                 module : "decimal",
                 currentYPos : 0
             };
-            //bow.safeKeyBoard.arouse(opts,function(data){
-            //});
         },
         inputPutin(value){
             value = value+"";
             this.trueOrFalse(value,this.dhtDetail.radioCheck.tFlag);
-
-
             let content = fit.chineseNum(value);
             if(this.inputFlag){
                 this.$store.commit("DHT_CHINESENUM", content);
@@ -315,34 +306,15 @@ export default {
         },
         // 左边头部按钮
         leftClick:function() {
-            if (true) {
-                ald.navigator.forward({
-                    url: api.orderDetailPage,
-                    title: api.orderDetailPage,
-                    type: 'webapp'
-                });
-            } else {
-                ald.navigator.forward({
-                    title: api.orderDetailPage,
-                    showHeader: true,
-                    url: api.orderDetailPage,
-                    tabIndex: 2,
-                    tpl: 'webview'
-                });
-            }
+          ald.navigator.forward({
+            url: api.orderDetailPage,
+            type: 'webapp'
+          });
         }
     },
     watch:{
         changeFlag : function(){
             this.$store.commit("DHT_RADIO");
-            //this.withdrawData.iconCh = !this.withdrawData.iconCh;
-            //this.withdrawData.iconChed = !this.withdrawData.iconChed;
-            //if(this.changeFlag == false){
-            //    this.withdrawData.tFlag = "t1";
-            //}else{
-            //    this.withdrawData.tFlag = "t0";
-            //}
-            //this.changeFlag = false;
         }
     },
     components:{

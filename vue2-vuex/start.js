@@ -1,7 +1,7 @@
 var register = require('babel-core/register');
 
 register({
-    presets: ['stage-3']
+    presets: ['stage-2']
 });
 const model = require('./server/model.js');
 require('./server/app.js');

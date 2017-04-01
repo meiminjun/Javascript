@@ -56,6 +56,7 @@ export function orderStatusFun (code,type){
         case '00':
             return '初始状态';
         case '01':
+        case '05':
             return '处理中';
         case '02':
             if(type === "01"){

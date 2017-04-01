@@ -1,9 +1,8 @@
-import 'flexible';
-import * as FastClick from 'fastclick';
-import 'babel-polyfill';
+import 'flexible'
+import * as FastClick from 'fastclick'
 
 if ('addEventListener' in document) {
-    document.addEventListener('DOMContentLoaded', function () {
-        FastClick.attach(document.body);
-    }, false);
+  document.addEventListener('DOMContentLoaded', function () {
+    FastClick.attach(document.body)
+  }, false)
 }
