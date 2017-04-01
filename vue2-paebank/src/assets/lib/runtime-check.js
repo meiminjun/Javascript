@@ -32,18 +32,15 @@
   var deps = [
     'aladdin{environment}.min.js',
     'aladdin.loading{environment}.min.js',
+    'aladdin.dialog{environment}.min.js',
+    'aladdin.toast{environment}.min.js',
     'bow{environment}.min.js'
-        // "./aladdin-loading/dist/aladdin.loading{environment}.js",
-        // "./aladdin-toast/dist/aladdin.toast{environment}.js",
-        // "./aladdin-dialog/dist/aladdin.dialog{environment}.js",
-        // "bow.min.js",
   ]
 
   var depscripts = ''
 
   for (var i = 0, len = deps.length; i < len; i++) {
-    depscripts += '<script src="' + currentScriptBase + deps[i] + '"></script>\n'
+    depscripts += '<script id="runtimeCheck" src="' + currentScriptBase + deps[i] + '"></script>\n'
   }
-
   document.write(depscripts.replace(/\{environment\}/g, runtime))
 }(window, navigator))

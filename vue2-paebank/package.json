@@ -12,7 +12,7 @@
     "build:stats": "export ENV=stg && node build/build.js --stg --json --profile > stats.json",
     "build:prd": "export ENV=prd && node build/build.js --prd",
     "dll": "webpack --config build/webpack.dll.conf.js --progress",
-    "dll:debug":"DEBUG=true webpack --config build/webpack.dll.conf.js --progress",
+    "dll:debug": "DEBUG=true webpack --config build/webpack.dll.conf.js --progress",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "add-asset-html-webpack-plugin": "^1.0.2",
-    "aladdin": "git+http://git-ma.paic.com.cn/Aladdin/aladdin.git",
     "autoprefixer": "^6.7.2",
     "axios": "^0.15.3",
     "babel-core": "^6.22.1",
@@ -32,7 +31,6 @@
     "babel-preset-env": "^1.2.1",
     "babel-preset-stage-2": "^6.22.0",
     "babel-register": "^6.22.0",
-    "bow": "git+http://git-ma.paic.com.cn/kdwy-libs/bow.git",
     "chalk": "^1.1.3",
     "connect-history-api-fallback": "^1.3.0",
     "copy-webpack-plugin": "^4.0.1",
@@ -73,7 +71,8 @@
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
-    "webpack-merge": "^2.6.1"
+    "webpack-merge": "^2.6.1",
+    "webpack-uglify-parallel": "^0.1.3"
   },
   "engines": {
     "node": ">= 4.0.0",

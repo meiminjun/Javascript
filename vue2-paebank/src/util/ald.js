@@ -107,12 +107,12 @@ export const http = {
     function _beforeSend () {
       if (requestCount++ === 0) {
         window.__store.commit(types.COMMON_LOADING, true)
-        // if (bow.loading) {
-        //   // console.dir(loading)
-        //   // bow.loading.start({ canCancel: false })
-        // } else {
-        //   console.warn('bow.loading plugin is needed!')
-        // }
+        if (bow.loading) {
+          console.dir(bow.loading)
+          bow.loading.start({ canCancel: false })
+        } else {
+          console.warn('bow.loading plugin is needed!')
+        }
       }
       beforeSend()
     }
@@ -120,11 +120,11 @@ export const http = {
     function _complete () {
       if (requestCount === 0 || --requestCount === 0) {
         window.__store.commit(types.COMMON_LOADING, false)
-        // if (bow.loading) {
-        //   // bow.loading.stop()
-        // } else {
-        //   console.warn('bow.loading plugin is needed! ')
-        // }
+        if (bow.loading) {
+          bow.loading.stop()
+        } else {
+          console.warn('bow.loading plugin is needed! ')
+        }
       }
       complete()
     }
@@ -437,4 +437,61 @@ export const event = {
 export const env = {
   ...(aladdin.env || {})
     // 其它
+}
+
+export const toast = {
+  /**
+   * toast公共方法
+   * @param  {[type]}   options  [position:显示位置（top|middle|bottom）, message:显示内容]
+   * @param  {Function} callback [description]
+   * @return {[type]}            [description]
+   */
+  show: function (options, callback) {
+    let defalut = {
+      message: '默认显示',
+      position: 'bottom' // 默认显示下方
+    }
+    aladdin.toast.show(Object.assign({}, defalut, options), function (err) {
+      if (err) {
+        console.error(err.message || '调用失败')
+      } else {
+        callback && callback()
+      }
+    })
+  }
+}
+
+export const dialog = {
+  alert: function (options, callback) {
+    let defalut = {
+      title: '提示',
+      message: '请写提示语',
+      buttonText: '确认',
+      buttonCallback: emptyFunction
+    }
+    aladdin.dialog.alert(Object.assign({}, defalut, options), function (err) {
+      if (err) {
+        console.error(err.message || '调用失败')
+      } else {
+        callback && callback()
+      }
+    })
+  },
+  confirm: function (options, callback) {
+    let defalut = {
+      title: '提示',
+      message: '是否进行选择',
+      leftButtonText: '取消',
+      leftButtonCallback: emptyFunction,
+      rightButtonText: '确定',
+      rightButtonCallback: emptyFunction
+    }
+    aladdin.dialog.confirm(Object.assign({}, defalut, options), function (err) {
+      if (err) {
+        console.error(err.message || '调用失败')
+      } else {
+        callback && callback()
+      }
+    })
+  }
 }

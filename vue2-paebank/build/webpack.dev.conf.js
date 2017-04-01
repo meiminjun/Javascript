@@ -47,7 +47,6 @@ var plugins = [
       ignore: ['.*']
     }
   ]),
-  _createHappyPlugin('js', ['babel-loader']),
   new webpack.DllReferencePlugin({
     context: __dirname,
     manifest: require(dll.manifest)
@@ -76,13 +75,14 @@ var plugins = [
         ]
       }
     }
-  })
+  }),
+  _createHappyPlugin('js', ['babel-loader'])
+  // _createHappyPlugin('vue', ['vue-loader'])
 ]
 
 console.log('打印环境')
 var env = config.dev.env
 console.log(env.NODE_ENV)
-console.log(env)
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
   // console.log(baseWebpackConfig.entry)
@@ -92,7 +92,6 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
     chunks: [
       name
     ],
-    // env: env.NODE_ENV,
     env: 'development',
     title: name + ' App',
     inject: true,
@@ -108,10 +107,13 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 // console.log(path.join(config.dev.dll.outputPath))
 // console.log(path.join(config.dev.dll.publicPath))
 
-plugins.push(new AddAssetHtmlPlugin({
-  filepath: require.resolve(dll.fileName),
-  hash: true
-}))
+plugins.push(
+  new AddAssetHtmlPlugin([
+    {
+      filepath: require.resolve(dll.fileName),
+      hash: true
+    }
+  ]))
 // plugins.push(new AddAssetHtmlPlugin([{
 //   filepath: path.resolve(__dirname, config.dev.dll.fileName),
 //   outputPath: path.join(config.dev.dll.outputPath),

@@ -1,8 +1,6 @@
-var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var isProduction = process.env.NODE_ENV === 'production'
-var cssnano = require('cssnano')
 
 module.exports = {
   loaders: utils.cssLoaders({
@@ -32,6 +30,7 @@ module.exports = {
     // })
   ]
 }
+
 // if (/production/.test(process.env.NODE_ENV)) {
 //   module.exports.postcss.aplice(0, 1, cssnano({
 //     autoprefixer: {

@@ -89,18 +89,37 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env,
       'ENV': JSON.stringify(process.env.ENV)
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     // 在UglifyJs删除没有用到的代码时不输出警告
+    //     warnings: false,
+    //     // 删除所有的 `console` 语句，可以兼容ie浏览器
+    //     drop_console: true,
+    //     // 内嵌定义了但是只用到一次的变量
+    //     collapse_vars: true,
+    //     // 提取出出现多次但是没有定义成变量去引用的静态值
+    //     reduce_vars: true
+    //   },
+    //   sourceMap: config.build.productionSourceMap
+    // }),
+    new UglifyJsParallelPlugin({
+      workers: os.cpus().length,
+      mangle: {
+        except: ['$super', '$', 'exports', 'require']  // 防止这些变量被改变
+      },
+      compressor: {
         // 在UglifyJs删除没有用到的代码时不输出警告
         warnings: false,
         // 删除所有的 `console` 语句，可以兼容ie浏览器
-        drop_console: true,
+        drop_console: deployEnv === 'prd',
+        // 删除所有的 `debugger`语句
+        drop_debugger: deployEnv === 'prd',
         // 内嵌定义了但是只用到一次的变量
-        collapse_vars: true,
+        collapse_vars: deployEnv === 'prd',
         // 提取出出现多次但是没有定义成变量去引用的静态值
         reduce_vars: true
       },
-      sourceMap: true
+      sourceMap: config.build.productionSourceMap
     }),
     new webpack.LoaderOptionsPlugin({
       options: {
@@ -121,22 +140,12 @@ var webpackConfig = merge(baseWebpackConfig, {
               // 禁止使用不安全的options 注意！！！
               safe: true,
               // 是否输出.map文件
-              sourcemap: false
+              sourcemap: config.build.productionSourceMap
             })
           ]
         }
       }
     }),
-    // new UglifyJsParallelPlugin({
-    //   workers: os.cpus().length,
-    //   mangle: true,
-    //   compressor: {
-    //     warnings: true,
-    //     drop_console: false,
-    //     drop_debugger:true
-    //   },
-    //   sourceMap: true
-    // }),
     // 分离 .css 文件输出路径
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css')

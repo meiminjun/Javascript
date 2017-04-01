@@ -25,7 +25,7 @@
   var depscripts = ''
 
   for (var i = 0, len = deps.length; i < len; i++) {
-    depscripts += '<script src="' + currentScriptBase + deps[i] + '"></script>\n'
+    depscripts += '<script type="text/javascript" src="' + currentScriptBase + deps[i] + '"></script>\n'
   }
 
   document.write(depscripts)

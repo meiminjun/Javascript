@@ -1,17 +1,16 @@
-# 定活理财规范文档
+# 定活理财组规范文档
 
 ## 快速开始
 
 ```
 npm install  // 下载依赖
 ```
-> bow 和 aladdin需要内网环境
 
 ### 启动
 
 ```
-npm run dev  // 挡板
-npm run stg  // 运行测试环境
+npm run dev   // 运行测试环境
+npm run mock  // 运行挡板环境
 ```
 
 ### 编译

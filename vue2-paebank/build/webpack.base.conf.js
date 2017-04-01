@@ -4,8 +4,6 @@ var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var fs = require('fs')
 
-// console.log('测试')
-// console.log(process.env.NODE_ENV)
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -44,7 +42,7 @@ module.exports = {
   },
   module: {
     // 这些库都是不依赖其它库的库 不需要解析他们可以加快编译速度
-    noParse: /src\/assets\/lib\/(zepto|runtime-check|add-assets|aladdin.loading|aladdin|bow|dante|flexible|\.js)/,
+    noParse: /src\/assets\/lib\/(zepto|runtime-check|add-assets|aladdin.loading|aladdin.dialog|aladdin.toast|aladdin|bow|dante|flexible|\.js)/,
     rules: [
       // {
       //   test: /\.(js|vue)$/,
@@ -58,6 +56,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+        // loader: 'happypack/loader?id=vue',
         options: vueLoaderConfig
       },
       {
@@ -84,7 +83,7 @@ module.exports = {
       }
     ]
   },
-  // 加载外部lib
+  // 外部加载lib
   externals: {
     aladdin: 'aladdin',
     bow: 'bow'
