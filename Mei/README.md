@@ -1,4 +1,4 @@
-# 定活理财组规范文档
+# a multiple pages vue project
 
 ## 快速开始
 
@@ -11,6 +11,12 @@ npm install  // 下载依赖
 ```
 npm run dev   // 运行测试环境
 npm run mock  // 运行挡板环境
+```
+
+Tips: 测试环境需要chrome跨域访问
+
+```
+open -a "Google Chrome" --args --disable-web-security --user-data-dir
 ```
 
 ### 编译
@@ -118,6 +124,7 @@ import urllib.request,os; pf = 'Package Control.sublime-package'; ipp = sublime.
 打开sublime text 3，按 ctrl+~或者菜单 View > Show Console打开命令窗口，粘贴以上代码并回车即可。
 
 然后，ctrl + shift + p 下载相关插件
+
 ![](http://ww3.sinaimg.cn/large/69a9ed59gw1f568lvwdzug20b606o40a.gif)
 
 1. Vue Syntax Highlight
@@ -210,10 +217,10 @@ sublime用户快捷键设置:
 
 ```
 
-## CMS开发部署规范(一定要遵守)
+## CMS开发部署规范
 
-1. 在本地构建一个dev的包并部署到dev，自测整个流程通过后再进行下一步骤
-2. 完成上一流程后，构建stg包并部署到测试环境
+1. 在本地构建一个dev的包并部署到对应的dev，自测整个流程通过后再进行下一步骤
+2. 完成上一流程后，才能构建stg包并部署到测试环境
 
 ## 配置项(config文件)
 

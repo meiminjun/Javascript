@@ -1,0 +1,110 @@
+import * as aladdin from 'aladdin';
+export function share() {
+  if (!aladdin.env.isBrowser) {
+    $.ajax = function (options) {
+      var args = Array.prototype.slice.call(arguments);
+
+      if (!options.headers) {
+        options.headers = {};
+      }
+
+      if (!options.headers['Content-Type']) {
+        options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      }
+
+      if (!options.data) {
+        options.data = {
+          responseDataType: "JSON"
+        };
+      }
+
+      return bow.http.ajax.apply(bow.http, args);
+    };
+  }
+  var WeiXin = {
+    getParamVals: function getParamVals() {
+      var item,
+          obj = {},
+          href = location.search,
+          str = href.substr(href.lastIndexOf('?') + 1),
+          arr = [];
+      if (str) {
+        arr = str.split('&');
+      }
+      $.each(arr, function (k, v) {
+        item = v.split('=');
+        obj[item[0]] = item[1];
+      });
+      return obj;
+    },
+    paramFilter: function paramFilter(str) {
+      var _str = str || location.search,
+          _obj = this.getParamVals(_str),
+          returnStr = '';
+      $.each(_obj, function (key, val) {
+        if (key !== 'rec_no' && key !== 'rec_type' && key !== 'media_source' && key !== 'channel_source' && key !== 'source' && key !== 'outerSource' && key !== 'activity_Id' && key !== 'activity_FlowId' && key !== 'umMode' && key !== 'userType' && key !== 'isKDAPP2') {
+          returnStr += '&' + key + '=' + val;
+        }
+      });
+      if (returnStr) {
+        returnStr = returnStr.replace('&', '?');
+      }
+      return returnStr;
+    },
+    init: function init() {
+      var getParamVals = this.getParamVals(),
+          options = {},
+          _search = this.paramFilter();
+
+      options = {
+        shareObj: {
+          title: '定活通（增强型）：随存随取，实时到账',
+          content: '存满90天更可申请T+1到账支取，收益率最高可达3.5%',
+          picture: 'https://b.pingan.com/app_images/b/v10/youhui/kaimenhong/share-icon.jpg' },
+
+        shareUrlObj: {
+          url: location.origin + location.pathname,
+          search: _search,
+          hash: '' },
+
+        paramObj: {
+          rec_no: '',
+          rec_type: '',
+          media_source: getParamVals.media_source,
+          channel_source: getParamVals.channel_source,
+          source: getParamVals.source,
+          outerSource: getParamVals.outerSource,
+          activity_Id: getParamVals.activity_Id,
+          activity_FlowId: '' },
+
+        ucpParamObj: {
+          appId: 'wx95415c456652ce73',
+          weappNo: 'bank',
+          ucp_url: location.protocol + '//eim.pingan.com.cn/bank/getSignature',
+          backUrl: location.origin,
+          openid: 'oiBF4juARSrSbe1-bHAl2zQc8P3w' },
+
+        sharChannelArr: {
+          btn: "1",
+          wx: "1",
+          qqZone: "1",
+          sina: "1",
+          erweima: "1",
+          changeRecNo: "1",
+          recNoLayer: "1" },
+
+        otherObj: {
+          intentCust: 'test-intentCust',
+          productCode: 'test-productCode',
+          pubOrgCode: 'test-pubOrgCode' },
+        webtrendsTitle: '大额存单（增强型）',
+        environment: 'stg',
+        isKDAPP2: getParamVals.isKDAPP2 === '1' ? true : false,
+        pactivityId: 'DECD',
+        notFlowIdShare: true };
+
+      shareMode.shareInit(options);
+    }
+  };
+  WeiXin.init();
+}
