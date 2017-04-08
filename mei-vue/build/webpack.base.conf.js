@@ -6,12 +6,14 @@ var vueLoaderConfig = require('./vue-loader.conf')
 var os = require('os')
 var HappyPack = require('happypack')
 var happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
+
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 function _createHappyPlugin (id, loaders) {
   return new HappyPack({
     id: id,
+    tempDir: process.env.NODE_ENV === 'production' ? '.happypack' : '.devhappypack',
     loaders: loaders,
     threadPool: happyThreadPool,
     // 开启缓存
@@ -53,13 +55,14 @@ module.exports = {
     }
   },
   plugins: [
-    _createHappyPlugin('eslint-vue', ['eslint-loader']),
-    _createHappyPlugin('eslint-js', ['eslint-loader']),
+    // _createHappyPlugin('eslint-vue', ['eslint-loader']), // 暂时不支持vue
+    // _createHappyPlugin('eslint-js', ['eslint-loader']),  // 暂时不支持vue
     _createHappyPlugin('js', ['babel-loader']),
     _createHappyPlugin('vue', ['vue-loader']),
     _createHappyPlugin('url', ['url-loader']),
     new HappyPack({
-      threads: 4,
+      tempDir: process.env.NODE_ENV === 'production' ? '.happypack' : '.devhappypack',
+      threads: os.cpus().length,
       loaders: [{
         path: 'vue-loader',
         query: {
@@ -73,17 +76,8 @@ module.exports = {
     noParse: /src\/assets\/lib\/(zepto|runtime-check|add-assets|aladdin.loading|aladdin.dialog|aladdin.toast|aladdin|bow|dante|flexible|\.js)/,
     rules: [
       {
-        test: /\.vue$/,
-        loader: 'happypack/loader?id=eslint-vue',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
-      {
-        test: /\.js$/,
-        loader: 'happypack/loader?id=eslint-js',
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
         enforce: 'pre',
         include: [resolve('src'), resolve('test')],
         options: {

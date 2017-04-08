@@ -10,6 +10,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var cssnano = require('cssnano')
 var UglifyJsParallelPlugin = require('webpack-uglify-parallel')
+var FastUglifyJsPlugin = require('fast-uglifyjs-plugin')
 var os = require('os')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var env = config.build.env
@@ -69,25 +70,38 @@ var webpackConfig = merge(baseWebpackConfig, {
       'process.env': env,
       'ENV': JSON.stringify(process.env.ENV)
     }),
-    new UglifyJsParallelPlugin({
-      workers: os.cpus().length,
-      mangle: {
-        except: ['$super', '$', 'exports', 'require']  // 防止这些变量被改变
+    new FastUglifyJsPlugin({
+      compress: {
+        warnings: false
       },
-      compressor: {
-        // 在UglifyJs删除没有用到的代码时不输出警告
-        warnings: false,
-        // 删除所有的 `console` 语句，可以兼容ie浏览器
-        drop_console: deployEnv === 'prd',
-        // 删除所有的 `debugger`语句
-        drop_debugger: true,
-        // 内嵌定义了但是只用到一次的变量
-        collapse_vars: deployEnv === 'prd',
-        // 提取出出现多次但是没有定义成变量去引用的静态值
-        reduce_vars: true
-      },
-      sourceMap: false
+      // debug设为true可输出详细缓存使用信息:
+      debug: true,
+        // 默认开启缓存，提高uglify效率，关闭请使用:
+        // cache: false,
+        // 默认缓存路径为项目根目录，手动配置请使用:
+      cacheFolder: path.resolve(__dirname, '../.otherFolder'),
+        // 工作进程数，默认os.cpus().length
+      workerNum: os.cpus().length
     }),
+    // new UglifyJsParallelPlugin({
+    //   workers: os.cpus().length,
+    //   mangle: {
+    //     except: ['$super', '$', 'exports', 'require']  // 防止这些变量被改变
+    //   },
+    //   compressor: {
+    //     // 在UglifyJs删除没有用到的代码时不输出警告
+    //     warnings: false,
+    //     // 删除所有的 `console` 语句，可以兼容ie浏览器
+    //     drop_console: deployEnv === 'prd',
+    //     // 删除所有的 `debugger`语句
+    //     drop_debugger: true,
+    //     // 内嵌定义了但是只用到一次的变量
+    //     collapse_vars: deployEnv === 'prd',
+    //     // 提取出出现多次但是没有定义成变量去引用的静态值
+    //     reduce_vars: true
+    //   },
+    //   sourceMap: false
+    // }),
     new webpack.LoaderOptionsPlugin({
       options: {
         postcss: function () {
