@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>定活通表单页面</title>
+</head>
+<body>
+<h1>定活通表单页面</h1>
+<button onclick= "back()">返回产品介绍页</button>
+<button onclick= "to()">跳转结果页面</button>
+<script type="text/javascript" src='router.js'></script>
+<script type="text/javascript">
+  function to () {
+    Router.to({
+      url: 'test5.html'
+    })
+  }
+  function back () {
+    Router.back()
+  }
+</script>
+</body>
+</html>

@@ -1,22 +1,20 @@
 define(['zepto'], function($) {
-	'use strict'
+  'use strict'
 
-	function List() {}
+  function List() {}
 
-	List.prototype = {
-		init: function(opt) {
-			var items = opt.items,
-				$ele = this.$ele = $('#' + opt.ele),
-				if (!option.ele && Array.isArray(items)) {
-					return;
-				}
-
-
-		}
-	}
+  List.prototype = {
+    init: function(opt) {
+      var items = opt.items,
+        $ele = this.$ele = $('#' + opt.ele),
+        if (!option.ele && Array.isArray(items)) {
+          return;
+        }
+    }
+  }
 
 
-	return {
-		List: List
-	}
+  return {
+    List: List
+  }
 });

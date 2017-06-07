@@ -125,7 +125,6 @@ let data = {
 }
 
 var app = new Observer(data)
-debugger
 app.$watcher('age', function (age) {
   console.log(`我的年纪变了，现在已经是：${age}岁了`)
 })
