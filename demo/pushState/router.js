@@ -8,9 +8,18 @@
     return type === 'function' || type === 'object' && !!obj
   }
   var json = { time: new Date().getTime() }
-  var routerUrlArr = []
+  var routes = {}
+
+  function _route (path, templateId, data) {
+    routes[path] = {templateId: templateId, data: data}
+    window.sessionStorage.setItem('__Router__', routes)
+  }
   return {
     init: function () {
+      var __Router__ = window.sessionStorage.getItem('__Router__')
+      if (__Router__) {
+        routes = __Router__
+      }
       window.onpopstate = function (event) {
         window.alert('location: ' + document.location + ', state: ' + JSON.stringify(event.state))
       }
@@ -19,7 +28,7 @@
       if (!_isObject(option) && option.url) {
         return
       }
-      routerUrlArr.push(option.url)
+      _route(option.url, option)
       if (window.history && (window.history.pushState && window.history.replaceState)) {
         if (!option.replace) {
           window.history.pushState(json, '', option.url + '?page=1')
@@ -34,8 +43,6 @@
       if (!_isObject(option) && option.url) {
         return
       }
-      debugger;
-      var url = routerUrlArr.pop()
       if (window.history && (window.history.pushState && window.history.replaceState)) {
         if (!option.replace) {
           window.history.pushState(json, '', url + '?page=1')
