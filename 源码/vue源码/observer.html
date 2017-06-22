@@ -66,6 +66,7 @@ p.walk = function (obj) {
   var me = this
   Object.keys(obj).forEach(function (key, item) {
     val = obj[key]
+    // 判断对象的Key是否为对象，如果是则再次New
     me.observer(val)
     me.convert(key, val)
   })
@@ -123,7 +124,6 @@ let data = {
     city: '九江'
   }
 }
-
 var app = new Observer(data)
 app.$watcher('age', function (age) {
   console.log(`我的年纪变了，现在已经是：${age}岁了`)
