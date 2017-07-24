@@ -1,7 +1,0 @@
-/node_modules
-/.happypack
-/.gitignore
-.DS_Store
-/dist
-*.tmp
-.npm-debug.log
