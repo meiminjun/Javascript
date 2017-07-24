@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>定活通结果页面</title>
+</head>
+<body>
+<h1>定活通结果页面</h1>
+<button onclick= "back()">完成（返回产品介绍页）</button>
+<button onclick= "to()">跳转我的定活通页面</button>
+<script type="text/javascript" src='router.js'></script>
+<script type="text/javascript">
+  function to () {
+    Router.back({
+      url: 'test3-1.html',
+      replace: true
+    })
+  }
+  function back () {
+    Router.back()
+  }
+</script>
+</body>
+</html>

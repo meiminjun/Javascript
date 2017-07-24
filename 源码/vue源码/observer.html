@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>测试</title>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+// 定义一个Dep(调度中心)，用来维护一系列观察者，方便添加观察者
+function Dep () {
+  this.subs = [] // 存放订阅者的数组
+}
+var s = Dep.prototype
+// 把订阅者都存到数组里面
+s.addSub = function (sub) {
+  this.subs.push(sub)
+}
+// 订阅者想订阅的事件，注册到事件中心
+s.notify = function () {
+  // 一旦调用了set就触发notify,然后遍历每个观察者，并触发他们相应的update方法
+  this.subs.forEach(function (sub) {
+    sub.update()
+    /*
+      sub.update()：
+      调度中心统一调度订阅者注册到调度中心的处理代码
+     */
+  })
+}
+Dep.target = null // 定义一个全局变量，用来判断是否是watcher调用了getter
+
+// Watcher的实例就是订阅者
+function Watcher (vm, exp, cb) {
+  console.log('watcher执行了')
+  this.cb = cb
+  this.vm = vm
+  this.exp = exp
+  this.value = this.get() // 更新前的值
+}
+var w = Watcher.prototype
+
+// 订阅者的更新方法
+w.update = function () {
+  var value = this.get() // 这里是更新后的值
+  if (value !== this.value) {
+    this.value = value // 用新值覆盖旧值
+    this.cb.call(this.vm, value)
+  }
+}
+
+// 通过Watcher的实例调用了getter
+w.get = function () {
+  Dep.target = this // 表明是watcher调用了getter
+  return this.vm.data[this.exp] // 这里会调用get方法
+}
+
+function Observer (Obj) {
+  if (!Obj && Object.prototype.toString.call(Obj) !== '[object]') return
+  this.data = Obj
+  this.walk(Obj)
+}
+
+var p = Observer.prototype
+p.walk = function (obj) {
+  var val
+  var me = this
+  Object.keys(obj).forEach(function (key, item) {
+    val = obj[key]
+    // 判断对象的Key是否为对象，如果是则再次New
+    me.observer(val)
+    me.convert(key, val)
+  })
+}
+
+p.convert = function (key, val) {
+  // 每次set函数调用的时候，触发notify
+  var dep = new Dep()  // 发布给订阅者
+  var me = this
+  Object.defineProperty(this.data, key, {
+    configurable: true,
+    enumarable: true,
+    get: function () {
+      console.log('你访问了' + key)
+      // Watcher的实例调用了getter，将watcher加入到调度中心的数组里面
+      if (Dep.target) {
+        dep.addSub(Dep.target)
+      }
+      return val
+    },
+    set: function (newVal) {
+      // 如果新设置的值和原来相等则不重新赋值
+      if (newVal === val) {
+        return
+      }
+      console.log('你设置了' + key)
+      console.log('新的设置' + key + '=' + newVal)
+      val = newVal
+      // 如果设置的新值是一个对象，则递归它，加上set/get
+      me.observer(newVal)
+      dep.notify() // 发布者发布到订阅中心
+    }
+  })
+}
+
+// 判断属性值是否是一个对象,如果是再深度监听
+p.observer = function (val) {
+  if (typeof val === 'object') {
+    new Observer(val)
+  }
+}
+
+// 定义一个watcher
+p.$watcher = function (exp, cb) {
+  new Watcher(this, exp, cb)
+}
+
+let data = {
+  age: 24,
+  user: {
+    name: 'hello world',
+    age: '24'
+  },
+  address: {
+    city: '九江'
+  }
+}
+var app = new Observer(data)
+app.$watcher('age', function (age) {
+  console.log(`我的年纪变了，现在已经是：${age}岁了`)
+})
+app.data.age = 100
+console.log(app.data)
+
+</script>
+</html>
