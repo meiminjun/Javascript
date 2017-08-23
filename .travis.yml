@@ -10,7 +10,11 @@ node_js: stable
 script:
   - git config user.name "meiminjun"
   - git config user.email "251222845@qq.com"
-  - git push --force --quiet "https://${GitHub_TOKEN_Javascript}@${GH_REF}" origin gh-pages
+  - git branch -a
+  - git checkout develop
+  - git checkout -b gh-pages
+  - git merge develop
+  - git push --quiet "https://${GitHub_TOKEN_Javascript}@${GH_REF}" origin gh-pages
 # after_script:
 #   - cd ./public
 #   - git init
