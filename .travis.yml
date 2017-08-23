@@ -8,8 +8,6 @@ node_js: stable
 #before_script:
 # - npm install -g gulp
 script:
-  - git status
-  - git branch
   - git config user.name "meiminjun"
   - git config user.email "251222845@qq.com"
   - git push --force --quiet "https://${GitHub_TOKEN_Javascript}@${GH_REF}" origin gh-pages
