@@ -8,8 +8,8 @@ node_js: stable
 #before_script:
 # - npm install -g gulp
 script:
-  - git config user.name "meiminjun"
-  - git config user.email "251222845@qq.com"
+# - git config user.name "meiminjun"
+# - git config user.email "251222845@qq.com"
   - git branch -a
   - git checkout develop
   - git checkout -b gh-pages
