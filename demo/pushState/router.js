@@ -1,6 +1,5 @@
 (function IIFE (def) {
   window.Router = def(window)
-  debugger;
   window.Router.init()
 })(function def (global) {
   var _isObject = function (obj) {
