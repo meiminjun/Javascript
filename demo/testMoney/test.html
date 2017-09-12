@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title></title>
 </head>
+
 <body>
-<script type="text/javascript">
-function formatNumber (number, decimals, decPoint, thousandsSep, roundtag) {
+  <script type="text/javascript">
+  function formatNumber(number, decimals, decPoint, thousandsSep, roundtag) {
     number = (number + '').replace(/[^0-9+-Ee.]/g, '');
     roundtag = roundtag || 'floor'; // "ceil","floor","round"
     var n = !isFinite(+number) ? 0 : +number; // 要处理的数值
@@ -14,25 +16,26 @@ function formatNumber (number, decimals, decPoint, thousandsSep, roundtag) {
     var sep = (typeof thousandsSep === 'undefined') ? ',' : thousandsSep; // 千分位符号
     var s = '';
     var toFixedFix = function (n, prec) {
-        var k = Math.pow(10, prec);
-        return '' + parseFloat(Math[roundtag](parseFloat((n * k).toFixed(prec * 2))).toFixed(prec * 2)) / k;
+      var k = Math.pow(10, prec);
+      return '' + parseFloat(Math[roundtag](parseFloat((n * k).toFixed(prec * 2))).toFixed(prec * 2)) / k;
     };
     s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
     if (sep !== '') {
-        var re = /(-?\d+)(\d{3})/;
-        while (re.test(s[0])) {
-            s[0] = s[0].replace(re, '$1' + sep + '$2');
-        }
+      var re = /(-?\d+)(\d{3})/;
+      while (re.test(s[0])) { s[0] = s[0].replace(re, '$1' + sep + '$2'); }
+
     }
     if ((s[1] || '').length < prec) {
-        s[1] = s[1] || '';
-        s[1] += new Array(prec - s[1].length + 1).join('0');
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
     }
     return s.join(dec);
-}
-console.log(formatNumber(234.334, 2, ".", "")) // 234.33
-console.log(formatNumber(0.232373, 4, ".", "")) // 0.2323
-console.log(formatNumber(2, 2, ",", ","))//"2,00"
-</script>
+  }
+  console.log(formatNumber(234.334, 2, ".", "")) // 234.33
+  console.log(formatNumber(0.232373, 4, ".", "")) // 0.2323
+  console.log(formatNumber(2, 2, ",", ",")) //"2,00"
+
+  </script>
 </body>
+
 </html>
