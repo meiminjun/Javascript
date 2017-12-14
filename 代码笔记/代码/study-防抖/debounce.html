@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>debounce防抖</title>
+</head>
+<body>
+<div id='container' style="height:300px;width:100%;background-color:black;color: white;font-size:23px;text-align: center;line-height: 300px;">
+  0
+</div>
+<script type="text/javascript">
+
+  // 参考：https://github.com/mqyqingfeng/Blog/issues/22
+  // 防抖: 频繁发生的情况下，只有足够时间，才执行一次，例如：坐公交，只要有人刷卡，车子就不会运行
+
+  var count = 0;
+  var container = document.getElementById('container');
+  function getUserAction(e) {
+      console.log(e);
+      container.innerHTML = count++;
+  };
+  // 第一版本：
+  function debounce(func, wait) {
+      var timeout;
+      return function () {
+          clearTimeout(timeout)
+          timeout = setTimeout(func, wait);
+      }
+  }
+
+  // 第二版
+  function debounce2(func, wait) {
+      var timeout;
+      return function () {
+          var context = this;
+          clearTimeout(timeout)
+          timeout = setTimeout(function(){
+              func.apply(context)
+          }, wait);
+      }
+  }
+
+  // 第三版
+function debounce3(func, wait) {
+    var timeout;
+
+    return function () {
+        var context = this;
+        var args = arguments;
+
+        clearTimeout(timeout)
+        timeout = setTimeout(function(){
+            func.apply(context, args)
+        }, wait);
+    }
+}
+
+// 第四版
+function debounce4(func, wait, immediate) {
+    var timeout, result;
+    return function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) func.apply(context, args)
+        } else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+    }
+}
+
+// 第五版
+function debounce5(func, wait, immediate) {
+    var timeout, result;
+    return function () {
+        var context = this;
+        var args = arguments;
+
+        if (timeout) clearTimeout(timeout);
+        if (immediate) {
+            // 如果已经执行过，不再执行
+            var callNow = !timeout;
+            timeout = setTimeout(function(){
+                timeout = null;
+            }, wait)
+            if (callNow) result = func.apply(context, args)
+        }
+        else {
+            timeout = setTimeout(function(){
+                func.apply(context, args)
+            }, wait);
+        }
+        return result;
+    }
+}
+
+  // container.onmousemove = getUserAction; // 原始
+  // container.onmousemove = debounce(getUserAction, 1000);  // 第一版
+  // container.onmousemove = debounce2(getUserAction, 1000);  // 第二版
+  // container.onmousemove = debounce3(getUserAction, 1000);  // 第三版
+  container.onmousemove = debounce4(getUserAction, 1000, false);  // 第四版
+  // container.onmousemove = debounce5(getUserAction, 1000);  // 第四版
+
+</script>
+</body>
+</html>
