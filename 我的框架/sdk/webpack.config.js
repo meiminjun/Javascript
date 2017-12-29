@@ -15,18 +15,23 @@ module.exports = function (option) {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
-      library: 'SDK',
+      library: 'MEI',
       libraryTarget: 'umd'
     }
   }
   if (isMin === 'true') {
     config.plugins = plugins
     config.entry = {
-      'sdk.min': './src/index.js'
+      'mei.min': './src/index.js'
+    }
+  } else if (isMin === 'false'){
+    config.entry = {
+      'mei': ['./src/index.js']
     }
   } else {
     config.entry = {
-      'sdk': ['./src/index.js']
+      'mei': ['./src/index.js'],
+      'mei.min': './src/index.js'
     }
   }
   return config

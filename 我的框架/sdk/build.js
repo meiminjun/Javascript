@@ -1,4 +1,4 @@
-var isMin = process.env.MIN // 是否压缩
+var isMin = process.env.MIN || 'all' // 是否压缩
 let webpackConfig = require('./webpack.config');
 let rm = require('rimraf')
 let path = require('path')
@@ -23,6 +23,7 @@ const compileCallback = (er, stats) => {
 
 rm(path.resolve(__dirname, './dist'), err => {
     if (err) throw err
+    console.log(isMin)
     if (isMin === 'all') {
         let compiler1 = webpack(webpackConfig({
             isMin: 'true'
@@ -38,6 +39,5 @@ rm(path.resolve(__dirname, './dist'), err => {
             isMin: isMin
         }))
         compiler.run(compileCallback)
-        return;
     }
 })
