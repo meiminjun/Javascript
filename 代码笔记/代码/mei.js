@@ -767,24 +767,23 @@ var o = {
     }
     return _rs.join('&')
   },
-  // 获取，设置url参数
-  // ecDo.getUrlPrmt('test.com/write?draftId=122000011938')
-  // result：Object{draftId: "122000011938"}
-  getUrlPrmt: function (url) {
-    url = url || window.location.href
-    var _pa = url.substring(url.indexOf('?') + 1),
-      _arrS = _pa.split('&'),
-      _rs = {}
-    for (var i = 0, _len = _arrS.length; i < _len; i++) {
-      var pos = _arrS[i].indexOf('=')
-      if (pos == -1) {
-        continue
-      }
-      var name = _arrS[i].substring(0, pos),
-        value = window.decodeURIComponent(_arrS[i].substring(pos + 1))
-      _rs[name] = value
+  // 获取url参数转换为对象
+  getParamToObj: function (url) {
+    let obj = {}
+    let href = typeof url === 'undefined' ? window.location.search : url
+    if (href === '') {
+      return obj
     }
-    return _rs
+    let str = href.substring(href.lastIndexOf('?') + 1)
+    let arr = str.split('&')
+    arr.forEach(function (item, index) {
+      if (item === '') {
+        return
+      }
+      item = item.split('=')
+      obj[item[0]] = item[1]
+    })
+    return obj
   },
   randomColor: function () {
       // randomNumber是下面定义的函数
