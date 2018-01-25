@@ -770,7 +770,7 @@ var o = {
   // 获取url参数转换为对象
   getParamToObj: function (url) {
     let obj = {}
-    let href = typeof url === 'undefined' ? window.location.search : url
+    let href = typeof url === 'undefined' ? window.location.href : url
     if (href === '') {
       return obj
     }
