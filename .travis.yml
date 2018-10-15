@@ -1,0 +1,32 @@
+language: node_js
+node_js: stable
+# S: Build Lifecycle
+# install:
+#   - npm install
+# before_install:
+#   - git submodule update --init --remote --recursive
+#before_script:
+# - npm install -g gulp
+script:
+# - git config user.name "meiminjun"
+# - git config user.email "251222845@qq.com"
+  - git branch -a
+  - git checkout develop
+  - git checkout -b gh-pages
+  - git merge develop
+  - git push --quiet "https://${GitHub_TOKEN_Javascript}@${GH_REF}" gh-pages:gh-pages
+# after_script:
+#   - cd ./public
+#   - git init
+#   - git config user.name "meiminjun"
+#   - git config user.email "251222845@qq.com"
+#   - git add .
+#   - git commit -m "Update docs"
+#   - git push --force --quiet "https://${GitHub_TOKEN_BLOG}@${GH_REF}" master:master
+# E: Build LifeCycle
+branches:
+  only:
+    - develop
+env:
+  global:
+    - GH_REF: github.com/meiminjun/Javascript

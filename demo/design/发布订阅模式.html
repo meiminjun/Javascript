@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>发布订阅模式</title>
+</head>
+<script type="text/javascript">
+var subc = {};
+(function (q) {
+  var topics = {}  // 回调函数订阅数组
+  var uid = -1
+  q.subscribe = function (topic, func) {
+    if (arguments.length < 2) {
+      return false
+    }
+    if (!topics[topic]) {
+      topics[topic] = []
+    }
+    var token = (++uid).toString()
+    var args = Array.prototype.slice.call(arguments, 1)
+    args.forEach(function (item, index) {
+      topics[topic].push({
+        token: token,
+        topicName: topics[topic],
+        func: item
+      })
+    })
+    console.log(this)
+    return this
+  }
+  // q.publish = function (topic, args) {
+  //   if (!topics[topic]) {
+  //     return false
+  //   }
+
+  //   var subTopic = topics[topic]
+  //   var len = subTopic.length > 0 ? subTopic.length : 0
+
+  //   while (len--) {
+  //     subTopic[len].func(topic, args)
+  //   }
+  // }
+  return q
+})(subc)
+
+subc.subscribe('测试', function (a, b) {
+  console.log(a, b)
+}, function (c) {
+  console.log(c)
+})
+
+</script>
+
+<body>
+</body>
+
+</html>
