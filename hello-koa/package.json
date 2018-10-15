@@ -7,10 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node start.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "http://git-ma.paic.com.cn/EX-MEIMINJUN001/Javascript.git"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
